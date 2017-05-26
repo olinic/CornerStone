@@ -1,0 +1,52 @@
+{
+  "name": "cornerstone",
+  "version": "1.0.0",
+  "description": "A unified JavaScript Bible API.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "pretest": "tsc --sourceMap false",
+    "test": "jasmine",
+    "typedoc": "typedoc --excludePrivate --excludeNotExported --excludeExternals --exclude 'Triangle.ts' --mode file --readme ./README --module commonjs --out ./doc ./src/index.ts",
+    "build": "webpack --optimize-minimize --output-filename [name].min.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olinic/CornerStone.git"
+  },
+  "keywords": [
+    "npm",
+    "unified",
+    "JavaScript",
+    "Bible",
+    "library",
+    "API"
+  ],
+  "author": "Oliver Nichols <oliver.nic012@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/olinic/CornerStone/issues"
+  },
+  "homepage": "https://github.com/olinic/CornerStone#readme",
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.1.3",
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^6.4.1",
+    "babel-preset-es2015": "^6.24.1",
+    "jasmine": "^2.5.3",
+    "jasmine-core": "^2.6.2",
+    "karma": "^1.7.0",
+    "karma-chrome-launcher": "^2.1.1",
+    "karma-jasmine": "^1.1.0",
+    "sinon": "^2.3.2",
+    "source-map-loader": "^0.2.1",
+    "typedoc": "^0.5.10",
+    "webpack": "^2.3.3"
+  },
+  "dependencies": {
+    "es6-promise": "^4.1.0"
+  }
+}
