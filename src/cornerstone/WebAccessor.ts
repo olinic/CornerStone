@@ -1,8 +1,34 @@
 var Promise = require('es6-promise').Promise;
-
 declare var Qt: any;
 declare var CornerStone: any;
 
+// Attempt to load node http
+try
+{
+  var http = require('http');
+}
+catch(err)
+{
+  var http = undefined;
+}
+
+export function getCurrentPlatform()
+{
+  let platform = "unknown";
+  if (typeof http !== 'undefined')
+  {
+    platform = "node";
+  }
+  else if (typeof Qt !== 'undefined')
+  {
+    platform = "Qt";
+  }
+  else if (typeof document !== 'undefined')
+  {
+    platform = "browser";
+  }
+  return platform;
+}
 
 export interface UrlOptions
 {
@@ -59,87 +85,82 @@ export interface UrlOptions
  *  })
  * </code></pre>
  */
-export function get({method = 'GET', url, params, headers}: UrlOptions = {url: ''})
+export function request({method = 'GET', url, params, headers}: UrlOptions = {url: ''})
 {
-  if (method == "JSONP")
+  
+  // return a promise
+  return new Promise(function(
+    resolve: (response: any) => any,
+    reject: (err: Object) => any)
   {
 
-    // check if document is defined locally
-    if (typeof document !== "undefined")
+    http.get(url, function(res)
     {
-      console.log("document exists.");
-      var script = document.createElement('script');
-      script.src = url;
-      document.getElementsByTagName('head')[0].appendChild(script);
+      const { statusCode } = res;
 
-    }
-    // check if Qt is defined
-    else if (typeof Qt !== "undefined")
-    {
-      console.log("Qt.include exists!");
-
-    }
-    else
-    {
-      console.log("I do not have a way to grab jsonp.");
-    }
-
-    // send error if timeout is triggered
-
-
-  }
-  // use HTTP Request
-  else
-  {
-    // return a promise
-    return new Promise(function(
-      resolve: (response: any) => any,
-      reject: (err: Object) => any)
-    {
-      // create our new http request
-      let xhr = new XMLHttpRequest();
-      // set it up
-      xhr.open(method, url);
-      xhr.onload = function()
+      // reject on error
+      if (statusCode < 200 || statusCode >= 300)
       {
-        // on success, use resolve callback
-        if (xhr.status >= 200 && xhr.status < 300)
-        {
-          resolve(xhr.response);
-        }
-        // on failure, use reject
-        else
-        {
-          reject({
-            status: xhr.status,
-            statusText: xhr.statusText
-          });
-        }
+        reject({
+          status: statusCode
+        })
+      }
+
+      let data = '';
+      res.on('data', function(chunk)
+      {
+        data += chunk;
+      });
+      res.on('end', function()
+      {
+        resolve(data);
+      })
+
+    });
+
+    /*// create our new http request
+    let xhr = new XMLHttpRequest();
+    // set it up
+    xhr.open(method, url);
+    xhr.onload = function()
+    {
+      // on success, use resolve callback
+      if (xhr.status >= 200 && xhr.status < 300)
+      {
+        resolve(xhr.response);
       }
       // on failure, use reject
-      xhr.onerror = function()
+      else
       {
         reject({
           status: xhr.status,
           statusText: xhr.statusText
         });
       }
+    }
+    // on failure, use reject
+    xhr.onerror = function()
+    {
+      reject({
+        status: xhr.status,
+        statusText: xhr.statusText
+      });
+    }
 
-      // setup headers
-      if (headers)
+    // setup headers
+    if (headers)
+    {
+      Object.keys(headers).forEach(function(key)
       {
-        Object.keys(headers).forEach(function(key)
-        {
-          // call for each key
-          xhr.setRequestHeader(key, headers[key]);
-        })
-      }
+        // call for each key
+        xhr.setRequestHeader(key, headers[key]);
+      })
+    }
 
-      params = stringifyParams(params);
+    params = stringifyParams(params);
 
-      xhr.send(params);
-    });
-  }
+    xhr.send(params);*/
+  });
 }
 
 /**
