@@ -1,21 +1,12 @@
 var sinon;
-var express;
 var Web;
-var app;
-var port;
-var server;
 
 inNode(function() {
   // dependencies
   sinon = require("sinon");
-  express = require('express');
 
   // src file
   Web = require('../../js/cornerstone/WebAccessor.js');
-
-  app = express();
-  port = 3000;
-  server;
 });
 
 inBrowser(function() {
@@ -25,28 +16,13 @@ inBrowser(function() {
 
 // Setup before each spec
 beforeAll(function() {
-  console.log("hello")
-  inNode(function() {
-    // start server
-    server = app.listen(port, function() {
-      console.log("Listening on port " + port);
-    });
 
-    // respond with provided path
-    app.get('/*', function (req, res) {
-      res.send(req.params[0]);
-    });
-  });
 });
 
 // Tear down
 afterAll(function() {
-  inNode(function() {
-    // shutdown the server
-    server.close();
-  });
-});
 
+});
 
 describe("Web Accessor", function() {
   // test each platform
@@ -81,7 +57,7 @@ describe("Web Accessor", function() {
 
       var webPromise = Web.request({
         method: "GET",
-        url: "http://localhost:3000/verse",
+        url: "http://localhost:3001/verse",
       });
 
       webPromise.then(function(response) {

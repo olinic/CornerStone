@@ -1,0 +1,14 @@
+{
+   "extends": "tslint:recommended",
+   "rules": {
+      "max-line-length": {
+         "options": [120]
+      },
+      "no-console": {
+         "severity": "warning"
+      },
+      "one-line": [false], 
+      "trailing-comma": [true, {"multiline": "ignore", "singleline": "never"}],
+      "only-arrow-functions": [true, "allow-named-functions"]
+   }
+}

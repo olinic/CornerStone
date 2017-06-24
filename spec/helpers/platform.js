@@ -1,4 +1,4 @@
-// print all of the globals
+// return all of the global variables
 function globals() { return this; }
 function varsList() {
   return Object.getOwnPropertyNames(globals());
@@ -18,8 +18,6 @@ function inNode(func) {
     func();
   }
 }
-
-console.log("hello bacon")
 
 // define as global in node
 if (typeof global !== 'undefined') {
