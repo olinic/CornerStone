@@ -7,10 +7,11 @@
     "test": "tests"
   },
   "scripts": {
-    "pretest": "tsc --sourceMap false",
-    "test": "start node testserver.js 5 && jasmine && start spec/SpecRunner.html",
+    "pretest": "tsc --sourceMap false && webpack --config ./spec/webpack.config.js",
+    "test": "start node testserver.js 10 && jasmine && start spec/SpecRunner.html",
     "typedoc": "typedoc --excludePrivate --excludeNotExported --excludeExternals --exclude 'Triangle.ts' --mode file --readme ./README --module commonjs --out ./doc ./src/index.ts",
-    "build": "webpack --optimize-minimize --output-filename [name].min.js"
+    "build": "webpack --optimize-minimize --output-filename [name].min.js",
+    "lint": "tslint --force src/**/*.ts"
   },
   "repository": {
     "type": "git",

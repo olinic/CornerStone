@@ -1,15 +1,20 @@
+
 import * as es6Promise from "es6-promise";
 import * as http from "http";
+import { parse } from "url";
 
 declare var Qt: any;
 declare var CornerStone: any;
 
 const Promise = es6Promise.Promise;
 
+console.log("test");
+
+let getVerse;
 /**
  * Access point for jsonp callback functions. Allows unique function names to be utilized.
  */
-export let jsonpCaller;
+let jsonpCaller;
 
 /**
  * Counter that creates unique jsonp callback names.
@@ -20,6 +25,23 @@ let jsonpCounter = 0;
  * Library name. Allows the callback to call the appropriate object.
  */
 const libraryName = "CornerStone";
+
+export interface IWebAccessor
+{
+   request(options: IUrlOptions): any;
+}
+
+export interface IUrlOptions
+{
+   /**
+    * Method: JSONP, GET, POST, PUT, DELETE, etc.
+    */
+   method?: string;
+   /**
+    * URL to access
+    */
+   url: string;
+}
 
 /*let http;
 // Attempt to load Node http
@@ -47,41 +69,7 @@ function isQt()
    return (typeof Qt !== "undefined");
 }
 
-export interface IUrlOptions
-{
-   /**
-    * Method: JSONP, GET, POST, PUT, DELETE, etc.
-    */
-   method?: string;
-   /**
-    * URL to access
-    */
-   url: string;
-   /**
-    * Parameters to send with the URL.
-    * {
-    *   param: value,
-    *   param: value,
-    *   ...
-    * }
-    * or
-    * "param=value&param=value&..."
-    */
-   params?: string | object;
-   /**
-    * Header values for URL request.
-    * {
-    *   header: value,
-    *   header: value,
-    *   ...
-    * }
-    */
-   headers?: object;
-   /**
-    * Name for callback function. Used internally.
-    * Prevents conflicts between different jsonp calls.
-    */
-}
+
 
 /**
  * Request that is tied to the current platform. After the first
@@ -89,21 +77,21 @@ export interface IUrlOptions
  *
  * The variable will be assigned to the appropriate function.
  */
-function platformRequest(options: IUrlOptions)
+let platformRequest = (options: IUrlOptions) =>
 {
    if (isNode())
    {
-      // platformRequest = nodeRequest;
+      platformRequest = nodeRequest;
       return nodeRequest(options);
    }
    else if (isBrowser())
    {
-      // platformRequest = browserRequest;
+      platformRequest = browserRequest;
       return browserRequest(options);
    }
    else if (isQt())
    {
-      // platformRequest = qtRequest;
+      platformRequest = qtRequest;
       return qtRequest(options);
    }
    else
@@ -117,7 +105,7 @@ function platformRequest(options: IUrlOptions)
  * Returns a Promise.
  * Usage:
  * <pre><code>
- * get({
+ * request({
  *   method: "GET",
  *   url: "https://bible-api.com/john%203:16"
  * })
@@ -136,15 +124,72 @@ export function request(options: IUrlOptions)
    return platformRequest(options);
 }
 
-function nodeRequest({method = "GET", url, params, headers}: IUrlOptions = {url: ""})
+function cleanUrlOptions(options)
 {
+
+}
+
+function cleanUrl(options)
+{
+   if (options.method === "JSONP")
+   {
+
+   }
+}
+
+function getCallback(url)
+{
+   // get search
+   // http://localhost/path?search=value => ?search=value
+   let searchParams = parse(url).search || "";
+
+   // get callback parameter
+   // callback=value
+   let callbackReg = /callback=\w+/.exec(searchParams);
+   let callbackParam = (callbackReg === null) ? "" : callbackReg[0];
+
+   // pull value out of callback parameter, don't include the "="
+   let start = callbackParam.indexOf("=");
+   return callbackParam.substring(start + 1);
+}
+
+function nodeRequest({method = "GET", url}: IUrlOptions = {url: ""})
+{
+   // Default is to do nothing
+   let preResolve = (response) => { return response; };
+
+   if (method === "JSONP")
+   {
+      method = "GET";
+      preResolve = (response) =>
+      {
+         let start = response.indexOf("({");
+         start = (start !== -1) ? start : 0;
+
+         let end = response.lastIndexOf("})");
+         end = (end !== -1) ? end : response.length;
+
+         // Return the JSON without the parentheses.
+         const json = response.substring(start + 1, end + 1);
+         return json;
+      };
+   }
+
    // return a promise
    return new Promise((
       resolve: (response: any) => any,
       reject: (err: object) => any) =>
    {
 
-      http.get(url, (res) =>
+      let options = {
+         method: method,
+         protocol: parse(url).protocol || "http:",
+         hostname: parse(url).hostname,
+         port: Number(parse(url).port) || 80,
+         path: (parse(url).pathname || "") + (parse(url).search || "")
+      };
+
+      const req = http.request(options, (res) =>
       {
          const { statusCode } = res;
 
@@ -163,25 +208,41 @@ function nodeRequest({method = "GET", url, params, headers}: IUrlOptions = {url:
          });
          res.on("end", () =>
          {
+            // handle JSONP if necessary
+            data = preResolve(data);
             resolve(data);
          });
 
       });
+
+      req.on('error', (e) => {
+         console.error(e.message);
+      });
+      req.end();
    });
 }
 
 function browserRequest(options: IUrlOptions)
 {
    console.log("browserRequest: Method is " + options.method);
-   return xmlHttpPromise(options);
+   if (options.method === "JSONP")
+   {
+      console.log("Starting JSONP");
+      return jsonpPromise(options);
+   }
+   else
+   {
+      return xmlHttpPromise(options);
+   }
+
 }
 
-function qtRequest({method = "GET", url, params, headers}: IUrlOptions = {url: ""})
+function qtRequest({method = "GET", url}: IUrlOptions = {url: ""})
 {
    // more to come
 }
 
-function xmlHttpPromise({method = "GET", url, params, headers}: IUrlOptions = {url: ""})
+function xmlHttpPromise({method = "GET", url}: IUrlOptions = {url: ""})
 {
    return new Promise((
       resolve: (response: any) => any,
@@ -217,110 +278,57 @@ function xmlHttpPromise({method = "GET", url, params, headers}: IUrlOptions = {u
          });
       };
 
-      // setup headers
-      if (headers)
-      {
-         Object.keys(headers).forEach((key) =>
-         {
-            // call for each key
-            xhr.setRequestHeader(key, headers[key]);
-         });
-      }
-
-      params = stringifyParams(params);
-
-      xhr.send(params);
+      xhr.send();
    });
 }
 
-/**
- * Convert provided parameters into a string of parameters, ready for a URL.
- */
-function stringifyParams(params): string
+function jsonpPromise({method = "GET", url}: IUrlOptions = {url: ""})
 {
-   // string up the params if an object
-   if (params && typeof params === "object")
+   return new Promise((
+      resolve: (response: any) => any,
+      reject: (err: object) => any) =>
    {
-      params = Object.keys(params).map((key) =>
+      jsonpCounter++;
+      // function name
+      //const callFunctionName = "call" + jsonpCounter;
+      const callFunctionName = "getVerse"
+
+      // callback name
+      //const myCallbackName: string = "jsonpCaller." + callFunctionName;
+      const myCallbackName = callFunctionName;
+
+      // create the callback
+      //jsonpCaller[callFunctionName] = (data) =>
+
+      // create "component" that retrieves the data and calls back
+      if (isBrowser())
       {
-         return encodeURIComponent(key) + "=" + encodeURIComponent(params[key]);
-      }).join("&");
-   }
-   return params;
-}
+         window[ myCallbackName ] = (data) =>
+         {
+            var json = JSON.stringify(data);
+            console.log("Data: " + json);
+            resolve(json);
+            // clearTimeout
 
-/**
- * Returns whether the provided haystack contains a needle.
- */
-function strIncludes(haystack: string, needle: string): boolean
-{
-   return (haystack.indexOf(needle) !== -1);
-}
+            // clean up
+            // remove reference for Garbage Collector
+            //jsonpCaller[callFunctionName] = null;
+         }
 
-function jsonpCallback(data)
-{
-   console.log(data);
-}
+         console.log("Creating new script!");
+         const script = document.createElement("script");
+         script.src = url;
 
-/**
- * Sets up JSONP by including the remote script into our application.
- */
-function setupJsonp(url: string, params: string, callbackName: string)
-{
-   // Are we currently in Qt or a browser? Let's check ...
-   if (isBrowser())
-   {
+         document.getElementsByTagName("head")[0].appendChild(script);
+      }
+      else if (isQt())
+      {
+         console.log("Qt.include exists!");
+         Qt.include(url);
+      }
 
-      const script = document.createElement("script");
-      script.src = url + params + "";
 
-      document.getElementsByTagName("head")[0].appendChild(script);
-   }
-   // check if Qt is defined
-   else if (isQt())
-   {
-      console.log("Qt.include exists!");
-      Qt.include(url + params);
-   }
-   else
-   {
-      throw new Error("I do not have a way to grab jsonp.");
-   }
-}
 
-/**
- * Cleans up JSONP mess.
- */
-function cleanUpJsonp(callbackName: string)
-{
-   // remove reference for Garbage Collector
-   jsonpCaller[callbackName] = null;
-}
-
-function jsonp({url, params}: IUrlOptions = {url: ""})
-{
-   const paramStr: string = stringifyParams(params);
-   const myCallbackName: string = "jsonpCallback" + jsonpCounter;
-   jsonpCounter++;
-
-   // Setup URL
-   // check if callback is already defined
-   if (!strIncludes(paramStr, "callback"))
-   {
-      // add our own callback function
-   }
-
-   // setupJsonp(myCallbackName);
-
-   // Create callback function
-   jsonpCaller[myCallbackName] = (data) =>
-   {
-      // clearTimeout
-      // resolve
-      // callback
-      console.log(data);
-      cleanUpJsonp(myCallbackName);
-   };
-
-   // send error if timeout is triggered
+      // send error if timeout is triggered
+   });
 }
