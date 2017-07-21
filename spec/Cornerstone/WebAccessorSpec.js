@@ -1,103 +1,127 @@
-var sinon;
-var Web;
-var port = 3000;
-
-// dependencies
-sinon = require("sinon");
-
 // src file
-Web = require('../../js/cornerstone/WebAccessor.js');
+const Web = require("../../" + generatedJsPath + "cornerstone/WebAccessor.js");
+Web.request = Web.default;
 
-describe("Web Accessor", function() {
-   it("should be able to GET an online resource", function(done) {
-      var responseText = "verse";
+const httpPort = 3000;
+const httpsPort = 3003;
 
-      var webPromise = Web.request({
-         method: "GET",
-         url: testServerUrl(responseText),
+describe("Web Accessor", () => {
+   let responseText;
+   let method;
+   let baseUrl;
+   let port;
+   let urlPath;
+
+
+   function testRequest(method, urlPath, baseUrl, port) {
+      return Web.request({
+         method: method,
+         url: testServerUrl(urlPath, baseUrl, port),
       });
+   }
 
-      webPromise.then(function(response) {
-         expect(response).toEqual(responseText);
+   function expectGoodPromise(promise, expectedText, done) {
+      promise.then((response) => {
+         expect(response).toEqual(expectedText);
          done();
-      });
-   });
-
-   it("should be able to retrieve an online resource via POST", function(done) {
-      // Note: server will return the path + post
-      var urlPath = "text"
-      var responseText = urlPath + "post";
-
-      var webPromise = Web.request({
-         method: "POST",
-         url: testServerUrl(urlPath),
-      });
-
-      webPromise.then(function(response) {
-
-         expect(response).toEqual(responseText);
-         done();
-      });
-   });
-
-   function jsonpTest(urlParam, shouldPass, done)
-   {
-      var responseText = "helloworld";
-
-      var webPromise = Web.request({
-         method: "JSONP",
-         url: testServerUrl(urlParam),
-      });
-
-      webPromise.then(function(response) {
-         if (shouldPass) {
-            var json = JSON.parse(response);
-            expect(json.message).toEqual(responseText);
-         }
-         else {
-            fail("Supposed to fail.")
-         }
-         done();
-      }).catch(function(err) {
-         if (shouldPass) {
-            fail(err);
-         }
-         else {
-            expect(err).toBeDefined();
-         }
+      }).catch((err) => {
+         fail(err);
          done();
       });
    }
 
-   it("should be able to retrieve an online resource via JSONP with a specified callback", function(done) {
+   function expectBadPromise(promise, done) {
+      promise.then((response) => {
+         fail("Promise should not have succeeded.")
+         done();
+      }).catch((err) => {
+         // check that an Error is provided
+         expect(err instanceof Error).toBeTruthy();
+         done();
+      });
+   }
+
+   beforeEach(() => {
+      // Set variables to defaults before each test
+      responseText = "verse";
+      method = "GET";
+      baseUrl = "http://localhost";
+      port = 3000;
+      urlPath = "";
+      process.env.NODE_TLS_REJECT_UNAUTHORIZED = "1";
+   });
+
+   it("should GET an online resource", (done) => {
+      urlPath = responseText;
+
+      let webPromise = testRequest(method, urlPath, baseUrl, port);
+      expectGoodPromise(webPromise, responseText, done);
+   });
+
+   it("should GET an online resource securely (HTTPS)", (done) => {
+      process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+      baseUrl = "https://localhost";
+      port = httpsPort;
+      urlPath = responseText;
+
+      let webPromise = testRequest(method, urlPath, baseUrl, port);
+
+      webPromise.then((response) => {
+         expect(response).toEqual(responseText);
+         done();
+      });
+   });
+
+   it("should retrieve an online resource via POST", (done) => {
+      // Note: server will return the path + post
+      urlPath = "text"
+      responseText = urlPath + "post";
+      method = "POST";
+
+      let webPromise = testRequest(method, urlPath, baseUrl, port);
+      expectGoodPromise(webPromise, responseText, done);
+   });
+
+   function jsonpTest(urlParam, shouldPass, done)
+   {
+      responseText = '{"message":"helloworld"}';
+      method = "JSONP";
+      urlPath = urlParam;
+
+      let webPromise = testRequest(method, urlPath);
+
+      if (shouldPass) {
+         expectGoodPromise(webPromise, responseText, done);
+      } else {
+         expectBadPromise(webPromise, done);
+      }
+   }
+
+   it("should retrieve an online resource via JSONP with a specified callback", (done) => {
       jsonpTest("jsonp?callback=getVerse", true, done);
    });
 
-   /*it("should be able to retrieve an online resource via JSONP with no specified callback", function(done) {
+   it("should retrieve an online resource via JSONP with no specified callback", (done) => {
       jsonpTest("jsonp", true, done);
-   });*/
+   });
 
-   it("should fail gracefully (the Promise way)", function(done) {
-      var responseText = "failure_text";
+   it("should fail gracefully when using JSONP", (done) => {
+      jsonpTest("fail", false, done);
+   });
 
-      var webPromise = Web.request({
-         method: "POST",
-         url: testServerUrl("fail?code=404&message=" + responseText),
-      });
+   it("should fail gracefully (the Promise way)", (done) => {
+      responseText = "failure_text";
+      urlPath = "fail?code=404&message=" + responseText;
+      method = "POST";
 
-      webPromise.then(function(response) {
-         fail("Promise succeeded on a bad request.")
-         done();
-      }).catch(function(err) {
-         expect(err).toBeDefined();
-         done();
-      });
+      let webPromise = testRequest(method, urlPath, baseUrl, port);
+      expectBadPromise(webPromise, done);
    });
 });
 
 // Returns the url for the test server. baseUrl and port are optional.
 function testServerUrl(urlEnd, baseUrl, port) {
-   var urlBase = (typeof baseUrl === 'string') ? baseUrl : "http://localhost";
-   var urlPort = (typeof port === 'number') ? port : 3000;
+   let urlBase = (typeof baseUrl === 'string') ? baseUrl : "http://localhost";
+   let urlPort = (typeof port === 'number') ? port : 3000;
    return (urlBase + ":" + urlPort + "/" + urlEnd);
 }
