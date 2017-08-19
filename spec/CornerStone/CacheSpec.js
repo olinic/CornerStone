@@ -12,7 +12,7 @@ describe("Cache", () => {
    function randomString(length)
    {
       let text = "";
-      let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789/:"
+      let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789/:";
       for (let i = 0; i < length; i++) {
          text += possible.charAt(Math.floor(Math.random() * possible.length));
       }
@@ -20,7 +20,7 @@ describe("Cache", () => {
    }
 
    // Test storage
-   let keyTypes = ["string", "number"]
+   let keyTypes = ["string", "number"];
    keyTypes.forEach((keyType) => {
       // counter used for number keys
       let counter = Math.random()*100;
@@ -105,5 +105,54 @@ describe("Cache", () => {
       cache.store(key, value);
       cache.clear();
       expect(cache.checkFor(key)).toBeFalsy();
+   });
+
+   it("should provide multiple promises", (done) => {
+      let promise = new Promise((resolve, reject) => {
+         setTimeout(() => {
+            resolve("world");
+         }, 2000);
+      });
+      let promises = [];
+      cache.store("hello", promise);
+      for (let i=0 ; i < 5; i++) {
+         promises[i] = cache.retrieve("hello");
+
+         promises[i].then((data) => {
+            expect(data).toEqual("world");
+            if (i == 4) {
+               done();
+            }
+         });
+      }
+   });
+
+   it("should remove old items when the cache exceeds the max cache size", () => {
+      const rounds = 15;
+      // max should match the max size of the cache
+      const max = 13;
+      for (let i=0 ; i < rounds; i++) {
+         cache.store(i, i*2);
+      }
+      // check that the first nth number of items do not exist.
+      for (let a=0; a < rounds; a++) {
+         if (a < (rounds - max)) {
+            expect(cache.checkFor(a)).toBeFalsy();
+         } else {
+            expect(cache.checkFor(a)).toBeTruthy();
+         }
+      }
+   });
+
+   it("should remove old items until the cache value is below or equal to the max cache value", () => {
+      cache.setMaxValue(10)
+      let text = "";
+      for (let i=0 ; i < 3; i++) {
+         text += "wow";
+         cache.store(i, text, (i+1)*3);
+      }
+      expect(cache.checkFor(0)).toBeFalsy();
+      expect(cache.checkFor(1)).toBeFalsy();
+      expect(cache.checkFor(2)).toBeTruthy();
    });
 });
