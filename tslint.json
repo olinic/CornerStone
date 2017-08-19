@@ -4,11 +4,11 @@
       "max-line-length": {
          "options": [120]
       },
-      "no-console": {
+      "object-literal-shorthand": {
          "severity": "warning"
       },
-      "one-line": [false], 
-      "trailing-comma": [true, {"multiline": "ignore", "singleline": "never"}],
-      "only-arrow-functions": [true, "allow-named-functions"]
+      "one-line": [false],
+      "only-arrow-functions": [true, "allow-named-functions"],
+      "trailing-comma": [true, {"multiline": "ignore", "singleline": "never"}]
    }
 }
