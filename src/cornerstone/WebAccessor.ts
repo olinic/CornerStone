@@ -1,334 +1,249 @@
+/**
+ * WebAccessor
+ * Accessor for any online resource.
+ */
 
-import * as es6Promise from "es6-promise";
-import * as http from "http";
+// Interfaces
+import { ILogger } from "../interfaces/ILogger";
+import { IUrlOptions } from "../interfaces/IUrlOptions";
+import { IWebGetter } from "../interfaces/IWebGetter";
+
+// Internal
+import {
+   isBrowser,
+   isNode
+} from "./Platform";
+
+// External
+import { Promise } from "es6-promise";
+import { request as httpRequest} from "http";
+import { request as httpsRequest } from "https";
 import { parse } from "url";
 
-declare var Qt: any;
-declare var CornerStone: any;
-
-const Promise = es6Promise.Promise;
-
-console.log("test");
-
-let getVerse;
-/**
- * Access point for jsonp callback functions. Allows unique function names to be utilized.
- */
-let jsonpCaller;
-
-/**
- * Counter that creates unique jsonp callback names.
- */
-let jsonpCounter = 0;
-
-/**
- * Library name. Allows the callback to call the appropriate object.
- */
-const libraryName = "CornerStone";
-
-export interface IWebAccessor
-{
-   request(options: IUrlOptions): any;
-}
-
-export interface IUrlOptions
+export default class WebAccessor implements IWebGetter
 {
    /**
-    * Method: JSONP, GET, POST, PUT, DELETE, etc.
+    * Counter that creates unique jsonp callback names.
     */
-   method?: string;
-   /**
-    * URL to access
-    */
-   url: string;
-}
+   private jsonpCounter: number;
 
-/*let http;
-// Attempt to load Node http
-try
-{
-   http = require("http");
-}
-catch (err)
-{
-   http = undefined;
-}*/
+   private platformRequest;
 
-function isBrowser()
-{
-   return (typeof document !== "undefined" && typeof window !== "undefined");
-}
+   public constructor(
+         private logger: ILogger,
+         private readonly PROMISE_TIMEOUT_PERIOD: number = 3000, // milliseconds
+         /**
+          * Library name. Allows the callback to call the appropriate object.
+          */
+         private libraryName: string = "CornerStone") {
 
-function isNode()
-{
-   return (typeof http !== "undefined");
-}
+      this.jsonpCounter = 0;
 
-function isQt()
-{
-   return (typeof Qt !== "undefined");
-}
-
-
-
-/**
- * Request that is tied to the current platform. After the first
- * execution, it will no longer perform the platform check.
- *
- * The variable will be assigned to the appropriate function.
- */
-let platformRequest = (options: IUrlOptions) =>
-{
-   if (isNode())
-   {
-      platformRequest = nodeRequest;
-      return nodeRequest(options);
-   }
-   else if (isBrowser())
-   {
-      platformRequest = browserRequest;
-      return browserRequest(options);
-   }
-   else if (isQt())
-   {
-      platformRequest = qtRequest;
-      return qtRequest(options);
-   }
-   else
-   {
-      throw new Error("Platform not recognized or supported.");
-   }
-}
-
-/**
- * Retrieves URL using defined options.
- * Returns a Promise.
- * Usage:
- * <pre><code>
- * request({
- *   method: "GET",
- *   url: "https://bible-api.com/john%203:16"
- * })
- *   .then(function(response)
- *   {
- *      // do something with response
- *   })
- *   .catch(function(err)
- *   {
- *      // do something with err.statusText
- *   })
- * </code></pre>
- */
-export function request(options: IUrlOptions)
-{
-   return platformRequest(options);
-}
-
-function cleanUrlOptions(options)
-{
-
-}
-
-function cleanUrl(options)
-{
-   if (options.method === "JSONP")
-   {
-
-   }
-}
-
-function getCallback(url)
-{
-   // get search
-   // http://localhost/path?search=value => ?search=value
-   let searchParams = parse(url).search || "";
-
-   // get callback parameter
-   // callback=value
-   let callbackReg = /callback=\w+/.exec(searchParams);
-   let callbackParam = (callbackReg === null) ? "" : callbackReg[0];
-
-   // pull value out of callback parameter, don't include the "="
-   let start = callbackParam.indexOf("=");
-   return callbackParam.substring(start + 1);
-}
-
-function nodeRequest({method = "GET", url}: IUrlOptions = {url: ""})
-{
-   // Default is to do nothing
-   let preResolve = (response) => { return response; };
-
-   if (method === "JSONP")
-   {
-      method = "GET";
-      preResolve = (response) =>
-      {
-         let start = response.indexOf("({");
-         start = (start !== -1) ? start : 0;
-
-         let end = response.lastIndexOf("})");
-         end = (end !== -1) ? end : response.length;
-
-         // Return the JSON without the parentheses.
-         const json = response.substring(start + 1, end + 1);
-         return json;
+      /**
+       * Request that is tied to the current platform. After the first
+       * execution, it will no longer perform the platform check.
+       *
+       * The variable will be assigned to the appropriate platform-specific function.
+       */
+      this.platformRequest = (options: IUrlOptions) => {
+         if (isBrowser()) {
+            this.platformRequest = this.browserRequest;
+            return this.browserRequest(options);
+         } else if (isNode()) {
+            this.platformRequest = this.nodeRequest;
+            return this.nodeRequest(options);
+         } else {
+            throw logger.logAndGiveError("Platform not recognized or supported.");
+         }
       };
    }
 
-   // return a promise
-   return new Promise((
-      resolve: (response: any) => any,
-      reject: (err: object) => any) =>
-   {
+   /**
+    * Retrieves URL using defined options.
+    * Returns a Promise.
+    * Usage:
+    * <pre><code>
+    * request({
+    *   method: "GET",
+    *   url: "https://bible-api.com/john%203:16"
+    * })
+    *   .then(function(response)
+    *   {
+    *      // do something with response
+    *   })
+    *   .catch(function(err)
+    *   {
+    *      // do something with err
+    *   })
+    * </code></pre>
+    */
+   public request(options: IUrlOptions): Promise<any> {
+      return this.platformRequest(options);
+   }
 
-      let options = {
-         method: method,
-         protocol: parse(url).protocol || "http:",
-         hostname: parse(url).hostname,
-         port: Number(parse(url).port) || 80,
-         path: (parse(url).pathname || "") + (parse(url).search || "")
-      };
+   private requestErrorMessage(url: string, statusMessage: string, statusCode?: number): string {
+      statusMessage = "(" + statusMessage + ")";
 
-      const req = http.request(options, (res) =>
-      {
-         const { statusCode } = res;
+      let statusCodeMessage = "";
+      if (statusCode !== undefined) {
+         statusCodeMessage = "Status Code: " + statusCode;
+      }
 
-         // reject on error
-         if (statusCode < 200 || statusCode >= 300)
-         {
-            reject({
-               status: statusCode,
+      return ("Failed to get resource from " + url + " " +
+               statusCodeMessage + " " + statusMessage);
+   }
+
+   private setupCallback(url: string, callback: string): string {
+      const callbackDefined = (url.indexOf("callback=") !== -1);
+      if (callbackDefined) {
+         //   Remove        callback=...&
+         url = url.replace(/callback=\w+&?/, "");
+      }
+
+      // add the callback to the URL
+      const prependCharacter = (url.indexOf("?") === -1) ? "?" : "&";
+      url += prependCharacter + "callback=" + callback;
+
+      return url;
+   }
+
+   private nodeRequest({method, url}: IUrlOptions = {url: ""}): Promise<any> {
+      // Default is to do nothing
+      let preResolve = (response) => response;
+
+      if (method === "JSONP") {
+         method = "GET";
+         // callback name in Node does not matter,
+         // the name is stripped from the returned output.
+         url = this.setupCallback(url, "nodeCallback");
+         preResolve = (response) => {
+            let start = response.indexOf("({");
+            start = (start !== -1) ? start : 0;
+
+            let end = response.lastIndexOf("})");
+            end = (end !== -1) ? end : response.length;
+
+            // Return the JSON without the parentheses.
+            const json = response.substring(start + 1, end + 1);
+            return json;
+         };
+      }
+
+      // return a promise
+      return new Promise((
+         resolve: (response: string) => Promise<string>,
+         reject: (err: Error) => Promise<Error>) => {
+
+         const options = {
+            hostname: parse(url).hostname,
+            method,
+            path: (parse(url).pathname || "") + (parse(url).search || ""),
+            port: Number(parse(url).port) || 80,
+            protocol: parse(url).protocol || "http:"
+         };
+
+         const webRequest: any = (options.protocol.toLowerCase().indexOf("https") === -1)
+                                    ? httpRequest : httpsRequest;
+
+         const req = webRequest(options, (res) => {
+            const { statusCode, statusMessage } = res;
+
+            // reject on error
+            if (statusCode < 200 || statusCode >= 300) {
+               reject(new Error(this.requestErrorMessage(url, statusMessage, statusCode)));
+            }
+
+            let data = "";
+
+            res.on("data", (chunk) => {
+               data += chunk;
             });
-         }
 
-         let data = "";
-         res.on("data", (chunk) =>
-         {
-            data += chunk;
-         });
-         res.on("end", () =>
-         {
-            // handle JSONP if necessary
-            data = preResolve(data);
-            resolve(data);
+            res.on("end", () => {
+               // handle JSONP if necessary
+               data = preResolve(data);
+               resolve(data);
+            });
+
          });
 
+         req.on("error", (e) => {
+            reject(new Error(this.requestErrorMessage(url, e.message)));
+         });
+         req.end();
       });
-
-      req.on('error', (e) => {
-         console.error(e.message);
-      });
-      req.end();
-   });
-}
-
-function browserRequest(options: IUrlOptions)
-{
-   console.log("browserRequest: Method is " + options.method);
-   if (options.method === "JSONP")
-   {
-      console.log("Starting JSONP");
-      return jsonpPromise(options);
-   }
-   else
-   {
-      return xmlHttpPromise(options);
    }
 
-}
+   private browserRequest(options: IUrlOptions): Promise<any> {
+      if (options.method === "JSONP") {
+         return this.jsonpPromise(options);
+      }
+      else {
+         return this.xmlHttpPromise(options);
+      }
+   }
 
-function qtRequest({method = "GET", url}: IUrlOptions = {url: ""})
-{
-   // more to come
-}
+   private xmlHttpPromise({method = "GET", url}: IUrlOptions = {url: ""}): Promise<any> {
+      return new Promise((
+         resolve: (response: string) => Promise<string>,
+         reject: (err: Error) => Promise<Error>) => {
+         // create our new http request
+         const xhr = new XMLHttpRequest();
 
-function xmlHttpPromise({method = "GET", url}: IUrlOptions = {url: ""})
-{
-   return new Promise((
-      resolve: (response: any) => any,
-      reject: (err: object) => any) =>
-   {
-      // create our new http request
-      const xhr = new XMLHttpRequest();
-
-      // set it up
-      xhr.open(method, url);
-      xhr.onload = () =>
-      {
-         // on success, use resolve callback
-         if (xhr.status >= 200 && xhr.status < 300)
-         {
-            resolve(xhr.response);
-         }
+         // set it up
+         xhr.open(method, url);
+         xhr.onload = () => {
+            // on success, use resolve callback
+            if (xhr.status >= 200 && xhr.status < 300) {
+               resolve(xhr.response);
+            }
+            // on failure, use reject
+            else {
+               reject(new Error(this.requestErrorMessage(url, xhr.statusText, xhr.status)));
+            }
+         };
          // on failure, use reject
-         else
-         {
-            reject({
-               status: xhr.status,
-               statusText: xhr.statusText
-            });
-         }
-      };
-      // on failure, use reject
-      xhr.onerror = () =>
-      {
-         reject({
-            status: xhr.status,
-            statusText: xhr.statusText,
-         });
-      };
+         xhr.onerror = () => {
+            reject(new Error(this.requestErrorMessage(url, xhr.statusText, xhr.status)));
+         };
 
-      xhr.send();
-   });
-}
+         xhr.send();
+      });
+   }
 
-function jsonpPromise({method = "GET", url}: IUrlOptions = {url: ""})
-{
-   return new Promise((
-      resolve: (response: any) => any,
-      reject: (err: object) => any) =>
-   {
-      jsonpCounter++;
-      // function name
-      //const callFunctionName = "call" + jsonpCounter;
-      const callFunctionName = "getVerse"
+   private jsonpPromise({method = "GET", url}: IUrlOptions = {url: ""}): Promise<any> {
+      return new Promise((
+         resolve: (response: string) => Promise<string>,
+         reject: (err: Error) => Promise<Error>) => {
+         this.jsonpCounter++;
+         // function name
+         const callFunctionName = this.libraryName + "Jsonp" + this.jsonpCounter;
 
-      // callback name
-      //const myCallbackName: string = "jsonpCaller." + callFunctionName;
-      const myCallbackName = callFunctionName;
+         // callback name
+         const myCallbackName = callFunctionName;
 
-      // create the callback
-      //jsonpCaller[callFunctionName] = (data) =>
+         url = this.setupCallback(url, myCallbackName);
 
-      // create "component" that retrieves the data and calls back
-      if (isBrowser())
-      {
-         window[ myCallbackName ] = (data) =>
-         {
-            var json = JSON.stringify(data);
-            console.log("Data: " + json);
-            resolve(json);
-            // clearTimeout
+         // create "component" that retrieves the data and calls back
+         const timeout = setTimeout(() => {
+            reject(new Error(this.requestErrorMessage(url, "JSONP did not retrieve resource " +
+                             "within the timeout period.")));
+         }, this.PROMISE_TIMEOUT_PERIOD);
 
-            // clean up
+         window[ myCallbackName ] = (data) => {
+            clearTimeout(timeout);
+            const json = JSON.stringify(data);
+
             // remove reference for Garbage Collector
-            //jsonpCaller[callFunctionName] = null;
-         }
+            window[ callFunctionName ] = null;
 
-         console.log("Creating new script!");
+            resolve(json);
+         };
+
          const script = document.createElement("script");
          script.src = url;
 
          document.getElementsByTagName("head")[0].appendChild(script);
-      }
-      else if (isQt())
-      {
-         console.log("Qt.include exists!");
-         Qt.include(url);
-      }
-
-
-
-      // send error if timeout is triggered
-   });
+      });
+   }
 }

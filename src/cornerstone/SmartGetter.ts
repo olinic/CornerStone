@@ -1,23 +1,33 @@
-import { getInstance as getCacheInstance } from "./Cache";
-import webRequest, { IUrlOptions } from "./WebAccessor";
+import { ICache } from "../interfaces/ICache";
+import { ILogger } from "../interfaces/ILogger";
+import { IUrlOptions } from "../interfaces/IUrlOptions";
+import { IWebGetter } from "../interfaces/IWebGetter";
 
-let cache = getCacheInstance();
-
-/**
- * Requests a resource based on the provided options. Queries the cache.
- * If item does not exist in the cache, a web request will be issued.
- */
-export default function request(options: IUrlOptions): Promise<any>
+export default class SmartGetter implements IWebGetter
 {
-   const url = options.url;
-   if (cache.checkFor(url)) {
-      // retrieve from cache
-      return cache.retrieve(url);
-      
-   } else {
-      let promise = webRequest(options);
-      // store response into cache
-      cache.store(url, promise);
-      return promise;
+   public constructor(
+         private logger: ILogger,
+         private cache: ICache,
+         private webGetter: IWebGetter) {
+
+   }
+
+   /**
+    * Requests a resource based on the provided options. Queries the cache.
+    * If item does not exist in the cache, a web request will be issued.
+    */
+   public request(options: IUrlOptions): Promise<any>
+   {
+      const url = options.url;
+      if (this.cache.checkFor(url)) {
+         // retrieve from cache
+         return this.cache.retrieve(url);
+
+      } else {
+         const promise = this.webGetter.request(options);
+         // store response into cache
+         this.cache.store(url, promise);
+         return promise;
+      }
    }
 }

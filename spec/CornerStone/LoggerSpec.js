@@ -1,66 +1,63 @@
 // src file
-const logger = require("../../" + generatedJsPath + "cornerstone/Logger.js");
-const Logger = logger.default;
-const LoggingLevel = logger.LoggingLevel;
+const Logger = require("../../" + generatedJsPath + "cornerstone/Logger.js").default;
+const LoggingLevel = require("../../" + generatedJsPath + "cornerstone/CommonEnums.js").LoggingLevel;
 // dependencies
 const sinon = require("sinon");
 const sinonTest = require("sinon-test")(sinon);
 
-console.log(JSON.stringify(logger));
-const debugLogger = new Logger(
-      {loggingEnabled: true,
+const debugLogger = new Logger({
+      loggingEnabled: true,
       loggingLevel: LoggingLevel.DEBUG});
 
-const infoLogger = new Logger(
-      {loggingEnabled: true,
+const infoLogger = new Logger({
+      loggingEnabled: true,
       loggingLevel: LoggingLevel.INFO});
 
-const warnLogger = new Logger(
-      {loggingEnabled: true,
+const warnLogger = new Logger({
+      loggingEnabled: true,
       loggingLevel: LoggingLevel.WARN});
 
-const errorLogger = new Logger(
-      {loggingEnabled: true,
+const errorLogger = new Logger({
+      loggingEnabled: true,
       loggingLevel: LoggingLevel.ERROR});
 
-const disabledLogger = new Logger(
-      {loggingEnabled: true});
+const disabledLogger = new Logger({
+      loggingEnabled: true});
 
-const identifiedLogger = new Logger(
-      {loggingEnabled: true,
-      loggingLevel: LoggingLevel.WARN});
-
-identifiedLogger.identify("LoggerSpec");
+const identifiedLogger = new Logger({
+      loggingEnabled: true,
+      loggingLevel: LoggingLevel.WARN,
+      who: "LoggerSpec"});
 
 describe("Logger", () => {
 
    it("should not log a message when logging is disabled", sinonTest(function() {
       this.stub(console, "log");
-      disabledLogger.logDebug("test");
+      disabledLogger.debug("test");
       expect(console.log.notCalled).toBeTruthy();
    }));
 
    it("should log errors to console error", sinonTest(function() {
       this.stub(console, "error");
-      errorLogger.logError("bad error");
+      errorLogger.error("bad error");
       expect(console.error.calledOnce).toBeTruthy();
    }));
 
    it("should log warings to console warn", sinonTest(function() {
       this.stub(console, "warn");
-      warnLogger.logWarn("somewhat bad error");
+      warnLogger.warn("somewhat bad error");
       expect(console.warn.calledOnce).toBeTruthy();
    }));
 
    it("should log info to console info", sinonTest(function() {
       this.stub(console, "info");
-      infoLogger.logInfo("info logging");
+      infoLogger.info("info logging");
       expect(console.info.calledOnce).toBeTruthy();
    }));
 
    it("should log debug to console log", sinonTest(function() {
       this.stub(console, "log");
-      debugLogger.logDebug("debug logging");
+      debugLogger.debug("debug logging");
       expect(console.log.calledOnce).toBeTruthy();
    }));
 
@@ -77,10 +74,10 @@ describe("Logger", () => {
       this.stub(console, "info");
       this.stub(console, "log");
 
-      errorLogger.logDebug("debug");
-      errorLogger.logInfo("info");
-      errorLogger.logWarn("warn");
-      errorLogger.logError("error");
+      errorLogger.debug("debug");
+      errorLogger.info("info");
+      errorLogger.warn("warn");
+      errorLogger.error("error");
 
       expect(console.error.calledOnce).toBeTruthy();
       expect(console.warn.notCalled).toBeTruthy();
@@ -94,10 +91,10 @@ describe("Logger", () => {
       this.stub(console, "info");
       this.stub(console, "log");
 
-      warnLogger.logDebug("debug");
-      warnLogger.logInfo("info");
-      warnLogger.logWarn("warn");
-      warnLogger.logError("error");
+      warnLogger.debug("debug");
+      warnLogger.info("info");
+      warnLogger.warn("warn");
+      warnLogger.error("error");
 
       expect(console.error.calledOnce).toBeTruthy();
       expect(console.warn.calledOnce).toBeTruthy();
@@ -111,10 +108,10 @@ describe("Logger", () => {
       this.stub(console, "info");
       this.stub(console, "log");
 
-      infoLogger.logDebug("debug");
-      infoLogger.logInfo("info");
-      infoLogger.logWarn("warn");
-      infoLogger.logError("error");
+      infoLogger.debug("debug");
+      infoLogger.info("info");
+      infoLogger.warn("warn");
+      infoLogger.error("error");
 
       expect(console.error.calledOnce).toBeTruthy();
       expect(console.warn.calledOnce).toBeTruthy();
@@ -128,10 +125,10 @@ describe("Logger", () => {
       this.stub(console, "info");
       this.stub(console, "log");
 
-      debugLogger.logDebug("debug");
-      debugLogger.logInfo("info");
-      debugLogger.logWarn("warn");
-      debugLogger.logError("error");
+      debugLogger.debug("debug");
+      debugLogger.info("info");
+      debugLogger.warn("warn");
+      debugLogger.error("error");
 
       expect(console.error.calledOnce).toBeTruthy();
       expect(console.warn.calledOnce).toBeTruthy();
@@ -141,18 +138,18 @@ describe("Logger", () => {
 
    it("should log errors in the correct format", sinonTest(function() {
       // Identified logger
-      this.stub(console, "error", (msg) => {
+      this.stub(console, "error").callsFake((msg) => {
          //                   Jan   3   at 12 : 45  : 03  . 997 [LoggerSpec]: msg
          expect(msg).toMatch(/\w{3} \d+ at \d+:\d{2}:\d{2}.\d{3} \[.*\]: .*/)
       });
 
       // Unidentified logger
-      this.stub(console, "log", (msg) => {
+      this.stub(console, "log").callsFake((msg) => {
          //                   Jan   3   at 12 : 45  : 03  . 997 : msg
          expect(msg).toMatch(/\w{3} \d+ at \d+:\d{2}:\d{2}.\d{3}: .*/)
       });
 
-      identifiedLogger.logError("an error message that knows who I am");
-      debugLogger.logDebug("a debug message that doesn't know who I am");
+      identifiedLogger.error("an error message that knows who I am");
+      debugLogger.debug("a debug message that doesn't know who I am");
    }));
 });

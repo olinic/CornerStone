@@ -1,8 +1,6 @@
-// Internal
-import {
-   default as Logger,
-   LoggingLevel
-} from "./Logger";
+// Interfaces
+import { ICache } from "../interfaces/ICache";
+import { ILogger } from "../interfaces/ILogger";
 
 // External
 import { Promise } from "es6-promise";
@@ -10,7 +8,7 @@ import { Promise } from "es6-promise";
 /**
  * Provides caching for anything (including promises).
  */
-class LocalCache
+export default class LocalCache implements ICache
 {
    /**
     * The Cache Object contains all of the values based on the key.
@@ -32,9 +30,8 @@ class LocalCache
     */
    private cacheValue: number;
 
-   private logger: Logger;
-
    public constructor(
+      private logger: ILogger,
       private readonly MAX_CACHE_SIZE: number = 13,
       private maxCacheValue: number = -1)
    {
@@ -42,15 +39,11 @@ class LocalCache
       this.keys = [];
       this.keyValues = {};
       this.cacheValue = 0;
-
-      this.logger = new Logger({loggingEnabled: true, loggingLevel: LoggingLevel.INFO});
-      // Identify myself
-      this.logger.identify("Cache");
    }
 
    public setMaxValue(max: number): void
    {
-      this.logger.logDebug("Updating max value to " + max);
+      this.logger.debug("Updating max value to " + max);
       this.maxCacheValue = max;
       // clean up in the event that the max was reduced.
       this.cleanUpCache();
@@ -62,7 +55,7 @@ class LocalCache
    public checkFor(key: string | number): boolean
    {
       const exists = (this.keys.indexOf(key) !== -1);
-      this.logger.logDebug("Key (" + key + ") does " + (exists ? "" : "not ") + "exist");
+      this.logger.debug("Key (" + key + ") does " + (exists ? "" : "not ") + "exist");
       return exists;
    }
 
@@ -78,7 +71,7 @@ class LocalCache
          this.keys.push(key);
       }
 
-      this.logger.logInfo("Storing value for key (" + key + ")");
+      this.logger.info("Storing value for key (" + key + ")");
       // store the item
       this.cacheObject[key] = value;
       // increase the cache value
@@ -99,7 +92,7 @@ class LocalCache
       if (keyExists) {
          this.refreshKey(key);
 
-         this.logger.logDebug("Retrieving value for key (" + key + ")");
+         this.logger.debug("Retrieving value for key (" + key + ")");
          const item = this.cacheObject[key];
          // don't wrap a promise in a promise
          if (item instanceof Promise) {
@@ -122,7 +115,7 @@ class LocalCache
     */
    public clear(): void
    {
-      this.logger.logDebug("Clearing the cache");
+      this.logger.debug("Clearing the cache");
       this.cacheObject = {};
       this.keys = [];
    }
@@ -183,18 +176,4 @@ class LocalCache
          this.shift();
       }
    }
-}
-
-let cache;
-
-/**
- * Returns the instance of the cache. Follows the singleton design pattern.
- */
-export function getInstance(): LocalCache
-{
-   if (typeof cache === "undefined") {
-      cache = new LocalCache();
-   }
-
-   return cache;
 }

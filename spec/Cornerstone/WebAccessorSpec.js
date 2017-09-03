@@ -1,9 +1,14 @@
 // src file
-const Web = require("../../" + generatedJsPath + "cornerstone/WebAccessor.js");
-Web.request = Web.default;
+const WebAccessor = require("../../" + generatedJsPath + "cornerstone/WebAccessor.js").default;
 
+// dependencies
+const Logger = require("../../" + generatedJsPath + "cornerstone/Logger.js").default;
+
+const logger = new Logger({ loggingEnabled: false });
 const httpPort = 3000;
 const httpsPort = 3003;
+
+const web = new WebAccessor(logger);
 
 describe("Web Accessor", () => {
    let responseText;
@@ -14,7 +19,7 @@ describe("Web Accessor", () => {
 
 
    function testRequest(method, urlPath, baseUrl, port) {
-      return Web.request({
+      return web.request({
          method: method,
          url: testServerUrl(urlPath, baseUrl, port),
       });
@@ -31,8 +36,8 @@ describe("Web Accessor", () => {
    }
 
    function expectBadPromise(promise, done) {
-      promise.then((response) => {
-         fail("Promise should not have succeeded.")
+      promise.then(() => {
+         fail("Promise should not have succeeded.");
          done();
       }).catch((err) => {
          // check that an Error is provided
@@ -53,7 +58,6 @@ describe("Web Accessor", () => {
 
    it("should GET an online resource", (done) => {
       urlPath = responseText;
-
       let webPromise = testRequest(method, urlPath, baseUrl, port);
       expectGoodPromise(webPromise, responseText, done);
    });
@@ -74,7 +78,7 @@ describe("Web Accessor", () => {
 
    it("should retrieve an online resource via POST", (done) => {
       // Note: server will return the path + post
-      urlPath = "text"
+      urlPath = "text";
       responseText = urlPath + "post";
       method = "POST";
 
@@ -122,6 +126,6 @@ describe("Web Accessor", () => {
 // Returns the url for the test server. baseUrl and port are optional.
 function testServerUrl(urlEnd, baseUrl, port) {
    let urlBase = (typeof baseUrl === 'string') ? baseUrl : "http://localhost";
-   let urlPort = (typeof port === 'number') ? port : 3000;
+   let urlPort = (typeof port === 'number') ? port : httpPort;
    return (urlBase + ":" + urlPort + "/" + urlEnd);
 }

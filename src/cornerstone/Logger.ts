@@ -1,10 +1,8 @@
-export enum LoggingLevel
-{
-   DEBUG,
-   INFO,
-   WARN,
-   ERROR
-}
+// interfaces
+import { ILogger } from "../interfaces/ILogger";
+
+// internal
+import { LoggingLevel } from "./CommonEnums";
 
 /**
  * Provides logging capabilities.
@@ -17,13 +15,13 @@ export enum LoggingLevel
  * INFO will enable logging for INFO, WARN, and ERROR messages.
  * Note: this setting only works if logging is enabled.
  */
-export default class Logger
+export default class Logger implements ILogger
 {
    // initially set all log functions to do nothing
-   public logDebug = this.nop;
-   public logInfo = this.nop;
-   public logWarn = this.nop;
-   public logError = this.nop;
+   public debug = this.nop;
+   public info = this.nop;
+   public warn = this.nop;
+   public error = this.nop;
 
    private who: string;
    private loggingEnabled: boolean;
@@ -32,11 +30,13 @@ export default class Logger
    public constructor(
          // defaults
          {loggingEnabled = false,
-          loggingLevel = LoggingLevel.WARN}
+          loggingLevel = LoggingLevel.WARN,
+          who = ""}
          // types
-       : {loggingEnabled: boolean,
-          loggingLevel: LoggingLevel}) {
-      this.who = "";
+       : {loggingEnabled?: boolean,
+          loggingLevel?: LoggingLevel,
+          who?: string}) {
+      this.who = who;
       this.loggingEnabled = loggingEnabled;
       this.level = loggingLevel;
 
@@ -45,19 +45,11 @@ export default class Logger
    }
 
    /**
-    * Identify who is calling the logger. This information will be included
-    * in the logs.
-    */
-   public identify(name: string) {
-      this.who = name;
-   }
-
-   /**
     * Log the error and return an instance of an Error.
     */
    public logAndGiveError(msg: string): Error
    {
-      this.logError(msg);
+      this.error(msg);
       return new Error(msg);
    }
 
@@ -76,22 +68,22 @@ export default class Logger
          switch (this.level) {
             // intentional fall-throughs
             case LoggingLevel.DEBUG:
-               this.logDebug = (msg: string): void => {
+               this.debug = (msg: string): void => {
                   // tslint:disable-next-line no-console
                   console.log(this.prepareMsg(msg));
                };
             case LoggingLevel.INFO:
-               this.logInfo = (msg: string): void => {
+               this.info = (msg: string): void => {
                   // tslint:disable-next-line no-console
                   console.info(this.prepareMsg(msg));
                };
             case LoggingLevel.WARN:
-               this.logWarn = (msg: string): void => {
+               this.warn = (msg: string): void => {
                   // tslint:disable-next-line no-console
                   console.warn(this.prepareMsg(msg));
                };
             case LoggingLevel.ERROR:
-               this.logError = (msg: string): void => {
+               this.error = (msg: string): void => {
                   // tslint:disable-next-line no-console
                   console.error(this.prepareMsg(msg));
                };
@@ -120,7 +112,7 @@ export default class Logger
       if (monthNum >= 0 && monthNum < 12) {
          return months[monthNum];
       } else {
-         this.logWarn("[Logger]: getMonth: Received an invalid month index.");
+         this.warn("[Logger]: getMonth: Received an invalid month index.");
          return "";
       }
    }

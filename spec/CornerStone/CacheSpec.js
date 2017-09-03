@@ -1,8 +1,12 @@
 // src file
-const myCache = require("../../" + generatedJsPath + "cornerstone/Cache.js");
+const LocalCache = require("../../" + generatedJsPath + "cornerstone/Cache.js").default;
+
+// dependencies
+const Logger = require("../../" + generatedJsPath + "cornerstone/Logger.js").default;
+const logger = new Logger({ loggingEnabled: false });
 
 describe("Cache", () => {
-   let cache = myCache.getInstance();
+   let cache = new LocalCache(logger);
 
    beforeEach(() => {
       // clear cache
@@ -73,11 +77,6 @@ describe("Cache", () => {
       }).catch((err) => {
          fail(err);
       });
-   });
-
-   it("should return the same instance (singleton)", () => {
-      let secondCache = myCache.getInstance();
-      expect(cache).toBe(secondCache);
    });
 
    it("should check for existing item", () => {
