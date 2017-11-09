@@ -26,6 +26,9 @@ CornerStone is provided in a JavaScript bundle, which means that it works across
 ### Smart Caching
 CornerStone intelligently caches calls to online Bible resources resulting in fewer calls; improving efficiency and data usage of users.
 
+### Promises
+CornerStone utilizes one of the newer features of JavaScript called Promises, a way to asynchronously retrieve content. Opposed to callbacks, promises provide error handling and are easy to use.
+
 ### Adaptive to Your Project's Needs
 Every project is different. Configure CornerStone to suit your project needs. For example, You can define how you want your data to look when it comes out of CornerStone.
 
@@ -51,7 +54,7 @@ Be sure to
 ### Developed in TypeScript
 CornerStone was developed in TypeScript so that the latest features of JavaScript and be utilized while providing compatibility for browsers. The TypeScript code is transpiled and nicely packaged into browser-supported JavaScript.
 
-### Unit testing
+### Unit Tested
 This project was developed using Test Driven Development (TDD) to improve quality of code. Techniques such as Behavior Driven Development (BDD) were also used.
 
 Currently CornerStone has over 40 unit tests.

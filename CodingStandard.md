@@ -1,4 +1,4 @@
-# CornerStone Style Guide
+# CornerStone TypeScript Style Guide
 
 ## Imports
 
@@ -20,19 +20,24 @@
    import { request } from "http";
    ```
 
-* Sort `import` statements alphabetically by function. Sorting within groups is allowed.
+* Sort `import` statements alphabetically by module. Sorting within groups is allowed.
 
    ```typescript
-   import { format } from "url";
-   import { isBrowser } from "./Platform";
-   import { isNode } from "./Platform";
    import { request } as http from "http";
+   import { format } from "url";
+   import {
+      isBrowser,
+      isNode
+   } from "./Platform";
 
    // or
 
    // internal
-   import { isBrowser } from "./Platform";
-   import { isNode } from "./Platform";
+   import {
+      isBrowser,
+      isNode
+   } from "./Platform";
+
    // external
    import { format } from "url";
    import { request } as http from "http";
@@ -40,21 +45,21 @@
 
 ## Naming
 * Variable names are in `camelCase`.
-* Class names are in `StudlyCase`.
+* Class and Enum names are in `StudlyCase`.
 * Interface names start with `I` and are in `StudlyCase`.
 * Constant names are uppercase and in `SNAKE_CASE`.
 
    > Reason: Items can be quickly identified by their name.
 
-* Prefix class attributes with an underscore `_` when a getter/setter is defined for the attribute.
+* End class attributes with an underscore `_` when a getter/setter is defined for the attribute.
 
    ```typescript
    class HelloWorld
    {
-      private _foo: string;
+      private foo_: string;
       public get foo(): string
       {
-         return this._foo;
+         return this.foo_;
       }
    }
    ```
@@ -64,7 +69,7 @@
    > Reason: 3 spaces provides enough to make the indents clear, but not too much where there are unnecessary characters.
 
 ## Braces
-* Named functions, interfaces, and classes have the opening brace on the next line.
+* Named functions, interfaces, enums, and classes have the opening brace on the next line.
 
    ```typescript
    function hello(): string
@@ -111,12 +116,22 @@
    }
    ```
 
+* For functions with long names or many parameters, place the parameters on the next line using 2 indents (6 spaces).
+
+   ```typescript
+   function sayHelloAndGoodBye(
+         hello,
+         goodbye) {
+      // do something
+   }
+   ```
+
 ## Comments and Newlines
-* Do use multi-line comments for TypeDoc documentation. Do not define parameters and return in comment. TypeDoc automatically retrieves this information.
+* Do use multi-line comments for TypeDoc documentation. Do not define parameters and return in comment. TypeDoc automatically retrieves this information. Use punctuation for these comments.
 
    ```typescript
    /**
-    * Documentation on foo
+    * Documentation on foo.
     */
    function foo(): number
    {
@@ -154,10 +169,14 @@
    ```
 
 ## Typing
-* Do define the type of variables.
+* Do define the type of variables with the colon immediately following the variable.
 
    ```typescript
+   // good
    let counter: number = 0;
+
+   // bad
+   let counter : number = 0
    ```
 
 * Do define the type of parameters and function return.
@@ -165,6 +184,18 @@
    ```typescript
    function getFavoriteWord(word: string): string
    {
+
+   }
+   ```
+
+* For multi-line parameter objects, use the following format:
+
+   ```typescript
+   function doSomethingWithObject(
+         {field,
+          field2 = "defaultValue"}
+       : {field: boolean,
+          field2: string}) {
 
    }
    ```

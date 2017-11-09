@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./js/",
+    "outDir": "./generated/js/",
     "sourceMap": true,
     "module": "commonjs",
     "target": "es5",

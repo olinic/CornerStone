@@ -1,2 +1,9 @@
-js/
+# directories to ignore
 node_modules/
+keys/
+
+# generated directories and files
+generated/
+doc/
+js/
+spec/SpecBundle.js
