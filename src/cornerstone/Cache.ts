@@ -1,6 +1,6 @@
 // Interfaces
-import { ICache } from "../interfaces/ICache";
-import { ILogger } from "../interfaces/ILogger";
+import ICache from "../interfaces/ICache";
+import ILogger from "../interfaces/ILogger";
 
 // External
 import { Promise } from "es6-promise";
@@ -100,8 +100,8 @@ export default class LocalCache implements ICache
          } else {
             // wrap anything else in a promise
             return new Promise((
-               resolve: (response: any) => Promise<any>,
-               reject: (err: Error) => Promise<Error>) => {
+               resolve: (response: any) => void,
+               reject: (err: Error) => void) => {
                   resolve(item);
                });
          }

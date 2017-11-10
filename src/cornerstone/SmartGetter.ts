@@ -1,7 +1,7 @@
-import { ICache } from "../interfaces/ICache";
-import { ILogger } from "../interfaces/ILogger";
-import { IUrlOptions } from "../interfaces/IUrlOptions";
-import { IWebGetter } from "../interfaces/IWebGetter";
+import ICache from "../interfaces/ICache";
+import ILogger from "../interfaces/ILogger";
+import IUrlOptions from "../interfaces/IUrlOptions";
+import IWebGetter from "../interfaces/IWebGetter";
 
 export default class SmartGetter implements IWebGetter
 {

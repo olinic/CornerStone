@@ -4,9 +4,9 @@
  */
 
 // Interfaces
-import { ILogger } from "../interfaces/ILogger";
-import { IUrlOptions } from "../interfaces/IUrlOptions";
-import { IWebGetter } from "../interfaces/IWebGetter";
+import ILogger from "../interfaces/ILogger";
+import IUrlOptions from "../interfaces/IUrlOptions";
+import IWebGetter from "../interfaces/IWebGetter";
 
 // Internal
 import {
@@ -77,11 +77,13 @@ export default class WebAccessor implements IWebGetter
     *   })
     * </code></pre>
     */
-   public request(options: IUrlOptions): Promise<any> {
+   public request(options: IUrlOptions): Promise<any>
+   {
       return this.platformRequest(options);
    }
 
-   private requestErrorMessage(url: string, statusMessage: string, statusCode?: number): string {
+   private requestErrorMessage(url: string, statusMessage: string, statusCode?: number): string
+   {
       statusMessage = "(" + statusMessage + ")";
 
       let statusCodeMessage = "";
@@ -93,7 +95,8 @@ export default class WebAccessor implements IWebGetter
                statusCodeMessage + " " + statusMessage);
    }
 
-   private setupCallback(url: string, callback: string): string {
+   private setupCallback(url: string, callback: string): string
+   {
       const callbackDefined = (url.indexOf("callback=") !== -1);
       if (callbackDefined) {
          //   Remove        callback=...&
@@ -107,7 +110,8 @@ export default class WebAccessor implements IWebGetter
       return url;
    }
 
-   private nodeRequest({method, url}: IUrlOptions = {url: ""}): Promise<any> {
+   private nodeRequest({method, url}: IUrlOptions = {url: ""}): Promise<any>
+   {
       // Default is to do nothing
       let preResolve = (response) => response;
 
@@ -131,8 +135,8 @@ export default class WebAccessor implements IWebGetter
 
       // return a promise
       return new Promise((
-         resolve: (response: string) => Promise<string>,
-         reject: (err: Error) => Promise<Error>) => {
+         resolve: (response: string) => void,
+         reject: (err: Error) => void) => {
 
          const options = {
             hostname: parse(url).hostname,
@@ -174,7 +178,8 @@ export default class WebAccessor implements IWebGetter
       });
    }
 
-   private browserRequest(options: IUrlOptions): Promise<any> {
+   private browserRequest(options: IUrlOptions): Promise<any>
+   {
       if (options.method === "JSONP") {
          return this.jsonpPromise(options);
       }
@@ -185,8 +190,8 @@ export default class WebAccessor implements IWebGetter
 
    private xmlHttpPromise({method = "GET", url}: IUrlOptions = {url: ""}): Promise<any> {
       return new Promise((
-         resolve: (response: string) => Promise<string>,
-         reject: (err: Error) => Promise<Error>) => {
+         resolve: (response: string) => void,
+         reject: (err: Error) => void) => {
          // create our new http request
          const xhr = new XMLHttpRequest();
 
@@ -213,8 +218,8 @@ export default class WebAccessor implements IWebGetter
 
    private jsonpPromise({method = "GET", url}: IUrlOptions = {url: ""}): Promise<any> {
       return new Promise((
-         resolve: (response: string) => Promise<string>,
-         reject: (err: Error) => Promise<Error>) => {
+         resolve: (response: string) => void,
+         reject: (err: Error) => void) => {
          this.jsonpCounter++;
          // function name
          const callFunctionName = this.libraryName + "Jsonp" + this.jsonpCounter;

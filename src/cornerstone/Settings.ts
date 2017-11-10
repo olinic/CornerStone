@@ -1,5 +1,5 @@
 // Interfaces
-import { ILogger } from "../interfaces/ILogger";
+import ILogger from "../interfaces/ILogger";
 
 import { LoggingLevel } from "./CommonEnums";
 
