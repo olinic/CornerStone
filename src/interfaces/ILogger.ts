@@ -1,7 +1,7 @@
 /**
  * Logger interface. Each method logs a different type of message.
  */
-export interface ILogger
+export default interface ILogger
 {
    debug(msg: string): void;
    info(msg: string): void;
