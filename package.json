@@ -1,6 +1,6 @@
 {
   "name": "cornerstone",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A unified JavaScript Bible API.",
   "main": "index.js",
   "directories": {
@@ -9,7 +9,7 @@
   "scripts": {
     "pretest": "tsc --sourceMap false && webpack --config ./spec/webpack.config.js",
     "test": "start node ./spec/testserver.js 15 && jasmine && start spec/SpecRunner.html",
-    "typedoc": "typedoc --excludePrivate --excludeNotExported --excludeExternals --mode file --readme ./README --module commonjs --out ./doc ./src/index.ts",
+    "typedoc": "typedoc --excludePrivate --excludeNotExported --excludeExternals --mode file --readme ./README.md --module commonjs --out ./doc ./src/index.ts",
     "build": "webpack --optimize-minimize --output-filename [name].min.js",
     "speclint": "eslint ./spec/CornerStone/*.js",
     "lint": "tslint --force src/**/*.ts",
@@ -48,7 +48,7 @@
     "source-map-loader": "^0.2.1",
     "tslint": "^5.4.3",
     "typedoc": "^0.5.10",
-    "typescript": "^2.3.4",
+    "typescript": "^2.6.1",
     "webpack": "^2.3.3"
   },
   "dependencies": {
