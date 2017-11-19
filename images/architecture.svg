@@ -10,14 +10,14 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="885.70081"
+   width="845"
    height="644"
-   viewBox="0 0 234.34136 170.39152"
+   viewBox="0 0 223.57274 170.39152"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.1 r15371"
    sodipodi:docname="architecture.svg"
-   inkscape:export-filename="E:\OK\development\CornerStone\images\architecture491x350.png"
+   inkscape:export-filename="E:\OK\development\CornerStone\images\architecture.png"
    inkscape:export-xdpi="54.100639"
    inkscape:export-ydpi="54.100639">
   <defs
@@ -115,7 +115,7 @@
        x2="58.710899"
        y2="72.962936"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="rotate(54.26697,18.425729,229.05772)" />
+       gradientTransform="rotate(54.26697,4.667413,202.21012)" />
     <radialGradient
        inkscape:collect="always"
        xlink:href="#linearGradient4528"
@@ -126,7 +126,7 @@
        fy="139.30833"
        r="24.530209"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.34363867,0.20179107,-1.0675764,1.8180215,290.39527,-36.57916)" />
+       gradientTransform="matrix(0.34363867,0.20179107,-1.0675764,1.8180215,262.87843,-36.57916)" />
     <radialGradient
        inkscape:collect="always"
        xlink:href="#linearGradient4534"
@@ -137,7 +137,7 @@
        fy="139.30833"
        r="37.362499"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.49074288,-0.32086348,1.1673131,1.7853406,-15.456022,-51.52471)" />
+       gradientTransform="matrix(0.49074288,-0.32086348,1.1673131,1.7853406,-42.972654,-51.52471)" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient4547"
@@ -147,13 +147,13 @@
        y1="73.494209"
        x2="58.352135"
        y2="73.549957"
-       gradientTransform="rotate(96.148427,61.218945,196.52855)" />
+       gradientTransform="rotate(96.148427,47.460629,184.17283)" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient4539"
        id="linearGradient4544"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="rotate(135.37843,81.033632,181.46697)"
+       gradientTransform="rotate(135.37843,67.275316,175.82133)"
        x1="73.265678"
        y1="72.733513"
        x2="59.270916"
@@ -163,7 +163,7 @@
        xlink:href="#linearGradient4554"
        id="linearGradient4548"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="rotate(-90.044724,138.30142,137.93603)"
+       gradientTransform="rotate(-90.044724,125.60158,150.62627)"
        x1="59.426983"
        y1="72.362328"
        x2="75.827049"
@@ -176,21 +176,23 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.75294118"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="394.07618"
-     inkscape:cy="351.07756"
+     inkscape:zoom="0.7071068"
+     inkscape:cx="225.83023"
+     inkscape:cy="38.626936"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
      showborder="true"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
-     inkscape:window-x="-32000"
-     inkscape:window-y="-32000"
-     inkscape:window-maximized="0"
+     inkscape:window-x="1672"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
      units="px"
      inkscape:pagecheckerboard="true"
-     borderlayer="false" />
+     borderlayer="false"
+     showguides="true"
+     inkscape:guide-bbox="true" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -199,7 +201,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -212,20 +214,20 @@
        style="opacity:1;fill:#a5a5a5;fill-opacity:1;fill-rule:nonzero;stroke:#1717ff;stroke-width:1.75960457;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.36078431"
        id="path4622"
        sodipodi:type="arc"
-       sodipodi:cx="-70.186028"
-       sodipodi:cy="235.68057"
+       sodipodi:cx="-88.467278"
+       sodipodi:cy="215.11417"
        sodipodi:rx="77.228523"
        sodipodi:ry="77.228523"
        sodipodi:start="6.1557391"
        sodipodi:end="2.4191532"
-       d="m 6.4161507,225.86471 a 77.228523,77.228523 0 0 1 -44.7632757,80.17586 77.228523,77.228523 0 0 1 -89.775355,-19.29521 l 57.936452,-51.06479 z"
+       d="m -11.865099,205.29831 a 77.228523,77.228523 0 0 1 -44.763276,80.17585 77.228523,77.228523 0 0 1 -89.775355,-19.2952 l 57.936452,-51.06479 z"
        inkscape:transform-center-x="-25.514044"
        inkscape:transform-center-y="10.436178"
        transform="rotate(-48.36637)" />
     <circle
        style="opacity:1;fill:url(#radialGradient4536);fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.70000005;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path4485"
-       cx="128.85217"
+       cx="101.33554"
        cy="209.15834"
        r="36.512501"
        inkscape:transform-center-x="-0.5348197"
@@ -233,7 +235,7 @@
     <circle
        style="opacity:1;fill:url(#radialGradient4522);fill-opacity:1;fill-rule:nonzero;stroke:#6d6d6d;stroke-width:1.56940055;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path4489"
-       cx="128.85217"
+       cx="101.33554"
        cy="209.15834"
        inkscape:transform-center-x="-0.18630729"
        inkscape:transform-center-y="-0.16345481"
@@ -242,7 +244,7 @@
        style="opacity:1;fill:url(#linearGradient4514);fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.69999993;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        inkscape:transform-center-x="-45.471987"
        inkscape:transform-center-y="-32.38876"
-       d="m 179.21909,161.09963 c 7.82908,2.63858 11.26217,8.20305 11.589,16.1081 l -21.90715,15.76095 c -3.21163,-8.53811 -5.54283,-11.20654 -11.589,-16.1081 z"
+       d="m 151.70225,161.09963 c 7.82908,2.63858 11.26217,8.20305 11.589,16.1081 l -21.90715,15.76095 c -3.21163,-8.53811 -5.54283,-11.20654 -11.589,-16.1081 z"
        id="rect4491"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
@@ -250,7 +252,7 @@
        sodipodi:nodetypes="ccccc"
        inkscape:connector-curvature="0"
        id="path4538"
-       d="m 198.5446,207.24575 c 4.06746,7.19109 2.90868,13.62588 -2.12537,19.7296 l -26.83242,-2.89049 c 3.30885,-8.5009 3.35465,-12.04389 2.12537,-19.72959 z"
+       d="m 171.02776,207.24575 c 4.06746,7.19109 2.90868,13.62588 -2.12537,19.7296 l -26.83242,-2.89049 c 3.30885,-8.5009 3.35465,-12.04389 2.12537,-19.72959 z"
        inkscape:transform-center-y="6.242395"
        inkscape:transform-center-x="-56.707863"
        style="opacity:1;fill:url(#linearGradient4540);fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.69999993;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
@@ -258,7 +260,7 @@
        style="opacity:1;fill:url(#linearGradient4544);fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.69999993;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        inkscape:transform-center-x="-39.025801"
        inkscape:transform-center-y="39.92143"
-       d="m 184.1542,251.97934 c -1.39722,8.14271 -6.36443,12.39433 -14.12411,13.93867 l -18.9567,-19.20867 c 7.93938,-4.4923 10.21558,-7.20779 14.1241,-13.93866 z"
+       d="m 156.63736,251.97934 c -1.39722,8.14271 -6.36443,12.39433 -14.12411,13.93867 l -18.9567,-19.20867 c 7.93938,-4.4923 10.21558,-7.20779 14.1241,-13.93866 z"
        id="path4542"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
@@ -266,24 +268,34 @@
        sodipodi:nodetypes="ccccc"
        inkscape:connector-curvature="0"
        id="path4546"
-       d="m 59.274372,219.13432 c -4.819463,-6.71033 -4.361636,-13.23257 -0.0155,-19.84375 l 26.987448,-0.0211 c -2.372438,8.80825 -2.035742,12.33551 0.01549,19.84374 z"
+       d="m 33.874404,219.13432 c -4.819463,-6.71033 -4.361636,-13.23257 -0.0155,-19.84375 l 26.987448,-0.0211 c -2.372438,8.80825 -2.035742,12.33551 0.01549,19.84374 z"
        inkscape:transform-center-y="-0.22102"
        inkscape:transform-center-x="57.542964"
        style="opacity:1;fill:url(#linearGradient4548);fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.69999814;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="2.8295419"
-       y="212.31477"
+       x="13.277511"
+       y="204.83124"
        id="text4558"><tspan
          sodipodi:role="line"
          id="tspan4556"
-         x="2.8295419"
-         y="212.31477"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Eras Demi ITC';-inkscape-font-specification:'Eras Demi ITC';stroke-width:0.26458332px">Your App</tspan></text>
+         x="14.468135"
+         y="204.83124"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.52498913px;line-height:112.99999952%;font-family:'Eras Demi ITC';-inkscape-font-specification:'Eras Demi ITC';text-align:center;text-anchor:middle;stroke-width:0.26458332px">Your </tspan><tspan
+         sodipodi:role="line"
+         x="13.277511"
+         y="218.06041"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.52498913px;line-height:112.99999952%;font-family:'Eras Demi ITC';-inkscape-font-specification:'Eras Demi ITC';text-align:center;text-anchor:middle;stroke-width:0.26458332px"
+         id="tspan4542">App</tspan><tspan
+         sodipodi:role="line"
+         x="13.277511"
+         y="231.28957"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.52498913px;line-height:112.99999952%;font-family:'Eras Demi ITC';-inkscape-font-specification:'Eras Demi ITC';text-align:center;text-anchor:middle;stroke-width:0.26458332px"
+         id="tspan4544" /></text>
     <g
        aria-label="CornerStone"
-       transform="matrix(-0.77734929,-0.69945003,0.69945003,-0.77734929,2.4913982,291.21452)"
+       transform="matrix(-0.77734929,-0.69945003,0.69945003,-0.77734929,-25.025236,291.21452)"
        inkscape:transform-center-x="-4.5783698"
        inkscape:transform-center-y="-11.949508"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -368,78 +380,73 @@
     </g>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="228.45988"
-       y="193.84171"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:119.9000001%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="201.60582"
+       y="196.52493"
        id="text4592"
        inkscape:transform-center-x="-105.14853"
        inkscape:transform-center-y="11.57391"
        transform="rotate(5.7068276)"><tspan
          sodipodi:role="line"
-         id="tspan4590"
-         x="228.45988"
-         y="193.84171"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Eras Demi ITC';-inkscape-font-specification:'Eras Demi ITC';stroke-width:0.26458332px">Bible </tspan><tspan
+         x="201.60582"
+         y="196.52493"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.52498913px;line-height:119.9000001%;font-family:'Eras Demi ITC';-inkscape-font-specification:'Eras Demi ITC';stroke-width:0.26458332px"
+         id="tspan4606">Bible API</tspan><tspan
          sodipodi:role="line"
-         x="228.45988"
-         y="207.53738"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Eras Demi ITC';-inkscape-font-specification:'Eras Demi ITC';stroke-width:0.26458332px"
-         id="tspan4606">API 2</tspan></text>
+         x="201.60582"
+         y="209.30383"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.52498913px;line-height:119.9000001%;font-family:'Eras Demi ITC';-inkscape-font-specification:'Eras Demi ITC';stroke-width:0.26458332px"
+         id="tspan4548">(JSON)</tspan></text>
     <text
-       transform="rotate(-40.008708)"
-       inkscape:transform-center-y="-67.655762"
-       inkscape:transform-center-x="-82.181105"
+       transform="rotate(-35.714473)"
+       inkscape:transform-center-y="-60.93758"
+       inkscape:transform-center-x="-87.453776"
        id="text4602"
-       y="248.19667"
-       x="45.404552"
+       y="226.28065"
+       x="42.680405"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Eras Demi ITC';-inkscape-font-specification:'Eras Demi ITC';stroke-width:0.26458332px"
-         y="248.19667"
-         x="45.404552"
-         id="tspan4600"
-         sodipodi:role="line">Bible </tspan><tspan
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Eras Demi ITC';-inkscape-font-specification:'Eras Demi ITC';stroke-width:0.26458332px"
-         y="261.89236"
-         x="45.404552"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.52498913px;line-height:112.30000257%;font-family:'Eras Demi ITC';-inkscape-font-specification:'Eras Demi ITC';stroke-width:0.26458332px"
+         y="226.28065"
+         x="42.680405"
          sodipodi:role="line"
-         id="tspan4604">API 1</tspan></text>
+         id="tspan4604">Bible API</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.52498913px;line-height:112.30000257%;font-family:'Eras Demi ITC';-inkscape-font-specification:'Eras Demi ITC';stroke-width:0.26458332px"
+         y="239.50983"
+         x="42.680405"
+         sodipodi:role="line"
+         id="tspan4546">(XML)</tspan></text>
     <text
-       transform="rotate(39.901469)"
-       inkscape:transform-center-y="69.264731"
-       inkscape:transform-center-x="-80.051568"
+       transform="rotate(42.704128)"
+       inkscape:transform-center-y="73.104202"
+       inkscape:transform-center-x="-69.075816"
        id="text4612"
-       y="84.131241"
-       x="315.40936"
+       y="91.883942"
+       x="297.00369"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Eras Demi ITC';-inkscape-font-specification:'Eras Demi ITC';stroke-width:0.26458332px"
-         y="84.131241"
-         x="315.40936"
-         id="tspan4608"
-         sodipodi:role="line">Bible </tspan><tspan
          id="tspan4610"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Eras Demi ITC';-inkscape-font-specification:'Eras Demi ITC';stroke-width:0.26458332px"
-         y="97.82692"
-         x="315.40936"
-         sodipodi:role="line">API 3</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.52498913px;font-family:'Eras Demi ITC';-inkscape-font-specification:'Eras Demi ITC';stroke-width:0.26458332px"
+         y="91.883942"
+         x="297.00369"
+         sodipodi:role="line">Bible API</tspan></text>
     <text
        transform="rotate(-55.703248)"
        inkscape:transform-center-y="-54.876293"
        inkscape:transform-center-x="-37.305701"
        id="text4618"
-       y="216.51732"
-       x="-58.292236"
+       y="193.78477"
+       x="-73.797256"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
          id="tspan4616"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Eras Demi ITC';-inkscape-font-specification:'Eras Demi ITC';stroke-width:0.26458332px"
-         y="216.51732"
-         x="-58.292236"
+         y="193.78477"
+         x="-73.797256"
          sodipodi:role="line">Adapters</tspan></text>
     <path
        style="opacity:1;fill:#88b8ff;fill-opacity:1;fill-rule:nonzero;stroke:#1717ff;stroke-width:1.44031203;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.36078431"
-       d="m 140.05105,258.52416 v 6.17729 h -6.24598 v 2.74547 h 6.24598 v 6.17729 h 2.6082 v -6.17729 h 6.24597 v -2.74547 h -6.24597 v -6.17729 z"
+       d="m 112.53421,258.52416 v 6.17729 h -6.24598 v 2.74547 h 6.24598 v 6.17729 h 2.6082 v -6.17729 h 6.24597 v -2.74547 h -6.24597 v -6.17729 z"
        id="rect4626"
        inkscape:connector-curvature="0" />
   </g>

@@ -1,14 +1,11 @@
-# ![CornerStone][cornerstone] CornerStone
+# ![CornerStone][cornerstone] CornerStone Bible
 **Bringing the Bible to developers.**
 
-## A Unified JavaScript Bible API
+## Free JavaScript Bible API
 CornerStone is a standalone JavaScript library that provides the Bible to developers by combining multiple online API's.
 
 ### The Problem
-For a website, web app, or node project to get access to Bible content, the developer must research available Bible APIs online and carefully choose which API to use. Choosing an API might depend on how many languages and versions are provided, or by how easy it is to use the API. In the end, the developer needs to choose one Bible API. If the developer wishes to add more content, additional code must be written to support addition APIs.
-
-### The Solution
-CornerStone was created to solve this problem. The goal is to provide multiple Bible APIs through one simple, "unified" API while providing features to enhance the developing and user experience.
+It's hard to choose one of the many free online Bible APIs. CornerStone makes it easy by giving you more than one by combining them into a "unified" powerful API.
 
 ## Architecture
 One of the key features of CornerStone is Adapters. Each Adapter is created for a Bible API and is integrated into CornerStone. CornerStone's single API can be used to access all of the content available from each Bible API adapter. As additional adapters are added, no change is required from your code.
@@ -44,11 +41,11 @@ For any issues, logging can be enabled to CornerStone to output to the console. 
 
 ## Usage
 
-By using CornerStone, you agree to the usage terms dictated by each Bible API. While CornerStone provides mechanisms to help comply with API usage terms, CornerStone is not held liable for misuse.
+By using CornerStone, you agree to the usage terms dictated by each Bible API. While CornerStone provides mechanisms to help comply with API usage terms, CornerStone is liable for misuse.
 
 Be sure to
 * provide the copyright text each time you display verses
-* if your app charges money, check with each API's terms first
+* if your app charges money, check with each API's terms first. CornerStone allows you to choose which APIs you want to use if your application does not meet the terms.
 
 ## More About CornerStone
 ### Developed in TypeScript
@@ -60,4 +57,4 @@ This project was developed using Test Driven Development (TDD) to improve qualit
 Currently CornerStone has over 40 unit tests.
 
 [cornerstone]: ./images/cornerstone-green192x192.png
-[architecture]: ./images/architecture491x350.png
+[architecture]: ./images/architecture.png
