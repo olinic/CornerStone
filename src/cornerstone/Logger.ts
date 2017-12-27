@@ -23,20 +23,16 @@ export default class Logger implements ILogger
    public warn = this.nop;
    public error = this.nop;
 
-   private who: string;
    private loggingEnabled: boolean;
    private level: LoggingLevel;
 
    public constructor(
          // defaults
          {loggingEnabled = false,
-          loggingLevel = LoggingLevel.WARN,
-          who = ""}
+          loggingLevel = LoggingLevel.WARN}
          // types
        : {loggingEnabled?: boolean,
-          loggingLevel?: LoggingLevel,
-          who?: string}) {
-      this.who = who;
+          loggingLevel?: LoggingLevel}) {
       this.loggingEnabled = loggingEnabled;
       this.level = loggingLevel;
 
@@ -98,9 +94,6 @@ export default class Logger implements ILogger
    private prepareMsg(msg: string): string
    {
       let callerInfo: string = "";
-      if (this.who !== "") {
-         callerInfo = " [" + this.who + "]";
-      }
       return this.getTime() + callerInfo + ": " + msg;
    }
 

@@ -1,9 +1,9 @@
 import IUrlOptions from "./IUrlOptions";
 export default interface IAdapter
 {
-   getVerse(options: IUrlOptions): Promise<any>;
-   getChapter(options: IUrlOptions): Promise<any>;
-   /*getNextChapter(): object;
+   getVerse(verse: number, chapter: number, book: string): Promise<any>;
+   /*getChapter(options: IUrlOptions): Promise<any>;
+   getNextChapter(): object;
    getPrevChapter(): object;
    getCatalog(): object;
 
@@ -11,6 +11,31 @@ export default interface IAdapter
    getVersions(): object;
 
    getAdapterName(): string;
-   getCapabilities(): object;*/
+   getCapabilities(): string[];*/
 
+}
+
+export interface IAdapterOptions
+{
+   adapterName: string,
+   /**
+    * Maximum number of queries.
+    * Valid values:
+    *    1 or greater
+    */
+   maxNumberOfQueries?: number,
+   /**
+    * Time period (in seconds) for the maximum number of queries.
+    * If maxNumberOfQueries is not set, this value is ignored.
+    * If maxNumberOfQueries is set, this value is required.
+    */
+   queryPeriod?: number,
+   /**
+    * Maximum number of queries that can be stored in the cache.
+    */
+   maxQueriesInCache?: number,
+   /**
+    * API terms URL.
+    */
+   termsUrl: string
 }
