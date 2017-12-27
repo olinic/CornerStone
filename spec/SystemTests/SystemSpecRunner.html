@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8">
+   <title>Jasmine Spec Runner v2.6.2</title>
+
+   <!-- dependencies -->
+   <link rel="shortcut icon" type="image/png" href="../../node_modules/jasmine-core/images/jasmine_favicon.png">
+   <link rel="stylesheet" href="../../node_modules/jasmine-core/lib/jasmine-core/jasmine.css">
+
+   <script src="../../node_modules/jasmine-core/lib/jasmine-core/jasmine.js"></script>
+   <script src="../../node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js"></script>
+   <script src="../../node_modules/jasmine-core/lib/jasmine-core/boot.js"></script>
+   <script src="../../dist/CornerStone-0.0.1/cornerstone-bible-0.0.1.js"></script>
+
+   <!-- include helper files here... -->
+   <script src="../helpers/platform.js"></script>
+   <script src="../helpers/paths.js"></script>
+
+   <!-- include spec files here... -->
+   <script src="SmokeTest.js"></script>
+
+   <script src="../helpers/projectDetails.js"></script>
+   <script>
+      //var loadScript = document.createElement("script");
+      //loadScript.setAttribute("src", "../../dist");
+      //document.head.appendChild(loadScript);
+      console.log(JSON.stringify(CornerStone.New({})));
+   </script>
+</head>
+
+<body>
+</body>
+</html>

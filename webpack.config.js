@@ -1,9 +1,13 @@
+var packagejson = require("./package.json");
+var name = packagejson.name;
+var version = packagejson.version;
+var filenameExtension = (process.argv.indexOf('--optimize-minimize') !== -1) ? ".min.js" : ".js";
 module.exports = {
     entry: "./src/index.ts",
     output: {
-        filename: "Cornerstone.js",
-        path: __dirname + "/dist",
-        library: 'Cornerstone',
+        filename: name + "-" + version + filenameExtension,
+        path: __dirname + "/dist/CornerStone-" + version,
+        library: 'CornerStone',
         libraryTarget: 'umd'
     },
 

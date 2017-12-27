@@ -1,16 +1,21 @@
 {
-  "name": "cornerstone",
+  "name": "cornerstone-bible",
   "version": "0.0.1",
-  "description": "A unified JavaScript Bible API.",
+  "description": "A free JavaScript Bible API for developers.",
   "main": "index.js",
+  "man": "./man/cornerstone.man",
   "directories": {
-    "test": "tests"
+     "doc": "doc",
+     "lib": "dist",
+     "test": "spec"
   },
   "scripts": {
     "pretest": "tsc --sourceMap false && webpack --config ./spec/webpack.config.js",
     "test": "start node ./spec/testserver.js 15 && jasmine && start spec/SpecRunner.html",
+    "systemtest": "npm run publish && jasmine --config=./spec/support/jasmine-system-test.json && start spec/SystemTests/SystemSpecRunner.html",
     "typedoc": "typedoc --excludePrivate --excludeNotExported --excludeExternals --mode file --readme ./README.md --module commonjs --out ./doc ./src/index.ts",
-    "build": "webpack --optimize-minimize --output-filename [name].min.js",
+    "apidoc": "typedoc --excludePrivate --excludeExternals --mode file --readme ./README.md --module commonjs --out ./doc ./src/interfaces/ICornerStone.ts",
+    "publish": "node ./scripts/propagateDetails.js && node ./scripts/mkDistDirectory.js && webpack --devtool false && webpack --devtool false --optimize-minimize",
     "speclint": "eslint ./spec/CornerStone/*.js",
     "lint": "tslint --force src/**/*.ts",
     "cleanLint": "tslint --fix src/**/*.ts"
