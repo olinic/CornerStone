@@ -23,6 +23,7 @@ function inNode(func) {
 if (typeof global !== 'undefined') {
   global.inNode = inNode;
   global.inBrowser = inBrowser;
+  global.isBrowser = isBrowser;
 }
 // Note: jasmine global exists
 

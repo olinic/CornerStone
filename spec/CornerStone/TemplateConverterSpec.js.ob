@@ -1,0 +1,78 @@
+// src file
+const TemplateConverter = require("../../" + generatedJsPath + "cornerstone/TemplateConverter.js").TemplateConverter;
+
+// dependencies
+const Logger = require("../../" + generatedJsPath + "cornerstone/Logger.js").Logger;
+
+const logger = new Logger({ loggingEnabled: false });
+let converter;
+
+describe("Template Converter", () => {
+
+   beforeEach(() => {
+      // start with a good fresh converter for each test
+      converter = new TemplateConverter(
+            logger,
+            [{name:"required", required: true, multiple: false},
+             {name:"optional", required: false, multiple: true}]);
+   });
+
+   it("should validate a good template", () => {
+      expect(converter.validate('{ "my": "required", "multi": ["optional"] }')).toBeTruthy();
+      expect(converter.validate('{ "my": "required", "multi": [["optional", "other"]] }')).toBeTruthy();
+      expect(converter.validate('{ "my": "required", "multi": [ [ "optional", 99] ] }')).toBeTruthy();
+      expect(converter.validate('{ "my": "required", "multi": [{ "item": "optional" }] }')).toBeTruthy();
+   });
+
+   it("should validate a bad JSON template", () => {
+      expect(converter.validate('}')).toBeFalsy();
+      expect(converter.validate('{ "my": "required", "multi": "optional" }')).toBeFalsy();
+      expect(converter.validate('{ "my": "required", "multi": ["optional", "bad"] }')).toBeFalsy();
+      expect(converter.validate('{ "my": "required", "multi": { "test": "optional"} }')).toBeFalsy();
+   });
+
+   it("should throw an error when setting a bad template", () => {
+      expect(() => {
+         converter.setTemplate('}');
+      }).toThrow();
+   });
+
+   it("should validate a bad template with required fields missing", () => {
+      expect(converter.validate('{}')).toBeFalsy();
+   });
+
+   it("should validate a bad template with multi fields improperly set", () => {
+      expect(converter.validate('{ "field1": "required", "field2": "optional" }')).toBeFalsy();
+   });
+
+   it("should throw an error when converting without a set template", () => {
+      expect(() => {
+         converter.convert({});
+      }).toThrow();
+   });
+
+   it("should return an object when converting", () => {
+      converter.setTemplate('{"name":"required"}');
+      expect(typeof converter.convert({})).toEqual("object");
+   });
+
+   /*it("should convert a template that uses indices", () => {
+      let template = "['required', ['optional']]";
+      converter.setTemplate(template);
+      let obj = converter.convert({ required: "hello", optional: ["my", "test", "array"]});
+      expect(obj[0]).toEqual("hello");
+      expect(obj[1][0]).toEqual("my");
+      expect(obj[1][1]).toEqual("test");
+      expect(obj[1][2]).toEqual("array");
+   });*/
+
+   it("should convert a template that uses an object", () => {
+      let template = '{ "my": "required", "multi": [{ "item": "optional" }] }';
+      converter.setTemplate(template);
+      let obj = converter.convert({ required: "world", optional: ["some", "other", "values"] });
+      expect(obj.my).toEqual("world");
+      expect(obj.multi[0].item).toEqual("some");
+      expect(obj.multi[1].item).toEqual("other");
+      expect(obj.multi[2].item).toEqual("values");
+   });
+});
