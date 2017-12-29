@@ -1,6 +1,9 @@
 # ![CornerStone][cornerstone] CornerStone Bible
 **Bringing the Bible to developers.**
 
+## A Work in Progress
+CornerStone has not come out with its first official release yet, but you can read more about it below!
+
 ## Free JavaScript Bible API
 CornerStone is a standalone JavaScript library that provides the Bible to developers by combining multiple free online API's.
 
@@ -35,8 +38,10 @@ By default all of the freely accessible adapters will by provided. You can choos
 For any issues, logging can be enabled to CornerStone to output to the console. You can define how verbose you want to be: every detail or only errors.
 
 ## Installation
+Greatness awaits!
 
 ## Usage
+More to come!
 
 By using CornerStone, you agree to the usage terms dictated by each Bible API. While CornerStone provides mechanisms to help comply with API usage terms, CornerStone is liable for misuse.
 
