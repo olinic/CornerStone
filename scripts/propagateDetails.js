@@ -4,14 +4,21 @@
  * Assumes that script is being run at the project top level.
  */
 var fs = require("fs");
+
+// Details from package.json
 var packagejson = require("../package.json");
 var version = packagejson.version;
 var name = packagejson.name;
 var lib = packagejson.directories.lib;
+
+// Details from webpack.config
 var webpackconfig = require("../webpack.config.js");
-var latestPath = webpackconfig.output.path;
-var latestFileName = webpackconfig.output.filename;
-var libraryName = webpackconfig.output.library;
+var latestWebPath = webpackconfig[0].output.path;
+var latestWebFileName = webpackconfig[0].output.filename;
+var webLibraryName = webpackconfig[0].output.library;
+var latestNodePath = webpackconfig[1].output.path;
+var latestNodeFileName = webpackconfig[1].output.filename;
+var nodeLibraryName = webpackconfig[1].output.library;
 
 // Files
 var jsFile = "./spec/helpers/projectDetails.js";
@@ -26,9 +33,12 @@ var jsVars = {
    "projectVersion": version,
    "projectName": name,
    "projectLib": lib,
-   "projectLatestPath": latestPath.replace(/\\/g, "/"),
-   "projectLatestFile": latestFileName,
-   "projectLibraryName": libraryName
+   "webProjectLatestPath": latestWebPath.replace(/\\/g, "/"),
+   "webProjectLatestFile": latestWebFileName,
+   "webProjectLibraryName": webLibraryName,
+   "nodeProjectLatestPath": latestNodePath.replace(/\\/g, "/"),
+   "nodeProjectLatestFile": latestNodeFileName,
+   "nodeProjectLibraryName": nodeLibraryName
 }
 var jsFileContents = generatedComment;
 for (variable in jsVars) {
