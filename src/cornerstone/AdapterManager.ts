@@ -1,13 +1,15 @@
-import IAdapter from "../interfaces/IAdapter";
+import IAdapter, { IVerseParams } from "../interfaces/IAdapter";
+import IAdapterManager from "../interfaces/IAdapterManager";
 import ILogger from "../interfaces/ILogger";
 import IWebGetter from "../interfaces/IWebGetter";
 import Adapter from "./Adapter";
+import { Book } from "./CommonEnums";
 
 /**
  * Manages adapters by choosing which ones to use. Consolodates
  * results from all adapters for certain queries (languages, versions, etc.).
  */
-export default class AdapterManager
+export default class AdapterManager implements IAdapterManager
 {
    private adapterConstructors: any[];
    private logger: ILogger;
@@ -20,16 +22,17 @@ export default class AdapterManager
       this.adapterConstructors = adapters;
       this.webGetter = webGetter;
       // Set the current adapter.
-
+      this.setAdapter();
    }
 
-   public getVerse(
-         verse: number,
-         chapter: number,
-         book: string,
-         version?: string): Promise<any>
+   public getVerse(options: IVerseParams): Promise<any>
    {
-      return this.currAdapter.getVerse(verse, chapter, book);
+      return this.currAdapter.getVerse(options);
+   }
+
+   public setVersion(): void
+   {
+
    }
 
    private setAdapter()

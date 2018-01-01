@@ -2,17 +2,15 @@
  * CornerStone interface/API.
  *
  * By default, CornerStone returns a Promise for all
- * asynchronous calls. Promises are recommended over callbacks,
- * but either can be used.
+ * asynchronous calls.
  * For more information on promises, go to: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises
  */
 export default interface ICornerStone
 {
    /**
-    * Retrieve a Bible verse. While using the returned
-    * Promise is recommended, a callback can be optionally used.
+    * Retrieve a Bible verse.
     *
-    * Examples:
+    * Example:
     * CornerStone.getVerse({
     *    book: "John",
     *    chapter: 3,
@@ -31,7 +29,7 @@ export default interface ICornerStone
 export interface ICornerStoneSettings
 {
    cacheSize?: string;
-   useAdapters?: Array<IAdapterInfo>; // [{name: "DBP", key: "apikey"}, {name: "DBN"}]
+   useAdapters?: IAdapterInfo[]; // [{name: "DBP", key: "apikey"}, {name: "DBN"}]
 
 }
 
@@ -46,9 +44,18 @@ export interface IVerseOptions
    verse: number;
    chapter: number;
    bookId: Book;
-   //version?: string;
-   //language?: string;
+   // version?: string;
+   // language?: string;
 }
+
+export interface IVerse
+{
+   text: string;
+   verseNumber: number;
+   ltr: boolean;
+}
+
+type IVerses = IVerse[];
 
 /*
 export interface IChapterOptions

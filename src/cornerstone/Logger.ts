@@ -93,8 +93,7 @@ export default class Logger implements ILogger
     */
    private prepareMsg(msg: string): string
    {
-      let callerInfo: string = "";
-      return this.getTime() + callerInfo + ": " + msg;
+      return this.getTime() + ": " + msg;
    }
 
    private getMonth(monthNum: number): string

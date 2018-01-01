@@ -143,8 +143,12 @@ export default class WebAccessor implements IWebGetter
             method,
             path: (parse(url).pathname || "") + (parse(url).search || ""),
             port: Number(parse(url).port) || 80,
-            protocol: parse(url).protocol || "http:"
+            protocol: parse(url).protocol || "http:",
+            headers: {
+               "User-Agent": "javascript"
+            }
          };
+         this.logger.debug("Sending URL options: " + JSON.stringify(options));
 
          const webRequest: any = (options.protocol.toLowerCase().indexOf("https") === -1)
                                     ? httpRequest : httpsRequest;

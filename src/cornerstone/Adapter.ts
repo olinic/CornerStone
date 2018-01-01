@@ -1,5 +1,5 @@
 // Internal dependencies.
-import IAdapter, { IAdapterOptions } from "../interfaces/IAdapter";
+import IAdapter, { IAdapterOptions, IVerseParams } from "../interfaces/IAdapter";
 import ICache from "../interfaces/ICache";
 import ILogger from "../interfaces/ILogger";
 import IUrlOptions from "../interfaces/IUrlOptions";
@@ -71,15 +71,19 @@ export default class Adapter implements IAdapter
       return this.API_TERMS_URL;
    }
 
-   public getVerse(verse, chapter, book)
+   public getVerse(options: IVerseParams)
    {
       return this.defaultResponse();
    }
 
    protected request(
          options: IUrlOptions,
-         onSuccess?: ( data: string ) => string,
-         onError?: ( err: Error ) => Error): Promise<any>
+         postProcessing:
+            ( data: any ) => any
+            =
+            ( data ) => data, // default to return the same data.
+         onSuccess?: ( data: string ) => void,
+         onError?: ( err: Error ) => void): Promise<any>
    {
       return new Promise((
             resolve: (response: string) => void,
@@ -87,21 +91,18 @@ export default class Adapter implements IAdapter
          this.onlineAccessor
             .request(options)
             .then((response) => {
-               if (typeof onSuccess === "undefined") {
-                  // pass the error
-                  resolve(response);
-               } else {
+               const processedData = postProcessing(response);
+               if (typeof onSuccess !== "undefined") {
                   // work with the data
-                  resolve(onSuccess(response));
+                  onSuccess(processedData);
                }
+               resolve(processedData);
             }).catch((err) => {
-               if (typeof onerror === "undefined") {
-                  // pass the error
-                  reject(err);
-               } else {
+               if (typeof onerror !== "undefined") {
                   // execute the custom error handler
-                  reject(onError(err));
+                  onError(err);
                }
+               reject(err);
             });
       });
    }

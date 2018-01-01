@@ -1,7 +1,9 @@
+import { Book } from "../cornerstone/CommonEnums";
 import IUrlOptions from "./IUrlOptions";
+
 export default interface IAdapter
 {
-   getVerse(verse: number, chapter: number, book: string): Promise<any>;
+   getVerse(options: IVerseParams): Promise<any>;
    /*getChapter(options: IUrlOptions): Promise<any>;
    getNextChapter(): object;
    getPrevChapter(): object;
@@ -15,27 +17,34 @@ export default interface IAdapter
 
 }
 
+export interface IVerseParams
+{
+   verse: number;
+   chapter: number;
+   book: Book;
+}
+
 export interface IAdapterOptions
 {
-   adapterName: string,
+   adapterName: string;
    /**
     * Maximum number of queries.
     * Valid values:
     *    1 or greater
     */
-   maxNumberOfQueries?: number,
+   maxNumberOfQueries?: number;
    /**
     * Time period (in seconds) for the maximum number of queries.
     * If maxNumberOfQueries is not set, this value is ignored.
     * If maxNumberOfQueries is set, this value is required.
     */
-   queryPeriod?: number,
+   queryPeriod?: number;
    /**
     * Maximum number of queries that can be stored in the cache.
     */
-   maxQueriesInCache?: number,
+   maxQueriesInCache?: number;
    /**
     * API terms URL.
     */
-   termsUrl: string
+   termsUrl: string;
 }
