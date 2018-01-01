@@ -137,19 +137,11 @@ describe("Logger", () => {
    }));
 
    it("should log errors in the correct format", sinonTest(function() {
-      // Identified logger
-      this.stub(console, "error").callsFake((msg) => {
-         //                   Jan   3   at 12 : 45  : 03  . 997 [LoggerSpec]: msg
-         expect(msg).toMatch(/\w{3} \d+ at \d+:\d{2}:\d{2}.\d{3} \[.*\]: .*/)
-      });
-
-      // Unidentified logger
       this.stub(console, "log").callsFake((msg) => {
          //                   Jan   3   at 12 : 45  : 03  . 997 : msg
          expect(msg).toMatch(/\w{3} \d+ at \d+:\d{2}:\d{2}.\d{3}: .*/)
       });
 
-      identifiedLogger.error("an error message that knows who I am");
       debugLogger.debug("a debug message that doesn't know who I am");
    }));
 });

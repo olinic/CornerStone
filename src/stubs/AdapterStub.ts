@@ -1,5 +1,6 @@
 // Internal dependencies.
 import Adapter from "../cornerstone/Adapter";
+import { IVerseParams } from "../interfaces/IAdapter";
 import ILogger from "../interfaces/ILogger";
 import IWebGetter from "../interfaces/IWebGetter";
 
@@ -14,7 +15,7 @@ export default class AdapterStub extends Adapter
       super(logger, webGetter, { adapterName: "Stub", termsUrl: "N/A" });
    }
 
-   public getVerse(verse: number, chapter: number, book: string): Promise<any>
+   public getVerse(options: IVerseParams): Promise<any>
    {
       return this.stubPromise("verse" + this.id);
    }

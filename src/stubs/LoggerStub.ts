@@ -14,7 +14,7 @@ export default class LoggerStub implements ILogger
    {
       return new Error(msg);
    }
- 
+
    // tslint:disable-next-line no-empty
    private nop(msg: string): void {}
 }
