@@ -3,9 +3,9 @@
  */
 export default interface ILogger
 {
-   debug(msg: string): void;
-   info(msg: string): void;
-   warn(msg: string): void;
-   error(msg: string): void;
-   logAndGiveError(msg: string): Error;
+   debug(...args: any[]): void;
+   info(...args: any[]): void;
+   warn(...args: any[]): void;
+   error(...args: any[]): void;
+   logAndGiveError(...args: any[]): Error;
 }

@@ -43,17 +43,17 @@ export default class Logger implements ILogger
    /**
     * Log the error and return an instance of an Error.
     */
-   public logAndGiveError(msg: string): Error
+   public logAndGiveError(...args: any[]): Error
    {
-      this.error(msg);
-      return new Error(msg);
+      this.error(...args);
+      return new Error(args.join(" "));
    }
 
    /**
     * Used to make logging do nothing (when disabled) to improve efficiency.
     */
    // tslint:disable-next-line no-empty
-   private nop(msg: string): void {}
+   private nop(...args: any[]): void {}
 
    /**
     * Configures all of the logging based on the level.
@@ -64,24 +64,24 @@ export default class Logger implements ILogger
          switch (this.level) {
             // intentional fall-throughs
             case LoggingLevel.DEBUG:
-               this.debug = (msg: string): void => {
+               this.debug = (...args: any[]): void => {
                   // tslint:disable-next-line no-console
-                  console.log(this.prepareMsg(msg));
+                  console.log(this.prepareMsg(args));
                };
             case LoggingLevel.INFO:
-               this.info = (msg: string): void => {
+               this.info = (...args: any[]): void => {
                   // tslint:disable-next-line no-console
-                  console.info(this.prepareMsg(msg));
+                  console.info(this.prepareMsg(args));
                };
             case LoggingLevel.WARN:
-               this.warn = (msg: string): void => {
+               this.warn = (...args: any[]): void => {
                   // tslint:disable-next-line no-console
-                  console.warn(this.prepareMsg(msg));
+                  console.warn(this.prepareMsg(args));
                };
             case LoggingLevel.ERROR:
-               this.error = (msg: string): void => {
+               this.error = (...args: any[]): void => {
                   // tslint:disable-next-line no-console
-                  console.error(this.prepareMsg(msg));
+                  console.error(this.prepareMsg(args));
                };
          }
       }
@@ -91,9 +91,24 @@ export default class Logger implements ILogger
     * Prepares the message to be logged by adding information
     * that might be useful.
     */
-   private prepareMsg(msg: string): string
+   private prepareMsg(...args: any[]): string
    {
-      return this.getTime() + ": " + msg;
+      return this.getTime() + ": " + this.toString(args);
+   }
+
+   private toString(thing: any): string
+   {
+      let str = "";
+      if (thing instanceof Array) {
+         for (let item in thing) {
+            str += this.toString(thing[item]) + " ";
+         }
+      } else if (typeof thing === "object") {
+         str = JSON.stringify(thing);
+      } else {
+         str += thing;
+      }
+      return str;
    }
 
    private getMonth(monthNum: number): string
