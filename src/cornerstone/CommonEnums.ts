@@ -6,7 +6,10 @@ export enum LoggingLevel
    ERROR
 }
 
-// Add any new books to the end.
+/**
+ *  Add any new books to the end.
+ *  Should match list of valid books in ICornerStone.ts
+ */
 export enum Book
 {
    GEN,

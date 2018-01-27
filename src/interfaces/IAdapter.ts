@@ -17,13 +17,6 @@ export default interface IAdapter
 
 }
 
-export interface IVerseParams
-{
-   verse: number;
-   chapter: number;
-   book: Book;
-}
-
 export interface IAdapterOptions
 {
    adapterName: string;
@@ -42,9 +35,44 @@ export interface IAdapterOptions
    /**
     * Maximum number of queries that can be stored in the cache.
     */
-   maxQueriesInCache?: number;
+   maxVersesInCache?: number;
    /**
-    * API terms URL.
+    * API terms URL. Useful for the developer to determine if their
+    * application meets the terms.
     */
    termsUrl: string;
+   /**
+    * Text format of the verses. HTML, paragraph containing newlines,
+    * or plain text.
+    */
+   textFormat: ITextFormat;
+}
+
+export interface IVerseParams
+{
+   verse: number;
+   chapter: number;
+   book: Book;
+}
+
+export type ITextFormat = "plain" | "para" | "html";
+
+export enum ETextFormat
+{
+   PLAIN,
+   PARA,
+   HTML
+}
+
+export interface IVerse
+{
+   verseNumber: number;
+   text: string;
+}
+
+export interface IBibleContent
+{
+   bookName: string;
+   ltr: boolean;
+   verses: IVerse[];
 }

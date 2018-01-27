@@ -4,7 +4,8 @@
     "sourceMap": true,
     "module": "commonjs",
     "target": "es5",
-    "lib": ["dom", "es2015.promise", "es5"]
+    "lib": ["dom", "es2015.promise", "es5"],
+    "experimentalDecorators": true
   },
   "include": [
     "./src/**/*.ts"

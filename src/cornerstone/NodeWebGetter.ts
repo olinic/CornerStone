@@ -3,6 +3,8 @@ import ILogger from "../interfaces/ILogger";
 import IUrlOptions from "../interfaces/IUrlOptions";
 import IWebGetter from "../interfaces/IWebGetter";
 
+import { setupCallback } from "./BrowserWebGetter";
+
 // External
 import { Promise } from "es6-promise";
 import { request as httpRequest} from "http";
@@ -18,12 +20,13 @@ export default class NodeWebGetter implements IWebGetter
 
    public request(options: IUrlOptions): Promise<any>
    {
-      const url = options.url;
+      let url = options.url;
       let method = options.method;
       // Default is to do nothing
       let preResolve = (response) => response;
 
       if (method === "JSONP") {
+         url = setupCallback(url, "NodeCornerStoneCallback");
          method = "GET";
          preResolve = (response) => {
             let start = response.indexOf("({");
@@ -43,7 +46,7 @@ export default class NodeWebGetter implements IWebGetter
          resolve: (response: string) => void,
          reject: (err: Error) => void) => {
 
-         const options = {
+         const requestOptions = {
             hostname: parse(url).hostname,
             method,
             path: (parse(url).pathname || "") + (parse(url).search || ""),
@@ -53,12 +56,12 @@ export default class NodeWebGetter implements IWebGetter
                "User-Agent": "javascript"
             }
          };
-         this.logger.debug("Sending URL options: " + JSON.stringify(options));
+         this.logger.debug("Sending URL options: " + JSON.stringify(requestOptions));
 
-         const webRequest: any = (options.protocol.toLowerCase().indexOf("https") === -1)
+         const webRequest: any = (requestOptions.protocol.toLowerCase().indexOf("https") === -1)
                                     ? httpRequest : httpsRequest;
 
-         const req = webRequest(options, (res) => {
+         const req = webRequest(requestOptions, (res) => {
             const { statusCode, statusMessage } = res;
 
             // reject on error

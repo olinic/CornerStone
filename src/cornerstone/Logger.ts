@@ -100,8 +100,8 @@ export default class Logger implements ILogger
    {
       let str = "";
       if (thing instanceof Array) {
-         for (let item in thing) {
-            str += this.toString(thing[item]) + " ";
+         for (const item of thing) {
+            str += this.toString(item) + " ";
          }
       } else if (typeof thing === "object") {
          str = JSON.stringify(thing);

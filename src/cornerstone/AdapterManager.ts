@@ -1,9 +1,6 @@
 import IAdapter, { IVerseParams } from "../interfaces/IAdapter";
 import IAdapterManager from "../interfaces/IAdapterManager";
 import ILogger from "../interfaces/ILogger";
-import IWebGetter from "../interfaces/IWebGetter";
-import Adapter from "./Adapter";
-import { Book } from "./CommonEnums";
 
 /**
  * Manages adapters by choosing which ones to use. Consolodates
@@ -11,16 +8,14 @@ import { Book } from "./CommonEnums";
  */
 export default class AdapterManager implements IAdapterManager
 {
-   private adapterConstructors: any[];
+   private adapters: IAdapter[];
    private logger: ILogger;
-   private currAdapter: Adapter;
-   private webGetter: IWebGetter;
+   private currAdapter: IAdapter;
 
-   constructor(logger: ILogger, adapters: any[], webGetter: IWebGetter)
+   constructor(logger: ILogger, adapters: IAdapter[])
    {
       this.logger = logger;
-      this.adapterConstructors = adapters;
-      this.webGetter = webGetter;
+      this.adapters = adapters;
       // Set the current adapter.
       this.setAdapter();
    }
@@ -37,6 +32,6 @@ export default class AdapterManager implements IAdapterManager
 
    private setAdapter()
    {
-      this.currAdapter = new this.adapterConstructors[0](this.logger, this.webGetter);
+      this.currAdapter = this.adapters[0];
    }
 }

@@ -53,7 +53,16 @@ export default class WebGetterStub implements IWebGetter
          resolve: (response: string) => void,
          reject: (err: Error) => void) => {
 
-         setTimeout(resolve(options.url), this.timeout);
+         // Send a response based on the source.
+         let data;
+         if (options.url.indexOf("getbible.net") !== -1) {
+            data = '({"book":[{"book_ref":"Jn","book_name":"John","book_nr":"43",' +
+            '"chapter_nr":"3","chapter":{"16":{"verse_nr":"16","verse":"' + options.url +
+            '"}}}],"direction":"LTR","type":"verse","version":"kjv"});';
+         } else {
+            data = options.url;
+         }
+         setTimeout(resolve(data), this.timeout);
       });
    }
 }

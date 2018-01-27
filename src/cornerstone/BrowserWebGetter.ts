@@ -47,12 +47,14 @@ export default class BrowserWebGetter implements IWebGetter
             }
             // on failure, use reject
             else {
-               reject(this.logger.logAndGiveError("Bad status", xhr.status, xhr.statusText, "in URL", url));
+               reject(this.logger.logAndGiveError("Bad status", xhr.status, xhr.statusText,
+                                                  "in URL", url));
             }
          };
          // on failure, use reject
          xhr.onerror = () => {
-            reject(this.logger.logAndGiveError("Experienced error with request. Status", xhr.status, xhr.statusText, "in URL", url));
+            reject(this.logger.logAndGiveError("Experienced error with request. Status",
+                                               xhr.status, xhr.statusText, "in URL", url));
          };
 
          xhr.send();
@@ -69,7 +71,7 @@ export default class BrowserWebGetter implements IWebGetter
          // callback name
          const myCallbackName = "CornerStoneJsonp" + this.jsonpCounter;
 
-         url = this.setupCallback(url, myCallbackName);
+         url = setupCallback(url, myCallbackName);
 
          // create "component" that retrieves the data and calls back
          const timeout = setTimeout(() => {
@@ -94,18 +96,19 @@ export default class BrowserWebGetter implements IWebGetter
       });
    }
 
-   private setupCallback(url: string, callback: string): string
-   {
-      const callbackDefined = (url.indexOf("callback=") !== -1);
-      if (callbackDefined) {
-         //   Remove        callback=...&
-         url = url.replace(/callback=\w+&?/, "");
-      }
+}
 
-      // add the callback to the URL
-      const prependCharacter = (url.indexOf("?") === -1) ? "?" : "&";
-      url += prependCharacter + "callback=" + callback;
-
-      return url;
+export function setupCallback(url: string, callback: string): string
+{
+   const callbackDefined = (url.indexOf("callback=") !== -1);
+   if (callbackDefined) {
+      //   Remove        callback=...&
+      url = url.replace(/callback=\w+&?/, "");
    }
+
+   // add the callback to the URL
+   const prependCharacter = (url.indexOf("?") === -1) ? "?" : "&";
+   url += prependCharacter + "callback=" + callback;
+
+   return url;
 }
