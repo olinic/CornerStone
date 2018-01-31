@@ -144,6 +144,11 @@ describe("Adapters", () => {
             expect(adapter.getTermsUrl().trim()).not.toEqual("");
          });
 
+         it("should have a text format", () => {
+            let format = adapter.getTextFormat();
+            expect(0 <= format && format <= 3).toBeTruthy();
+         });
+
          it("should get a verse", () => {
             adapter.getVerse(18, 3, "John").then((data) => {
                expect(data.verses[0].text).toEqual("http://getbible.net/json?passage=John3:16");

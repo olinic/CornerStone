@@ -37,7 +37,7 @@ export default abstract class Adapter
    /**
     * Verse format of adapter.
     */
-   private readonly textFormat: ETextFormat;
+   private readonly TEXT_FORMAT: ETextFormat;
 
    public constructor(
          logger: ILogger,
@@ -51,15 +51,15 @@ export default abstract class Adapter
       this.API_TERMS_URL = options.termsUrl;
       switch (options.textFormat) {
          case "plain": {
-            this.textFormat = ETextFormat.PLAIN;
+            this.TEXT_FORMAT = ETextFormat.PLAIN;
             break;
          }
          case "para": {
-            this.textFormat = ETextFormat.PARA;
+            this.TEXT_FORMAT = ETextFormat.PARA;
             break;
          }
          case "html": {
-            this.textFormat = ETextFormat.HTML;
+            this.TEXT_FORMAT = ETextFormat.HTML;
             break;
          }
       }
@@ -73,5 +73,10 @@ export default abstract class Adapter
    public getTermsUrl(): string
    {
       return this.API_TERMS_URL;
+   }
+
+   public getTextFormat(): ETextFormat
+   {
+      return this.TEXT_FORMAT;
    }
 }
