@@ -1,6 +1,13 @@
+// internal
 import IUrlOptions from "../interfaces/IUrlOptions";
 import IWebGetter from "../interfaces/IWebGetter";
 
+// external
+import { Promise } from "es6-promise";
+
+/**
+ * Convenience function for request.
+ */
 export function request(
       options: IUrlOptions,
       webGetter: IWebGetter,
@@ -32,6 +39,10 @@ export function request(
    });
 }
 
+/**
+ * If defined, return item.
+ * If undefined, return null.
+ */
 export function getOptionalValue(item: any): any
 {
    return (typeof item === "undefined") ? null : item;

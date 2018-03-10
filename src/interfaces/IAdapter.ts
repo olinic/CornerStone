@@ -55,6 +55,13 @@ export interface IVerseParams
    book: Book;
 }
 
+export interface IVerseDetails
+{
+   verse: number;
+   chapter: number;
+   book: string;
+}
+
 export type ITextFormat = "plain" | "para" | "html";
 
 export enum ETextFormat

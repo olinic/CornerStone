@@ -4,11 +4,16 @@ const SmartGetter = require("../../" + generatedJsPath + "cornerstone/SmartGette
 // dependencies
 const LocalCache = require("../../" + generatedJsPath + "cornerstone/Cache.js").default;
 const Logger = require("../../" + generatedJsPath + "cornerstone/Logger.js").default;
-const WebAccessor = require("../../" + generatedJsPath + "cornerstone/WebAccessor.js").default;
+const isNode = require("../../" + generatedJsPath + "cornerstone/Platform.js").isNode;
+const WebAccessor = (isBrowser()) ?
+      require("../../" + generatedJsPath + "cornerstone/BrowserWebGetter.js").default :
+      require("../../" + generatedJsPath + "cornerstone/NodeWebGetter.js").default;
+//const WebAccessor = require("../../" + generatedJsPath + "cornerstone/WebAccessor.js").default;
 const sinon = require("sinon");
 const http = require("http");
 
-const logger = new Logger({ loggingEnabled: false });
+const LoggingLevel = require("../../" + generatedJsPath + "cornerstone/CommonEnums.js").LoggingLevel;
+const logger = new Logger({ loggingEnabled: false, loggingLevel: LoggingLevel.DEBUG });
 const webGetter = new WebAccessor(logger);
 const cache = new LocalCache(logger);
 
@@ -61,7 +66,7 @@ describe("Smart Getter", () => {
    // for some reason, if this is above the other tests, they will fail.
    // sinon.test automatically cleans up.
    // sinon.test requires "function". Do not use the arrow function.
-   it("should call http or XMLHttpRequest only once for a resource.", () => {
+   it("should call http or XMLHttpRequest only once for a resource.", function() {
       if (isBrowser()) {
          sinon.spy(window, "XMLHttpRequest");
       } else {
@@ -76,10 +81,10 @@ describe("Smart Getter", () => {
       }
 
       inNode(() => {
-         expect(http.request.calledOnce).toBeTruthy();
+         expect(http.request.callCount).toEqual(1);
       });
       inBrowser(() => {
-         expect(XMLHttpRequest.calledOnce).toBeTruthy();
+         expect(XMLHttpRequest.callCount).toEqual(1);
       });
    });
 });

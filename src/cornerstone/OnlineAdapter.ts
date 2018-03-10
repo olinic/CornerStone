@@ -62,10 +62,14 @@ export default class OnlineAdapter
       this.howToInterpretVerse = adapterOptions.howToInterpretVerse;
    }
 
-   public getVerse(options: IVerseParams)
+   public getVerse(options: IVerseParams): Promise<IBibleContent>
    {
       return request(
-         this.howToGetVerse(options),
+         this.howToGetVerse({
+            book: this.myBooks[options.book],
+            chapter: options.chapter,
+            verse: options.verse
+         }),
          this.webGetter,
          this.howToInterpretVerse
       );

@@ -12,7 +12,7 @@ export default class AdapterStub extends Adapter
          private id: string = "",
          private timeout: number = 100)
    {
-      super(logger, webGetter, { adapterName: "Stub", termsUrl: "N/A" });
+      super(logger, webGetter, { adapterName: "Stub", termsUrl: "N/A", textFormat: "para" });
    }
 
    public getVerse(options: IVerseParams): Promise<any>

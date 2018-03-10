@@ -8,4 +8,5 @@ let SmartGetterSpec = require("./CornerStone/SmartGetterSpec.js");
 let LoggerSpec = require("./CornerStone/LoggerSpec.js");
 let SettingsSpec = require("./CornerStone/SettingsSpec.js");
 //let TemplateConverterSpec = require("./CornerStone/TemplateConverterSpec.js");
-let Adapters = require("./Adapters/AdapterSpec.js");
+let AdaptersSpec = require("./Adapters/AdapterSpec.js");
+let CornerStoneUtils = require("./CornerStone/CornerStoneUtilsSpec.js");

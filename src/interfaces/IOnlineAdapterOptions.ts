@@ -1,7 +1,7 @@
 import IAdapter, {
    IAdapterOptions,
    IBibleContent,
-   IVerseParams
+   IVerseDetails
 } from "./IAdapter";
 import IUrlOptions from "./IUrlOptions";
 
@@ -22,5 +22,5 @@ export default interface IOnlineAdapterOptions extends IAdapterOptions
    howToInterpretVerse: IPostVerseAction;
 }
 
-export type IVerseAction = (options: IVerseParams) => IUrlOptions;
+export type IVerseAction = (options: IVerseDetails) => IUrlOptions;
 export type IPostVerseAction = (data: string) => IBibleContent;

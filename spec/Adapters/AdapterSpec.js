@@ -4,10 +4,19 @@ const OnlineAdapter = require("../../" + generatedJsPath + "cornerstone/OnlineAd
 const validBookIds = require("../../" + generatedJsPath + "interfaces/ICornerStone.js").validBookIds;
 
 // dependencies
-const Logger = require("../../" + generatedJsPath + "stubs/LoggerStub.js").default;
-const WebGetter = require("../../" + generatedJsPath + "stubs/WebGetterStub.js").default;
+//const Logger = require("../../" + generatedJsPath + "stubs/LoggerStub.js").default;
+const Logger = require("../../" + generatedJsPath + "cornerstone/Logger.js").default;
+const LoggingLevel = require("../../" + generatedJsPath + "cornerstone/CommonEnums.js").LoggingLevel;
+const isNode = require("../../" + generatedJsPath + "cornerstone/Platform.js").isNode;
+const WebGetter = (isBrowser()) ?
+      require("../../" + generatedJsPath + "cornerstone/BrowserWebGetter.js").default :
+      require("../../" + generatedJsPath + "cornerstone/NodeWebGetter.js").default;
 
-const logger = new Logger();
+const Book = require("../../" + generatedJsPath + "cornerstone/CommonEnums.js").Book;
+
+const logger = new Logger({
+      loggingEnabled: false,
+      loggingLevel: LoggingLevel.DEBUG});
 const webGetter = new WebGetter(logger);
 
 let adapters = [];
@@ -149,11 +158,16 @@ describe("Adapters", () => {
             expect(0 <= format && format <= 3).toBeTruthy();
          });
 
-         it("should get a verse", () => {
-            adapter.getVerse(18, 3, "John").then((data) => {
-               expect(data.verses[0].text).toEqual("http://getbible.net/json?passage=John3:16");
+         it("should get a verse", (done) => {
+            adapter.getVerse({ book: Book.JOHN, chapter: 3, verse: 18 }).then((data) => {
+               let text = "He that believeth on him is not condemned: but he that " +
+                  "believeth not is condemned already, because he hath not believed " +
+                  "in the name of the only begotten Son of God.";
+               expect(data.verses[0].text.trim()).toEqual(text);
+               done();
             }).catch((err) => {
                fail(err);
+               done();
             });
          });
 

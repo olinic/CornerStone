@@ -80,28 +80,40 @@ export const GetBibleNetAdapter: IOnlineAdapterOptions = {
       "Rev"
    ],
    howToGetVerse: (options) => {
+      const url = "http://getbible.net/json?passage=" +
+              options.book +
+              options.chapter + ":" +
+              options.verse
       return {
-         method: "GET",
-         url: "http://getbible.net/json?passage=John3:16"
+         method: "JSONP",
+         url
       };
    },
    howToInterpretVerse: (data) => {
-      const obj = JSON.parse(data.slice(1, -2));
-      let output = {
-         verses: [
-            {
-               verseNumber: 16,
-               text: obj.book[0].chapter["16"].verse
-               .replace("\n", "")
-               .replace("\r", "")
-            }
-         ],
-         bookName: obj.book[0].book_name,
-         ltr: true
+      const json = data;
+      try {
+         const obj = JSON.parse(json);
+         const verseNum = Object.keys(obj.book[0].chapter)[0];
+         let output = {
+            verses: [
+               {
+                  verseNumber: parseInt(verseNum),
+                  text: obj.book[0].chapter[verseNum].verse
+               }
+            ],
+            bookName: obj.book[0].book_name,
+            ltr: true
+         }
+         return output;
+      } catch (err) {
+         if (err instanceof SyntaxError) {
+            throw Error("Unable to parse data from getbible.net. Data: " + json + ". Error: " + err);
+         }
+         else {
+            throw Error("Error: " + err);
+         }
       }
-      return output;
    }
-
 };
 
 /**
