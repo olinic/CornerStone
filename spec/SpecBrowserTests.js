@@ -9,4 +9,5 @@ let LoggerSpec = require("./CornerStone/LoggerSpec.js");
 let SettingsSpec = require("./CornerStone/SettingsSpec.js");
 //let TemplateConverterSpec = require("./CornerStone/TemplateConverterSpec.js");
 let AdaptersSpec = require("./Adapters/AdapterSpec.js");
-let CornerStoneUtils = require("./CornerStone/CornerStoneUtilsSpec.js");
+let CornerStoneUtilsSpec = require("./CornerStone/CornerStoneUtilsSpec.js");
+let ValidatorSpec = require("./CornerStone/ValidatorSpec.js");
