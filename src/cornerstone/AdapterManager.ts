@@ -22,6 +22,9 @@ export default class AdapterManager implements IAdapterManager
 
    public getVerse(options: IVerseParams): Promise<any>
    {
+      this.logger.debug("Verse options are Book Num:", options.book,
+            "Chapter:", options.chapter,
+            "Verse:", options.verse);
       return this.currAdapter.getVerse(options);
    }
 

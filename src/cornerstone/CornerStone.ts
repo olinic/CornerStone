@@ -5,9 +5,8 @@ import { Promise } from "es6-promise";
 import IAdapterManager from "../interfaces/IAdapterManager";
 import { IBibleContent } from "../interfaces/IAdapter";
 import ICornerStone, {
-   IStandardContent,
-   ISimpleVerse,
    IVerseOptions,
+   IVerse,
    OutputFormatType,
    validBookIds
 } from "../interfaces/ICornerStone";
@@ -37,11 +36,11 @@ export default class CornerStone implements ICornerStone
       this.version = "kjv";
    }
 
-   public getVerse(options: IVerseOptions): Promise<any>
+   public getVerse(options: IVerseOptions): Promise<IVerse>
    {
       return new Promise((resolve, reject) => {
          this.adapterManager.getVerse({
-            book: this.convertToBook(options.bookId),
+            book: this.convertToBook(options.book),
             chapter: options.chapter,
             verse: options.verse
          }).then((data) => {
@@ -54,15 +53,24 @@ export default class CornerStone implements ICornerStone
 
    private convertToBook(bookId: string): Book
    {
-      let bookIndex;
-      let bookFound = false;
-      for (bookIndex = 0; bookIndex < validBookIds.length && !bookFound; bookIndex++) {
-         bookFound = (validBookIds[bookIndex].indexOf(bookId) !== -1);
+      let validBooks = this.getValidBooks();
+      let bookIndex = 0;
+      while (bookIndex < validBooks.length && (validBooks[bookIndex].indexOf(bookId) === -1)) {
+         bookIndex++;
+      }
+      // Never found the book.
+      if (bookIndex === validBooks.length) {
+         bookIndex = -1;
       }
       return bookIndex;
    }
 
-   private convertToVerse(options: IVerseOptions, content: IBibleContent): IStandardContent | ISimpleVerse
+   public getValidBooks(): Array<String[]>
+   {
+      return validBookIds;
+   }
+
+   private convertToVerse(options: IVerseOptions, content: IBibleContent): IVerse
    {
       let output: any;
       switch(this.outputType)
@@ -72,7 +80,7 @@ export default class CornerStone implements ICornerStone
             output = {
                language: this.language,
                version: this.version,
-               bookId: options.bookId,
+               bookId: options.book,
                bookName: content.bookName,
                chapter: options.chapter,
                ltr: true,

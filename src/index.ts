@@ -30,7 +30,7 @@ export function New({
    verseFormat = "raw"
 }: ICornerStoneSettings = {})
 {
-   const logger = new Logger({loggingEnabled: false, loggingLevel: LoggingLevel.DEBUG});
+   const logger = new Logger({loggingEnabled: true, loggingLevel: LoggingLevel.DEBUG});
    const cache = new Cache(logger);
 
    // Set the web getter based on the platform.
@@ -51,7 +51,7 @@ export function New({
    const smartGetter = new SmartGetter(logger, cache, webGetter);
 
    // Compile the adapters.
-   let adapters: IAdapter[];
+   let adapters: IAdapter[] = [];
    for (let onlineAdapterOptions of onlineAdapters) {
       adapters.push(new OnlineAdapter(logger, smartGetter, onlineAdapterOptions));
    }

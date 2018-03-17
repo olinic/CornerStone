@@ -23,7 +23,7 @@ export default interface ICornerStone
     *    // something went wrong
     * });
     */
-   getVerse(options: IVerseOptions): Promise<IStandardContent | ISimpleVerse>;
+   getVerse(options: IVerseOptions): Promise<IVerse>;
 }
 
 export interface ICornerStoneSettings
@@ -43,7 +43,7 @@ export interface ICornerStoneSettings
     */
    outputFormat?: OutputFormatType;
    /**
-    * Define the newline character for verses.
+    * Define the newline character(s) for verses.
     * Note: Only applicable if the verse format is not plain text.
     */
    newlineCharacter?: string;
@@ -63,14 +63,22 @@ interface IAdapterInfo
    key: string;
 }
 
+//--------------------------------------------------------
+// Verse Options
+//--------------------------------------------------------
 export interface IVerseOptions
 {
    verse: number;
    chapter: number;
-   bookId: BookId;
+   book: BookId;
    // version?: string;
    // language?: string;
 }
+
+//--------------------------------------------------------
+// Verse Return Types
+//--------------------------------------------------------
+export type IVerse = IStandardVerse | ISimpleVerse;
 
 /**
  * Standard output
@@ -81,8 +89,6 @@ export interface IStandardVerse
    verseNumber: number;
 }
 
-export type IStandardVerses = IStandardVerse[];
-
 export interface IStandardContent
 {
    language: string;
@@ -91,7 +97,7 @@ export interface IStandardContent
    bookName: string;
    chapter: number;
    ltr: boolean;
-   verses: IStandardVerses;
+   verses: IStandardVerse[];
 }
 
 /**
