@@ -25,7 +25,7 @@ export default class Validator
       return this.errorMessage;
    }
 
-   public bool(value: any): this
+   public boolean(value: any): this
    {
       if (value !== true &&
           value !== false) {
