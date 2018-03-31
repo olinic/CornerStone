@@ -1,18 +1,24 @@
+import IValidator, {
+   INumValOptions,
+   IShortValOptions
+} from "../interfaces/IValidator";
 /**
  * Validator for "untrusted" input.
  */
 
-export default class Validator
+export default class Validator implements IValidator
 {
    private valid: boolean;
    private errorMessage: string;
    private delimiter: string;
+   private optionalFlag: boolean;
 
    public constructor()
    {
       this.valid = true;
       this.errorMessage = "";
       this.delimiter = "\n";
+      this.optionalFlag = false;
    }
 
    public isValid(): boolean
@@ -25,69 +31,107 @@ export default class Validator
       return this.errorMessage;
    }
 
-   public boolean(value: any): this
+   public boolean(options: IShortValOptions): this
    {
-      if (value !== true &&
-          value !== false) {
-         this.valid = false;
-         this.appendError(value, " is not a boolean.");
-      }
+      return this.validate(options, () => {
+         if (options.value !== true &&
+             options.value !== false) {
+            this.setInvalid(options, " is not a boolean.");
+         }
+         return this;
+      })
+   }
+
+   public number(options: INumValOptions): this
+   {
+      return this.validate(options, () => {
+         let error = "";
+         if (isNaN(options.value) ||
+             typeof options.value !== "number") {
+            error = " is not a number.";
+         } else if (!isFinite(options.value)) {
+            error = " is not a finite number.";
+         } else if (typeof options.min !== "undefined" && options.value < options.min) {
+            error = " is less than minimum value " + options.min + ".";
+         } else if (typeof options.max !== "undefined" && options.value > options.max) {
+            error = " is greater than maximum value " + options.max + ".";
+         }
+         if (error !== "") {
+            this.setInvalid(options, error);
+         }
+         return this;
+      });
+   }
+
+   public string(options: IShortValOptions): this
+   {
+      return this.validate(options, () => {
+         if (typeof options.value !== "string") {
+            this.setInvalid(options, " is not a string.");
+         }
+         return this;
+      });
+   }
+
+   public object(options: IShortValOptions): this
+   {
+      return this.validate(options, () => {
+         if (typeof options.value !== "object") {
+            this.setInvalid(options, " is not an object.");
+         }
+         return this;
+      });
+   }
+
+   public any(options: IShortValOptions): this
+   {
+      return this.validate(options, () => {
+         return this;
+      });
+   }
+
+   public optional(): this
+   {
+      this.optionalFlag = true;
       return this;
    }
 
-   public number(value: any, min?: number, max?: number): this
+   private validate(options: IShortValOptions, check: ()=>this): this
    {
-      let error = "";
-      if (value === true ||
-          value === false ||
-          isNaN(value) ||
-          typeof value !== "number") {
-         this.valid = false;
-         error = " is not a number.";
-      } else if (!isFinite(value)) {
-         this.valid = false;
-         error = " is not a finite number.";
-      } else if (typeof min !== "undefined" && value < min) {
-         this.valid = false;
-         error = " is less than minimum value " + min + ".";
-      } else if (typeof max !== "undefined" && value > max) {
-         this.valid = false;
-         error = " is greater than maximum value " + max + ".";
+      if (this.optionalFlag && !this.defined(options.value)) {
+         return this;
+      } else if (!this.defined(options.value)) {
+         // should have been defined
+         let error = "";
+         if (typeof options.value === "undefined") {
+            error = " should not be undefined.";
+         } else if (options.value === null) {
+            error = " should not be null.";
+         }
+         if (error !== "") {
+            this.setInvalid(options, error);
+         }
+         return this;
+      } else {
+         // perform check
+         return check();
       }
-      if (error !== "") {
-         this.appendError(value, error);
-      }
-
-      return this;
    }
 
-   public string(value: any): this
+   private defined(value: any): boolean
    {
-      if (typeof value !== "string") {
-         this.valid = false;
-         this.appendError(value, " is not a string.");
-      }
-      return this;
+      return (value !== null && typeof value !== "undefined");
    }
 
-   public any(value: any, varName: string): this
+   private setInvalid(options: IShortValOptions, msg: string): void
    {
-      let error = "";
-      if (typeof value === "undefined") {
-         this.valid = false;
-         error = " " + varName + " should not be undefined.";
-      } else if (value === null) {
-         this.valid = false;
-         error = " " + varName + " should not be null.";
-      }
-      if (error !== "") {
-         this.appendError(value, error);
-      }
-      return this;
+      this.valid = false;
+      this.appendError(options, msg);
    }
 
-   private appendError(value: any, msg: string): void
+   private appendError(options: IShortValOptions, msg: string): void
    {
-      this.errorMessage += "Value: " + value + msg + this.delimiter;
+      this.errorMessage += (this.defined(options.name) ? "Variable " + options.name : "") +
+                           "Value: " + options.value + msg + this.delimiter;
    }
 }
