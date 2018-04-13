@@ -1,4 +1,8 @@
-import IAdapter, { IVerseParams } from "../interfaces/IAdapter";
+import IAdapter, {
+   IBibleContent,
+   IChapterParams,
+   IVerseParams
+} from "../interfaces/IAdapter";
 import IAdapterManager from "../interfaces/IAdapterManager";
 import ILogger from "../interfaces/ILogger";
 
@@ -20,17 +24,20 @@ export default class AdapterManager implements IAdapterManager
       this.setAdapter();
    }
 
-   public getVerse(options: IVerseParams): Promise<any>
+   public getVerse(options: IVerseParams): Promise<IBibleContent>
    {
-      this.logger.debug("Verse options are Book Num:", options.book,
-            "Chapter:", options.chapter,
-            "Verse:", options.verse);
+      this.logger.debug(options);
       return this.currAdapter.getVerse(options);
+   }
+
+   public getChapter(options: IChapterParams): Promise<IBibleContent>
+   {
+      this.logger.debug(options);
+      return this.currAdapter.getChapter(options);
    }
 
    public setVersion(): void
    {
-
    }
 
    private setAdapter()

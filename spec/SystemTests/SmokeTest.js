@@ -12,7 +12,7 @@ function smokeTest(cornerstone)
 {
    describe("CornerStone", function() {
       it("should get a verse", function(done) {
-         cornerstone.getVerse({book: "John", chapter: 3, verse: 16})
+         cornerstone.getVerse({bookId: "John", chapter: 3, verse: 16})
          .then(function(data) {
             expect(data.verses[0].text).toEqual("For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.");
             done();

@@ -171,6 +171,16 @@ describe("Adapters", () => {
             });
          });
 
+         it("should get a chapter", (done) => {
+            adapter.getChapter({ book: Book.PS, chapter: 117 }).then((data) => {
+               expect(data.verses.length).toEqual(2);
+               done();
+            }).catch((err) => {
+               fail(err);
+               done();
+            });
+         });
+
          it("should have correct book names and position", () => {
             expect(adapter.myBooks.length).toEqual(shortBookNames.length);
             for (let bookIndex = 0; bookIndex < adapter.myBooks.length; bookIndex++) {

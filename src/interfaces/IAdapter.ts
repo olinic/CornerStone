@@ -4,8 +4,8 @@ import IUrlOptions from "./IUrlOptions";
 export default interface IAdapter
 {
    getVerse(options: IVerseParams): Promise<any>;
-   /*getChapter(options: IUrlOptions): Promise<any>;
-   getNextChapter(): object;
+   getChapter(options: IChapterParams): Promise<any>;
+   /*getNextChapter(): object;
    getPrevChapter(): object;
    getCatalog(): object;
 
@@ -48,16 +48,24 @@ export interface IAdapterOptions
    textFormat: ITextFormat;
 }
 
-export interface IVerseParams
+export interface IVerseParams extends IChapterParams
 {
    verse: number;
+}
+
+export interface IVerseDetails extends IChapterDetails
+{
+   verse: number;
+}
+
+export interface IChapterParams
+{
    chapter: number;
    book: Book;
 }
 
-export interface IVerseDetails
+export interface IChapterDetails
 {
-   verse: number;
    chapter: number;
    book: string;
 }

@@ -2,6 +2,10 @@
 import { IVerseParams } from "../interfaces/IAdapter";
 import IOnlineAdapterOptions from "../interfaces/IOnlineAdapterOptions";
 
+// Custom Variables
+const method = "JSONP";
+const ltr = true;
+
 /**
  * 1. Update Adapter settings appropriate to the adpater.
  */
@@ -83,39 +87,72 @@ export const GetBibleNetAdapter: IOnlineAdapterOptions = {
       const url = "http://getbible.net/json?passage=" +
               options.book +
               options.chapter + ":" +
-              options.verse
+              options.verse;
       return {
-         method: "JSONP",
+         method, // Use method defined earlier
          url
       };
    },
    howToInterpretVerse: (data) => {
       const json = data;
-      try {
-         const obj = JSON.parse(json);
+      return handleData(json, (obj) => {
          const verseNum = Object.keys(obj.book[0].chapter)[0];
-         let output = {
+         const output = {
             verses: [
                {
-                  verseNumber: parseInt(verseNum),
+                  verseNumber: parseInt(verseNum, 10),
                   text: obj.book[0].chapter[verseNum].verse
                }
             ],
             bookName: obj.book[0].book_name,
-            ltr: true
-         }
+            ltr
+         };
          return output;
-      } catch (err) {
-         if (err instanceof SyntaxError) {
-            throw Error("Unable to parse data from getbible.net. Data: " + json + ". Error: " + err);
+      });
+   },
+   howToGetChapter: (options) => {
+      const url = "http://getbible.net/json?passage=" +
+              options.book +
+              options.chapter;
+      return {
+         method,
+         url
+      };
+   },
+   howToInterpretChapter: (data) => {
+      const json = data;
+      return handleData(json, (obj) => {
+         let verses = [];
+         for (let key of Object.keys(obj.chapter)) {
+            verses.push(obj.chapter[key].verse);
          }
-         else {
-            throw Error("Error: " + err);
-         }
-      }
-   }
+         const output = {
+            verses,
+            bookName: obj.book_name,
+            ltr
+         };
+         return output;
+      });
+   },
 };
 
+function handleData(json, how: (obj: any) => any): any
+{
+   try {
+      return how(JSON.parse(json));
+   } catch (err) {
+      handleError(err, json);
+   }
+}
+function handleError(err: Error, json: string): void
+{
+   if (err instanceof SyntaxError) {
+      throw Error("Unable to parse data from getbible.net. Data: " + json + ". Error: " + err);
+   }
+   else {
+      throw Error("Error: " + err);
+   }
+}
 /**
  * When done with creating the adapter, add it to the AdapterList.ts and
  * remove all instruction comments (like this one :)

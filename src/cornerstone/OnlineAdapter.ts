@@ -2,9 +2,12 @@
 import Adapter from "./Adapter";
 import IAdapter, {
    IBibleContent,
+   IChapterParams,
    IVerseParams
 } from "../interfaces/IAdapter";
 import IOnlineAdapterOptions, {
+   IChapterAction,
+   IPostChapterAction,
    IPostVerseAction,
    IVerseAction
 } from "../interfaces/IOnlineAdapterOptions";
@@ -40,6 +43,16 @@ export default class OnlineAdapter
     */
    private howToInterpretVerse: IPostVerseAction;
 
+   /**
+    * Get the URL for the chapter.
+    */
+   private howToGetChapter: IChapterAction;
+
+   /**
+    * Chapter post-processing.
+    */
+   private howToInterpretChapter: IPostChapterAction;
+
    constructor(
          private logger: ILogger,
          private webGetter: IWebGetter,
@@ -60,6 +73,8 @@ export default class OnlineAdapter
       this.myBooks = adapterOptions.books;
       this.howToGetVerse = adapterOptions.howToGetVerse;
       this.howToInterpretVerse = adapterOptions.howToInterpretVerse;
+      this.howToGetChapter = adapterOptions.howToGetChapter;
+      this.howToInterpretChapter = adapterOptions.howToInterpretChapter;
    }
 
    public getVerse(options: IVerseParams): Promise<IBibleContent>
@@ -72,6 +87,18 @@ export default class OnlineAdapter
          }),
          this.webGetter,
          this.howToInterpretVerse
+      );
+   }
+
+   public getChapter(options: IChapterParams): Promise<IBibleContent>
+   {
+      return request(
+         this.howToGetChapter({
+            book: this.myBooks[options.book],
+            chapter: options.chapter
+         }),
+         this.webGetter,
+         this.howToInterpretChapter
       );
    }
 }
