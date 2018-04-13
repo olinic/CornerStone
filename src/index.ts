@@ -13,6 +13,7 @@ import NodeWebGetter from "./cornerstone/NodeWebGetter";
 import { isBrowser, isNode } from "./cornerstone/Platform";
 import Settings from "./cornerstone/Settings";
 import SmartGetter from "./cornerstone/SmartGetter";
+import Validator from "./cornerstone/Validator";
 
 // Interfaces
 import IAdapter from "./interfaces/IAdapter";
@@ -47,12 +48,17 @@ export function New({
                                    "Expected to run in Node or Browser.");
    }
 
+   // Create a Validator
+   // If noValidation is set, use an empty validator. Useful for TypeScript
+   // which already does checking at compile time.
+   const validator = new Validator();
+
    // Create smart caching.
    const smartGetter = new SmartGetter(logger, cache, webGetter);
 
    // Compile the adapters.
-   let adapters: IAdapter[] = [];
-   for (let onlineAdapterOptions of onlineAdapters) {
+   const adapters: IAdapter[] = [];
+   for (const onlineAdapterOptions of onlineAdapters) {
       adapters.push(new OnlineAdapter(logger, smartGetter, onlineAdapterOptions));
    }
 
@@ -61,6 +67,7 @@ export function New({
    return new CornerStoneBible(
       logger,
       adapterManager,
+      validator,
       outputFormat
    );
 }

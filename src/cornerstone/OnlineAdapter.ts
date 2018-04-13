@@ -1,20 +1,20 @@
 // Internal dependencies.
-import Adapter from "./Adapter";
 import IAdapter, {
    IBibleContent,
    IChapterParams,
    IVerseParams
 } from "../interfaces/IAdapter";
+import ICache from "../interfaces/ICache";
+import ILogger from "../interfaces/ILogger";
 import IOnlineAdapterOptions, {
    IChapterAction,
    IPostChapterAction,
    IPostVerseAction,
    IVerseAction
 } from "../interfaces/IOnlineAdapterOptions";
-import ICache from "../interfaces/ICache";
-import ILogger from "../interfaces/ILogger";
 import IUrlOptions from "../interfaces/IUrlOptions";
 import IWebGetter from "../interfaces/IWebGetter";
+import Adapter from "./Adapter";
 import { request } from "./AdapterUtils";
 
 // External dependencies.

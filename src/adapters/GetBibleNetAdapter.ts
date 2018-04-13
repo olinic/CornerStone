@@ -122,8 +122,8 @@ export const GetBibleNetAdapter: IOnlineAdapterOptions = {
    howToInterpretChapter: (data) => {
       const json = data;
       return handleData(json, (obj) => {
-         let verses = [];
-         for (let key of Object.keys(obj.chapter)) {
+         const verses = [];
+         for (const key of Object.keys(obj.chapter)) {
             verses.push(obj.chapter[key].verse);
          }
          const output = {

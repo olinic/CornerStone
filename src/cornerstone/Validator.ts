@@ -39,7 +39,7 @@ export default class Validator implements IValidator
             this.setInvalid(options, " is not a boolean.");
          }
          return this;
-      })
+      });
    }
 
    public number(options: INumValOptions): this
@@ -96,7 +96,7 @@ export default class Validator implements IValidator
       return this;
    }
 
-   private validate(options: IShortValOptions, check: ()=>this): this
+   private validate(options: IShortValOptions, check: () => this): this
    {
       if (this.optionalFlag && !this.defined(options.value)) {
          return this;
@@ -131,7 +131,7 @@ export default class Validator implements IValidator
 
    private appendError(options: IShortValOptions, msg: string): void
    {
-      this.errorMessage += (this.defined(options.name) ? "Variable " + options.name : "") +
-                           "Value: " + options.value + msg + this.delimiter;
+      this.errorMessage += (this.defined(options.name) ? options.name + " with " : "") +
+                           "value " + options.value + " : " + msg + this.delimiter;
    }
 }

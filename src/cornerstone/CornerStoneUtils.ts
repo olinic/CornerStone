@@ -3,7 +3,7 @@
  */
 export function multiReplace(haystack: string, needles: string[], replaceWith: string): string
 {
-   for (let needle of needles) {
+   for (const needle of needles) {
       haystack = haystack.replace(needle, replaceWith);
    }
    return haystack;

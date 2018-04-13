@@ -20,7 +20,6 @@ const cache = new LocalCache(logger);
 const smartGetter = new SmartGetter(logger, cache, webGetter);
 
 describe("Smart Getter", () => {
-
    it("should return the correct values for multiple calls", (done) => {
       let promises = [];
       let response = "hello";
