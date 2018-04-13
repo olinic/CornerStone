@@ -174,14 +174,16 @@ describe("Validator", () => {
       });
 
       it("should return invalid for multiple invalid values", () => {
+         let invalidVarName = "enable";
          expect(validator
-            .number({name: "enable", value: false}) // invalid
+            .number({name: invalidVarName, value: false}) // invalid
             .string({value: "hello"})
             .boolean({value: 5}) // invalid
             .any({value: "world"})
             .isValid()).toBe(false);
          expect(validator.getErrorMessage()).toContain("is not a number");
          expect(validator.getErrorMessage()).toContain("is not a boolean");
+         expect(validator.getErrorMessage()).toContain(invalidVarName); // invalid variable name
       });
    });
 

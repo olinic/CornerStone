@@ -2,15 +2,16 @@
 import { Promise } from "es6-promise";
 
 // Internal dependencies.
-import IAdapterManager from "../interfaces/IAdapterManager";
 import { IBibleContent } from "../interfaces/IAdapter";
+import IAdapterManager from "../interfaces/IAdapterManager";
 import ICornerStone, {
-   IVerseOptions,
    IVerse,
+   IVerseOptions,
    OutputFormatType,
    validBookIds
 } from "../interfaces/ICornerStone";
 import ILogger from "../interfaces/ILogger";
+import IValidator from "../interfaces/IValidator";
 import { Book } from "./CommonEnums";
 
 /**
@@ -30,6 +31,7 @@ export default class CornerStone implements ICornerStone
    public constructor(
       private logger: ILogger,
       private adapterManager: IAdapterManager,
+      private validator: IValidator,
       private outputType: OutputFormatType)
    {
       this.language = "eng";
@@ -38,22 +40,39 @@ export default class CornerStone implements ICornerStone
 
    public getVerse(options: IVerseOptions): Promise<IVerse>
    {
-      return new Promise((resolve, reject) => {
-         this.adapterManager.getVerse({
-            book: this.convertToBook(options.book),
-            chapter: options.chapter,
-            verse: options.verse
-         }).then((data) => {
-            resolve(this.convertToVerse(options, data));
-         }).catch((err) => {
-            reject(err);
+      if (this.validator
+            .string({name: "object.book", value: options.book})
+            .number({name: "object.chapter", value: options.chapter})
+            .number({name: "object.verse", value: options.verse})
+            .isValid()) {
+         return new Promise((resolve, reject) => {
+            this.adapterManager.getVerse({
+               book: this.convertToBook(options.book),
+               chapter: options.chapter,
+               verse: options.verse
+            }).then((data) => {
+               resolve(this.convertToVerse(options, data));
+            }).catch((err) => {
+               reject(err);
+            });
          });
-      });
+      } else {
+         return new Promise((resolve, reject) => {
+            const error = this.validator.getErrorMessage();
+            this.logger.error(error);
+            reject(error);
+         });
+      }
+   }
+
+   public getValidBooks(): String[][]
+   {
+      return validBookIds;
    }
 
    private convertToBook(bookId: string): Book
    {
-      let validBooks = this.getValidBooks();
+      const validBooks = this.getValidBooks();
       let bookIndex = 0;
       while (bookIndex < validBooks.length && (validBooks[bookIndex].indexOf(bookId) === -1)) {
          bookIndex++;
@@ -65,15 +84,10 @@ export default class CornerStone implements ICornerStone
       return bookIndex;
    }
 
-   public getValidBooks(): Array<String[]>
-   {
-      return validBookIds;
-   }
-
    private convertToVerse(options: IVerseOptions, content: IBibleContent): IVerse
    {
       let output: any;
-      switch(this.outputType)
+      switch (this.outputType)
       {
          case "standard":
          {
@@ -85,7 +99,7 @@ export default class CornerStone implements ICornerStone
                chapter: options.chapter,
                ltr: true,
                verses: content.verses
-            }
+            };
             break;
          }
          case "simple":
