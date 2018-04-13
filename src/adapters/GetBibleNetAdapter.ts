@@ -124,7 +124,8 @@ export const GetBibleNetAdapter: IOnlineAdapterOptions = {
       return handleData(json, (obj) => {
          const verses = [];
          for (const key of Object.keys(obj.chapter)) {
-            verses.push(obj.chapter[key].verse);
+            verses.push({ verseNumber: parseInt(key),
+                          text: obj.chapter[key].verse });
          }
          const output = {
             verses,

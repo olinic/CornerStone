@@ -160,10 +160,8 @@ describe("Adapters", () => {
 
          it("should get a verse", (done) => {
             adapter.getVerse({ book: Book.JOHN, chapter: 3, verse: 18 }).then((data) => {
-               let text = "He that believeth on him is not condemned: but he that " +
-                  "believeth not is condemned already, because he hath not believed " +
-                  "in the name of the only begotten Son of God.";
-               expect(data.verses[0].text.trim()).toEqual(text);
+               let text = "He that believeth on him is not condemned";
+               expect(data.verses[0].text.trim()).toContain(text);
                done();
             }).catch((err) => {
                fail(err);
@@ -174,6 +172,11 @@ describe("Adapters", () => {
          it("should get a chapter", (done) => {
             adapter.getChapter({ book: Book.PS, chapter: 117 }).then((data) => {
                expect(data.verses.length).toEqual(2);
+               expect(data.verses[0].text).toContain("O praise the LORD");
+               for (let key in data.verses) {
+                  // Check that all verses are properly numbered.
+                  expect(data.verses[key].verseNumber).toEqual(parseInt(key)+1);
+               }
                done();
             }).catch((err) => {
                fail(err);
