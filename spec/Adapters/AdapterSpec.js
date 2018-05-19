@@ -1,7 +1,7 @@
 // src file
 const onlineAdapters = require("../../" + generatedJsPath + "adapters/AdapterList.js").onlineAdapters;
 const OnlineAdapter = require("../../" + generatedJsPath + "cornerstone/OnlineAdapter").default;
-const validBookIds = require("../../" + generatedJsPath + "interfaces/ICornerStone.js").validBookIds;
+const validBookIds = require("../../" + generatedJsPath + "interfaces/ICornerStone.js").bookIds;
 
 // dependencies
 //const Logger = require("../../" + generatedJsPath + "stubs/LoggerStub.js").default;
@@ -22,6 +22,20 @@ const webGetter = new WebGetter(logger);
 let adapters = [];
 for (let i = 0; i < onlineAdapters.length; i++) {
    adapters.push(new OnlineAdapter(logger, webGetter, onlineAdapters[i]));
+}
+
+function checkBibleContent(data)
+{
+   expect(typeof data.bookName).toBe("string");
+   expect(data.bookName.length).toBeGreaterThan(0);
+   expect(typeof data.ltr).toBe("boolean");
+   expect(data.ltr).not.toBe(undefined);
+   for (let verse of data.verses) {
+      expect(typeof verse.verseNumber).toBe("number");
+      expect(verse.verseNumber).toBeGreaterThan(0);
+      expect(typeof verse.text).toBe("string");
+      expect(verse.text.length).toBeGreaterThan(0);
+   }
 }
 
 /**
@@ -133,8 +147,8 @@ describe("Adapters", () => {
          // if false, check shortBookNames
          expect(validBookIds.length).toEqual(shortBookNames.length);
          for (let bookIndex = 0; bookIndex < validBookIds.length; bookIndex++) {
-            if (!checkCharacters(shortBookNames[bookIndex], validBookIds[bookIndex][0])) {
-               fail(shortBookNames[bookIndex] + " does not match " + validBookIds[bookIndex][0]);
+            if (!checkCharacters(shortBookNames[bookIndex], validBookIds[bookIndex])) {
+               fail(shortBookNames[bookIndex] + " does not match " + validBookIds[bookIndex]);
             }
          }
       });
@@ -160,6 +174,7 @@ describe("Adapters", () => {
 
          it("should get a verse", (done) => {
             adapter.getVerse({ book: Book.JOHN, chapter: 3, verse: 18 }).then((data) => {
+               checkBibleContent(data);
                let text = "He that believeth on him is not condemned";
                expect(data.verses[0].text.trim()).toContain(text);
                done();
@@ -171,6 +186,7 @@ describe("Adapters", () => {
 
          it("should get a chapter", (done) => {
             adapter.getChapter({ book: Book.PS, chapter: 117 }).then((data) => {
+               checkBibleContent(data);
                expect(data.verses.length).toEqual(2);
                expect(data.verses[0].text).toContain("O praise the LORD");
                for (let key in data.verses) {
