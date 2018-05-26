@@ -96,6 +96,14 @@ export default class Validator implements IValidator
       return this;
    }
 
+   public reset(): this
+   {
+      this.optionalFlag = false;
+      this.valid = true;
+      this.errorMessage = "";
+      return this;
+   }
+
    private validate(options: IShortValOptions, check: () => this): this
    {
       if (this.optionalFlag && !this.defined(options.value)) {

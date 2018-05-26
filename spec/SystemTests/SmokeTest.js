@@ -34,11 +34,20 @@ function smokeTest(cornerstone)
             done();
          });
       });
-/*
+
       it("should get a list of languages", function(done) {
-         done();
+         cornerstone.getLanguages()
+         .then(function(data) {
+            expect(data.length).toBeGreaterThan(0);
+            done();
+         })
+         .catch(function(err) {
+            fail(err);
+            done();
+         });
       });
 
+/*
       it("should get a list of versions", function(done) {
          done();
       });*/

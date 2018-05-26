@@ -1,5 +1,4 @@
 // Internal dependencies.
-import { IVerseParams } from "../interfaces/IAdapter";
 import IOnlineAdapterOptions from "../interfaces/IOnlineAdapterOptions";
 
 // Custom Variables

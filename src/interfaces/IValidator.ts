@@ -9,6 +9,7 @@ export default interface IValidator
    object(obj: IShortValOptions): this;
    any(obj: IShortValOptions): this;
    optional(): this;
+   reset(): this;
 }
 
 export interface IShortValOptions

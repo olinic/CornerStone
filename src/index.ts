@@ -26,12 +26,14 @@ import { ICornerStoneSettings } from "./interfaces/ICornerStone";
  */
 export function New({
    cacheSize = 13,
+   logging= false,
+   loggingLevel = "WARN",
    outputFormat = "standard",
    newlineCharacter = "\n",
-   verseFormat = "raw"
+   verseFormat = "raw",
 }: ICornerStoneSettings = {})
 {
-   const logger = new Logger({loggingEnabled: true, loggingLevel: LoggingLevel.DEBUG});
+   const logger = new Logger({loggingEnabled: logging, loggingLevel: getLoggingLevel(loggingLevel)});
    const cache = new Cache(logger);
 
    // Set the web getter based on the platform.
@@ -70,4 +72,33 @@ export function New({
       validator,
       outputFormat
    );
+}
+
+function getLoggingLevel(level: string): LoggingLevel
+{
+   let loggingLevel: LoggingLevel;
+   level = level.toUpperCase();
+   switch (level) {
+      case "ERROR": {
+         loggingLevel = LoggingLevel.ERROR;
+         break;
+      }
+      case "WARN": {
+         loggingLevel = LoggingLevel.WARN;
+         break;
+      }
+      case "DEBUG": {
+         loggingLevel = LoggingLevel.DEBUG;
+         break;
+      }
+      case "INFO": {
+         loggingLevel = LoggingLevel.INFO;
+         break;
+      }
+      default: {
+         loggingLevel = LoggingLevel.WARN;
+         break;
+      }
+   }
+   return loggingLevel;
 }

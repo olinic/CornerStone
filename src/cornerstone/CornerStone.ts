@@ -8,6 +8,7 @@ import ICornerStone, {
    bookIds,
    IChapter,
    IChapterOptions,
+   ILanguages,
    IVerse,
    IVerseOptions,
    OutputFormatType,
@@ -47,12 +48,12 @@ export default class CornerStone implements ICornerStone
 
    public getChapter(options: IChapterOptions): Promise<IChapter>
    {
-      if (this.validator
-            .reset()
-            .string({name: "object.book", value: options.book})
-            .number({name: "object.chapter", value: options.chapter})
-            .isValid()) {
-         return new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
+         if (this.validator
+               .reset()
+               .string({name: "object.book", value: options.book})
+               .number({name: "object.chapter", value: options.chapter})
+               .isValid()) {
             this.adapterManager.getChapter({
                book: this.convertToBook(options.book),
                chapter: options.chapter
@@ -61,25 +62,23 @@ export default class CornerStone implements ICornerStone
             }).catch((err) => {
                reject(err);
             });
-         });
-      } else {
-         return new Promise((resolve, reject) => {
+         } else {
             const error = this.validator.getErrorMessage();
             this.logger.error(error);
             reject(error);
-         });
-      }
+         }
+      });
    }
 
    public getVerse(options: IVerseOptions): Promise<IVerse>
    {
-      if (this.validator
-            .reset()
-            .string({name: "object.book", value: options.book})
-            .number({name: "object.chapter", value: options.chapter})
-            .number({name: "object.verse", value: options.verse})
-            .isValid()) {
-         return new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
+         if (this.validator
+               .reset()
+               .string({name: "object.book", value: options.book})
+               .number({name: "object.chapter", value: options.chapter})
+               .number({name: "object.verse", value: options.verse})
+               .isValid()) {
             this.adapterManager.getVerse({
                book: this.convertToBook(options.book),
                chapter: options.chapter,
@@ -89,14 +88,19 @@ export default class CornerStone implements ICornerStone
             }).catch((err) => {
                reject(err);
             });
-         });
-      } else {
-         return new Promise((resolve, reject) => {
+         } else {
             const error = this.validator.getErrorMessage();
             this.logger.error(error);
             reject(error);
-         });
-      }
+         }
+      });
+   }
+
+   public getLanguages(): Promise<ILanguages>
+   {
+      return new Promise((resolve, reject) => {
+         resolve([]);
+      });
    }
 
    public setBookIds(newIds: string[]): void
