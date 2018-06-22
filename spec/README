@@ -4,10 +4,10 @@ If you are using Google Chrome for testing, you can enable the following:
    chrome://flags/#allow-insecure-localhost
 to ensure that HTTPS tests pass.
 
-TestServer
-The test server is an express js server used for unit testing CornerStone.
-You can run the server using the following:
-   node testserver.js <seconds>
+ExpressServer/server.js
+The express js server is used for unit testing CornerStone.
+You can run the server using the following (from the project directory):
+   node ./spec/ExpressServer/server.js <seconds>
 To access the server, navigate to http://localhost:<port>/path/
 
 For the server to provide HTTPS, the cert.pem (self-signed) and key.pem are

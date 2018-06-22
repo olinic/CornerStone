@@ -17,8 +17,8 @@ var httpPort = 3000;
 var httpsPort = 3003;
 
 const secureOptions = {
-   key: fs.readFileSync("./spec/key.pem"),
-   cert: fs.readFileSync("./spec/cert.pem")
+   key: fs.readFileSync("./spec/ExpressServer/key.pem"),
+   cert: fs.readFileSync("./spec/ExpressServer/cert.pem")
 };
 
 var server = http.createServer(app);
