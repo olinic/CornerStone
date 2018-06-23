@@ -57,15 +57,26 @@ var buildScriptContents = generatedComment +
 function() {
 var fs = require('fs');
 
-var directory = "./dist/CornerStone-" + version;
-fs.exists(directory, (exists) => {
-   if (!exists) {
-      fs.mkdir(directory, (err) => {
-         if (err) throw err;
-         console.log("Successfully created directory " + directory);
-      });
-   }
-});
+var dist = "./dist";
+var csDist = "./dist/CornerStone-" + version;
+
+createDir(dist);
+setTimeout(() => {createDir(csDist)}, 800);
+
+function createDir(dir)
+{
+   fs.exists(dir, (exists) => {
+      if (!exists) {
+         fs.mkdir(dir, (err) => {
+            if (err) {
+               console.error("Could not create directory " + dir);
+               throw err;
+            }
+            console.log("Successfully created directory " + dir);
+         });
+      }
+   });
+}
 }.toString().slice(13, -2);
 
 // Write to files.
