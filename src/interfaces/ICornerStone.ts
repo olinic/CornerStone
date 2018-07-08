@@ -84,8 +84,8 @@ export interface IChapterOptions
 {
    chapter: number;
    book: string;
-   //version?: string;
-   //language?: string;
+   // version?: string;
+   // language?: string;
 }
 
 export interface IVerseOptions extends IChapterOptions
@@ -96,9 +96,28 @@ export interface IVerseOptions extends IChapterOptions
 // --------------------------------------------------------
 // Return Types
 // --------------------------------------------------------
+export interface ILanguage
+{
+   code: LanguageCode;
+   name: string;
+}
+
+/**
+ * Language codes are based on the IANA Language Subtag Registry. The IETF
+ * specification is BCP 47.
+ */
+export type LanguageCode = string;
+export type ILanguages = ILanguage[];
+
+export interface IVersion
+{
+   lang: LanguageCode;
+   code: string;
+   name: string;
+}
+
 export type IChapter = IStandardContent | ISimpleVerses;
 export type IVerse = IStandardContent | ISimpleVerse;
-export type ILanguages = ILanguage[];
 
 /**
  * Standard output
@@ -118,13 +137,6 @@ export interface IStandardContent
    chapter: number;
    ltr: boolean;
    verses: IStandardVerse[];
-}
-
-export interface ILanguage
-{
-   code: string;
-   nativeName: string;
-   englishName: string;
 }
 
 /**
@@ -177,8 +189,3 @@ export let bookIds = [
       "2Pet", "1John", "2John",
       "3John", "Jude", "Rev"
    ];
-
-/**
- * ISO 639-1 Language Abbreviations.
- */
-export type Language = string;

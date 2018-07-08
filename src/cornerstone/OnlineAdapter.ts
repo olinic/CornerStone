@@ -2,13 +2,16 @@
 import IAdapter, {
    IBibleContent,
    IChapterParams,
+   ILanguages,
    IVerseParams
 } from "../interfaces/IAdapter";
 import ICache from "../interfaces/ICache";
 import ILogger from "../interfaces/ILogger";
 import IOnlineAdapterOptions, {
    IChapterAction,
+   ILanguageAction,
    IPostChapterAction,
+   IPostLanguageAction,
    IPostVerseAction,
    IVerseAction
 } from "../interfaces/IOnlineAdapterOptions";
@@ -33,6 +36,14 @@ export default class OnlineAdapter
     */
    private myBooks: string[];
 
+   /**
+    * Get the URL for the languages.
+    */
+   private howToGetLanguages: ILanguageAction;
+   /**
+    * Language post-processing.
+    */
+   private howToInterpretLanguages: IPostLanguageAction;
    /**
     * Get the URL for the verse.
     */
@@ -71,6 +82,8 @@ export default class OnlineAdapter
       this.onlineAccessor = webGetter;
 
       this.myBooks = adapterOptions.books;
+      this.howToGetLanguages = adapterOptions.howToGetLanguages;
+      this.howToInterpretLanguages = adapterOptions.howToInterpretLanguages;
       this.howToGetVerse = adapterOptions.howToGetVerse;
       this.howToInterpretVerse = adapterOptions.howToInterpretVerse;
       this.howToGetChapter = adapterOptions.howToGetChapter;
@@ -100,5 +113,14 @@ export default class OnlineAdapter
          this.webGetter,
          this.howToInterpretChapter
       );
+   }
+
+   public getLanguages(): Promise<ILanguages>
+   {
+      return request(
+         this.howToGetLanguages(),
+         this.webGetter,
+         this.howToInterpretLanguages
+      )
    }
 }

@@ -26,16 +26,23 @@ export function request(
    return new Promise((
          resolve: (response: string) => void,
          reject: (err: Error) => void) => {
-      webGetter
-         .request(options)
-         .then((response) => {
-            const processedData = postProcessing(response);
-            onSuccess(processedData);
-            resolve(processedData);
-         }).catch((err) => {
-            onError(err);
-            reject(err);
-         });
+      if (typeof options === "undefined" || options === null) {
+         // If options are not defined, postProcessing provides data.
+         const data = postProcessing(null);
+         onSuccess(data);
+         resolve(data);
+      } else {
+         webGetter
+            .request(options)
+            .then((response) => {
+               const processedData = postProcessing(response);
+               onSuccess(processedData);
+               resolve(processedData);
+            }).catch((err) => {
+               onError(err);
+               reject(err);
+            });
+      }
    });
 }
 

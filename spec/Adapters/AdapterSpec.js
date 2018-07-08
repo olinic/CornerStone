@@ -172,6 +172,21 @@ describe("Adapters", () => {
             expect(0 <= format && format <= 3).toBeTruthy();
          });
 
+         it("should get languages", (done) => {
+            adapter.getLanguages().then((data) => {
+               expect(data.length).toBeGreaterThan(0);
+               if (data.length > 0) {
+                  const expected = ["code", "name"];
+                  const actual = Object.keys(data[0]).sort();
+                  expect(actual).toEqual(expected);
+               }
+               done();
+            }).catch((err) => {
+               fail(err);
+               done();
+            });
+         });
+
          it("should get a verse", (done) => {
             adapter.getVerse({ book: Book.JOHN, chapter: 3, verse: 18 }).then((data) => {
                checkBibleContent(data);
