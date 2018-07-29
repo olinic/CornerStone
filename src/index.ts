@@ -11,7 +11,6 @@ import CornerStoneBible from "./cornerstone/CornerStone";
 import Logger from "./cornerstone/Logger";
 import NodeWebGetter from "./cornerstone/NodeWebGetter";
 import { isBrowser, isNode } from "./cornerstone/Platform";
-import Settings from "./cornerstone/Settings";
 import SmartGetter from "./cornerstone/SmartGetter";
 import Validator from "./cornerstone/Validator";
 
