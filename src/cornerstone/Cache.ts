@@ -1,6 +1,6 @@
 // Interfaces
-import ICache from "../interfaces/ICache";
-import ILogger from "../interfaces/ILogger";
+import { ICache } from "../interfaces/ICache";
+import { ILogger } from "../interfaces/ILogger";
 
 // External
 import { Promise } from "es6-promise";
@@ -8,7 +8,7 @@ import { Promise } from "es6-promise";
 /**
  * Provides caching for anything (including promises).
  */
-export default class LocalCache implements ICache
+export class Cache implements ICache
 {
    /**
     * The Cache Object contains all of the values based on the key.
@@ -45,7 +45,7 @@ export default class LocalCache implements ICache
    {
       this.logger.debug("Updating max value to " + max);
       this.maxCacheValue = max;
-      // clean up in the event that the max was reduced.
+      // Clean up in the event that the max was reduced.
       this.cleanUpCache();
    }
 
@@ -67,17 +67,17 @@ export default class LocalCache implements ICache
    public store(key: string | number, value: any, cacheValue: number = 0): void
    {
       if (!this.checkFor(key)) {
-         // add the new key to the list
+         // Add the new key to the list
          this.keys.push(key);
       }
 
       this.logger.info("Storing value for key (" + key + ")");
-      // store the item
+      // Store the item
       this.cacheObject[key] = value;
-      // increase the cache value
+      // Increase the cache value
       this.cacheValue += cacheValue;
       this.keyValues[key] = cacheValue;
-      // clean up if necessary
+      // Clean up if necessary
       this.cleanUpCache();
    }
 
@@ -94,11 +94,11 @@ export default class LocalCache implements ICache
 
          this.logger.debug("Retrieving value for key (" + key + ")");
          const item = this.cacheObject[key];
-         // don't wrap a promise in a promise
+         // Don't wrap a promise in a promise
          if (item instanceof Promise) {
             return item;
          } else {
-            // wrap anything else in a promise
+            // Wrap anything else in a promise
             return new Promise((
                resolve: (response: any) => void,
                reject: (err: Error) => void) => {
@@ -125,7 +125,7 @@ export default class LocalCache implements ICache
     */
    private shift(): void
    {
-      // remove the oldest key
+      // Remove the oldest key
       const oldKey: any = this.keys[0];
       this.remove(oldKey);
    }
@@ -136,9 +136,9 @@ export default class LocalCache implements ICache
    private remove(key): void
    {
       this.removeKey(key);
-      // reduce the cache value
+      // Reduce the cache value
       this.cacheValue -= this.keyValues[key];
-      // deallocate the properties
+      // Deallocate the properties
       this.cacheObject[key] = undefined;
       this.keyValues[key] = undefined;
    }
@@ -169,7 +169,7 @@ export default class LocalCache implements ICache
    private cleanUpCache(): void
    {
       while (this.maxCacheValue >= 0 && this.cacheValue > this.maxCacheValue) {
-         // remove items until cache value is below maxCacheValue
+         // Remove items until cache value is below maxCacheValue
          this.shift();
       }
       while (this.keys.length > this.MAX_CACHE_SIZE) {

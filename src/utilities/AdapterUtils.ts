@@ -1,9 +1,5 @@
-// internal
-import IUrlOptions from "../interfaces/IUrlOptions";
-import IWebGetter from "../interfaces/IWebGetter";
-
-// external
-import { Promise } from "es6-promise";
+import { IUrlOptions } from "../interfaces/IUrlOptions";
+import { IWebGetter } from "../interfaces/IWebGetter";
 
 /**
  * Convenience function for request.
@@ -14,13 +10,13 @@ export function request(
       postProcessing:
          ( data: any ) => any
          =
-         ( data ) => data, // default to return the same data.
+         ( data ) => data, // Default to return the same data.
       onSuccess: ( data: string ) => void
                  =
-                 ( data ) => {}, // do nothing by default
+                 ( data ) => null, // Do nothing by default
       onError:   ( err: Error ) => void
                  =
-                 ( err ) => {}, // do nothing by default
+                 ( err ) => null, // Do nothing by default
       ): Promise<any>
 {
    return new Promise((

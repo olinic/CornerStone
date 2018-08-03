@@ -1,10 +1,10 @@
 import { Book } from "../cornerstone/CommonEnums";
 import { ILanguages } from "./ICornerStone";
-import IUrlOptions from "./IUrlOptions";
+import { IUrlOptions } from "./IUrlOptions";
 
 export { ILanguages };
 
-export default interface IAdapter
+export interface IAdapter
 {
    getVerse(options: IVerseParams): Promise<IBibleContent>;
    getChapter(options: IChapterParams): Promise<IBibleContent>;
@@ -50,7 +50,6 @@ export interface IAdapterOptions
     */
    textFormat: ITextFormat;
 }
-
 
 export interface IVerseParams extends IChapterParams
 {

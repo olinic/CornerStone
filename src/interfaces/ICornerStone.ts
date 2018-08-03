@@ -1,3 +1,15 @@
+import {
+   ISimpleVerse,
+   ISimpleVerses
+} from "./ISimpleOutput";
+import {
+   IStandardContent,
+   IStandardVerse
+} from "./IStandardOutput";
+
+export { ISimpleVerse, ISimpleVerses };
+export { IStandardContent, IStandardVerse };
+
 /**
  * CornerStone interface/API.
  *
@@ -5,7 +17,7 @@
  * asynchronous calls.
  * For more information on promises, go to: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises
  */
-export default interface ICornerStone
+export interface ICornerStone
 {
    /**
     * Retrieve a Bible verse.
@@ -84,8 +96,8 @@ export interface IChapterOptions
 {
    chapter: number;
    book: string;
-   // version?: string;
-   // language?: string;
+   version?: string;
+   language?: ILanguageCode;
 }
 
 export interface IVerseOptions extends IChapterOptions
@@ -98,7 +110,7 @@ export interface IVerseOptions extends IChapterOptions
 // --------------------------------------------------------
 export interface ILanguage
 {
-   code: LanguageCode;
+   code: ILanguageCode;
    name: string;
 }
 
@@ -106,12 +118,12 @@ export interface ILanguage
  * Language codes are based on the IANA Language Subtag Registry. The IETF
  * specification is BCP 47.
  */
-export type LanguageCode = string;
+export type ILanguageCode = string;
 export type ILanguages = ILanguage[];
 
 export interface IVersion
 {
-   lang: LanguageCode;
+   lang: ILanguageCode;
    code: string;
    name: string;
 }
@@ -119,47 +131,19 @@ export interface IVersion
 export type IChapter = IStandardContent | ISimpleVerses;
 export type IVerse = IStandardContent | ISimpleVerse;
 
-/**
- * Standard output
- */
-export interface IStandardVerse
-{
-   text: string;
-   verseNumber: number;
-}
-
-export interface IStandardContent
-{
-   language: string;
-   version: string;
-   bookId: BookId;
-   bookName: string;
-   chapter: number;
-   ltr: boolean;
-   verses: IStandardVerse[];
-}
-
-/**
- * Simple output
- */
-export type ISimpleVerse = string;
-export type ISimpleVerses = string[];
-
 type SuccessCallback = (data: object) => any;
 type ErrorCallback = (error: Error) => any;
-
-type BookId = string;
 
 /**
  * Catalog
  */
-type ICatalogChapter = number[]; // array of number of verses
+type ICatalogChapter = number[]; // Array of number of verses
 interface ICatalogBook
 {
    bookId: string;
-   chapters: ICatalogChapter[]; // array of chapters
+   chapters: ICatalogChapter[]; // Array of chapters
 }
-export type ICatalog = ICatalogBook[]; // array of books
+export type ICatalog = ICatalogBook[]; // Array of books
 
 /**
  * Books of the Bible.

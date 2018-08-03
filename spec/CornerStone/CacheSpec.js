@@ -1,12 +1,12 @@
 // src file
-const LocalCache = require("../../" + generatedJsPath + "cornerstone/Cache.js").default;
+const Cache = require("../../" + generatedJsPath + "cornerstone/Cache.js").Cache;
 
 // dependencies
-const Logger = require("../../" + generatedJsPath + "cornerstone/Logger.js").default;
+const Logger = require("../../" + generatedJsPath + "cornerstone/Logger.js").Logger;
 const logger = new Logger({ loggingEnabled: false });
 
 describe("Cache", () => {
-   let cache = new LocalCache(logger);
+   let cache = new Cache(logger);
 
    beforeEach(() => {
       // clear cache

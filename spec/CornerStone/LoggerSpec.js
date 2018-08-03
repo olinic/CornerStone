@@ -1,5 +1,5 @@
 // src file
-const Logger = require("../../" + generatedJsPath + "cornerstone/Logger.js").default;
+const Logger = require("../../" + generatedJsPath + "cornerstone/Logger.js").Logger;
 const LoggingLevel = require("../../" + generatedJsPath + "cornerstone/CommonEnums.js").LoggingLevel;
 // dependencies
 const sinon = require("sinon");

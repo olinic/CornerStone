@@ -1,12 +1,12 @@
 // Interfaces
-import ILogger from "../interfaces/ILogger";
-import IUrlOptions from "../interfaces/IUrlOptions";
-import IWebGetter from "../interfaces/IWebGetter";
+import { ILogger } from "../interfaces/ILogger";
+import { IUrlOptions } from "../interfaces/IUrlOptions";
+import { IWebGetter } from "../interfaces/IWebGetter";
 
 // External
 import { Promise } from "es6-promise";
 
-export default class BrowserWebGetter implements IWebGetter
+export class BrowserWebGetter implements IWebGetter
 {
    /**
     * Counter that creates unique jsonp callback names.
@@ -35,23 +35,23 @@ export default class BrowserWebGetter implements IWebGetter
       return new Promise((
          resolve: (response: string) => void,
          reject: (err: Error) => void) => {
-         // create our new http request
+         // Create our new http request
          const xhr = new XMLHttpRequest();
 
-         // set it up
+         // Set it up
          xhr.open(method, url);
          xhr.onload = () => {
-            // on success, use resolve callback
+            // On success, use resolve callback
             if (xhr.status >= 200 && xhr.status < 300) {
                resolve(xhr.response);
             }
-            // on failure, use reject
+            // On failure, use reject
             else {
                reject(this.logger.logAndGiveError("Bad status", xhr.status, xhr.statusText,
                                                   "in URL", url));
             }
          };
-         // on failure, use reject
+         // On failure, use reject
          xhr.onerror = () => {
             reject(this.logger.logAndGiveError("Experienced error with request. Status",
                                                xhr.status, xhr.statusText, "in URL", url));
@@ -68,12 +68,12 @@ export default class BrowserWebGetter implements IWebGetter
          reject: (err: Error) => void) => {
          this.jsonpCounter++;
 
-         // callback name
+         // Callback name
          const myCallbackName = "CornerStoneJsonp" + this.jsonpCounter;
 
          url = setupCallback(url, myCallbackName);
 
-         // create "component" that retrieves the data and calls back
+         // Create "component" that retrieves the data and calls back
          const timeout = setTimeout(() => {
             reject(this.logger.logAndGiveError(url, "JSONP did not retrieve resource " +
                              "within the timeout period."));
@@ -83,7 +83,7 @@ export default class BrowserWebGetter implements IWebGetter
             clearTimeout(timeout);
             const json = JSON.stringify(data);
 
-            // remove reference for Garbage Collector
+            // Remove reference for Garbage Collector
             window[ myCallbackName ] = null;
 
             resolve(json);
@@ -106,7 +106,7 @@ export function setupCallback(url: string, callback: string): string
       url = url.replace(/callback=\w+&?/, "");
    }
 
-   // add the callback to the URL
+   // Add the callback to the URL
    const prependCharacter = (url.indexOf("?") === -1) ? "?" : "&";
    url += prependCharacter + "callback=" + callback;
 

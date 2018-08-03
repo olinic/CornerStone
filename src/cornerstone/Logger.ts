@@ -1,7 +1,4 @@
-// interfaces
-import ILogger from "../interfaces/ILogger";
-
-// internal
+import { ILogger } from "../interfaces/ILogger";
 import { LoggingLevel } from "./CommonEnums";
 
 /**
@@ -15,9 +12,9 @@ import { LoggingLevel } from "./CommonEnums";
  * INFO will enable logging for INFO, WARN, and ERROR messages.
  * Note: this setting only works if logging is enabled.
  */
-export default class Logger implements ILogger
+export class Logger implements ILogger
 {
-   // initially set all log functions to do nothing
+   // Initially set all log functions to do nothing
    public debug = this.nop;
    public info = this.nop;
    public warn = this.nop;
@@ -27,16 +24,16 @@ export default class Logger implements ILogger
    private level: LoggingLevel;
 
    public constructor(
-         // defaults
+         // Defaults
          {loggingEnabled = false,
           loggingLevel = LoggingLevel.WARN}
-         // types
+         // Types
        : {loggingEnabled?: boolean,
           loggingLevel?: LoggingLevel}) {
       this.loggingEnabled = loggingEnabled;
       this.level = loggingLevel;
 
-      // setup log functions
+      // Setup log functions
       this.setupLogging();
    }
 
@@ -62,7 +59,7 @@ export default class Logger implements ILogger
    {
       if (this.loggingEnabled) {
          switch (this.level) {
-            // intentional fall-throughs
+            // Intentional fall-throughs
             case LoggingLevel.DEBUG:
                this.debug = (...args: any[]): void => {
                   // tslint:disable-next-line no-console

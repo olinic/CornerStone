@@ -1,6 +1,6 @@
-import IAdapter from "./IAdapter";
+import { IAdapter } from "./IAdapter";
 
-export default interface IStorageAdapter extends IAdapter
+export interface IStorageAdapter extends IAdapter
 {
-   
+
 }

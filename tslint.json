@@ -1,16 +1,26 @@
 {
    "extends": "tslint:recommended",
    "rules": {
-      "ban-types": [ false, ["Function"]],
+      "ban-types": [false, ["Function"]],
+      "comment-format": [true, "check-uppercase"],
+      "indent": [true, "spaces"],
       "max-line-length": {
          "options": [120]
       },
+      "max-file-line-count": [true, 1000],
+      "max-line-length": [true, 120],
+      "no-default-export": true,
+      "no-duplicate-imports": true,
       "object-literal-shorthand": {
+         "severity": "warning"
+      },
+      "object-literal-sort-keys": {
          "severity": "warning"
       },
       "one-line": [false],
       "only-arrow-functions": [true, "allow-named-functions"],
       "trailing-comma": [true, {"multiline": "ignore", "singleline": "never"}],
-      "variable-name": ["allow-trailing-underscore"]
+      "typedef-whitespace": [true, {}, {"parameter": "space"}],
+      "variable-name": [true, "check-format", "allow-pascal-case"]
    }
 }

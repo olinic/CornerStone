@@ -2,7 +2,7 @@
 /**
  * A template converter converts templates into an object.
  */
-export default interface ITemplateConverter
+export interface ITemplateConverter
 {
    // Validate a template.
    validate(template: string): boolean;

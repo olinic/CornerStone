@@ -1,10 +1,10 @@
-import IUrlOptions from "./IUrlOptions";
+import { IUrlOptions } from "./IUrlOptions";
 
 /**
  * Retrieve the online resource according to the provided
  * options.
  */
-export default interface IWebGetter
+export interface IWebGetter
 {
    /**
     * Retrieves URL using defined options.

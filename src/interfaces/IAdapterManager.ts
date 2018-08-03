@@ -1,6 +1,6 @@
-import IAdapter from "./IAdapter";
+import { IAdapter } from "./IAdapter";
 
-export default interface IAdapterManager extends IAdapter
+export interface IAdapterManager
 {
-   setVersion();
+   getAdapter(): IAdapter;
 }

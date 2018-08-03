@@ -1,7 +1,6 @@
-// interfaces
-import ILogger from "../interfaces/ILogger";
+import { ILogger } from "../interfaces/ILogger";
 
-export default class LoggerStub implements ILogger
+export class LoggerStub implements ILogger
 {
    public debug = this.nop;
    public info = this.nop;

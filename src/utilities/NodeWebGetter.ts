@@ -1,7 +1,7 @@
 // Interfaces
-import ILogger from "../interfaces/ILogger";
-import IUrlOptions from "../interfaces/IUrlOptions";
-import IWebGetter from "../interfaces/IWebGetter";
+import { ILogger } from "../interfaces/ILogger";
+import { IUrlOptions } from "../interfaces/IUrlOptions";
+import { IWebGetter } from "../interfaces/IWebGetter";
 
 import { setupCallback } from "./BrowserWebGetter";
 
@@ -11,7 +11,7 @@ import { request as httpRequest} from "http";
 import { request as httpsRequest } from "https";
 import { parse } from "url";
 
-export default class NodeWebGetter implements IWebGetter
+export class NodeWebGetter implements IWebGetter
 {
    public constructor(
          private logger: ILogger,
@@ -41,20 +41,19 @@ export default class NodeWebGetter implements IWebGetter
          };
       }
 
-      // return a promise
       return new Promise((
          resolve: (response: string) => void,
          reject: (err: Error) => void) => {
 
          const requestOptions = {
+            headers: {
+               "User-Agent": "javascript"
+            },
             hostname: parse(url).hostname,
             method,
             path: (parse(url).pathname || "") + (parse(url).search || ""),
             port: Number(parse(url).port) || 80,
-            protocol: parse(url).protocol || "http:",
-            headers: {
-               "User-Agent": "javascript"
-            }
+            protocol: parse(url).protocol || "http:"
          };
          this.logger.debug("Sending URL options: " + JSON.stringify(requestOptions));
 
@@ -64,7 +63,7 @@ export default class NodeWebGetter implements IWebGetter
          const req = webRequest(requestOptions, (res) => {
             const { statusCode, statusMessage } = res;
 
-            // reject on error
+            // Reject on error
             if (statusCode < 200 || statusCode >= 300) {
                reject(this.logger.logAndGiveError("Bad Status", statusCode, statusMessage, "in URL", url));
             }
@@ -76,7 +75,7 @@ export default class NodeWebGetter implements IWebGetter
             });
 
             res.on("end", () => {
-               // handle JSONP if necessary
+               // Handle JSONP if necessary
                data = preResolve(data);
                resolve(data);
             });

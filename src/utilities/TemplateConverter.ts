@@ -1,12 +1,14 @@
-// Internal
-import ILogger from "../interfaces/ILogger";
-import ITemplateConverter, { ITemplateParam } from "../interfaces/ITemplateConverter";
+import { ILogger } from "../interfaces/ILogger";
+import {
+   ITemplateConverter,
+   ITemplateParam
+} from "../interfaces/ITemplateConverter";
 
 /**
  * Converts a provided JSON template into a function that
  * implements the template.
  */
-export default class TemplateConverter implements ITemplateConverter
+export class TemplateConverter implements ITemplateConverter
 {
    private logger: ILogger;
    private params: ITemplateParam[];
@@ -48,7 +50,7 @@ export default class TemplateConverter implements ITemplateConverter
 
    public convert(args: object): object
    {
-      // assumes that template is valid if it is set
+      // Assumes that template is valid if it is set
       if (this.template.length > 0) {
          const obj: object = JSON.parse(this.template);
          /*return {
@@ -82,7 +84,7 @@ export default class TemplateConverter implements ITemplateConverter
 
    private containsValue(template: string, value: string): boolean
    {
-      // check if the template contains the parameter
+      // Check if the template contains the parameter
       //                                     :       "required"
       //                                     :      ["required"
       const valueExists: boolean = (template.search(new RegExp(':[\\s\[]*"' + value + '"')) !== -1);

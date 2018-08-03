@@ -1,21 +1,13 @@
-import IAdapter, {
-   IBibleContent,
-   IChapterParams,
-   ILanguages,
-   IVerseParams
-} from "../interfaces/IAdapter";
-import IAdapterManager from "../interfaces/IAdapterManager";
-import ILogger from "../interfaces/ILogger";
+import { IAdapter } from "../interfaces/IAdapter";
+import { IAdapterManager } from "../interfaces/IAdapterManager";
+import { ILogger } from "../interfaces/ILogger";
 
 /**
  * Manages adapters by choosing which ones to use. Consolodates
  * results from all adapters for certain queries (languages, versions, etc.).
  */
-export default class AdapterManager implements IAdapterManager
+export class AdapterManager implements IAdapterManager
 {
-   public getVerse: any;
-   public getChapter: any;
-
    private adapters: IAdapter[];
    private logger: ILogger;
    private currAdapter: IAdapter;
@@ -28,21 +20,13 @@ export default class AdapterManager implements IAdapterManager
       this.setAdapter();
    }
 
-   public setVersion(): void
+   public getAdapter(): IAdapter
    {
-   }
-
-   public getLanguages(): Promise<ILanguages>
-   {
-      return new Promise((resolve, reject) => {
-         resolve([]);
-      });
+      return this.currAdapter;
    }
 
    private setAdapter()
    {
       this.currAdapter = this.adapters[0];
-      this.getVerse = this.currAdapter.getVerse;
-      this.getChapter = this.currAdapter.getChapter;
    }
 }

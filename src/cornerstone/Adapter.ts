@@ -2,10 +2,10 @@ import {
    ETextFormat,
    IAdapterOptions
 } from "../interfaces/IAdapter";
-import ILogger from "../interfaces/ILogger";
-import { getOptionalValue } from "./AdapterUtils";
+import { ILogger } from "../interfaces/ILogger";
+import { getOptionalValue } from "../utilities/AdapterUtils";
 
-export default abstract class Adapter
+export abstract class Adapter
 {
    /**
     * Adapter name.

@@ -1,9 +1,9 @@
 // src file
-const BrowserWebGetter = require("../../" + generatedJsPath + "cornerstone/BrowserWebGetter.js").default;
-const NodeWebGetter = require("../../" + generatedJsPath + "cornerstone/NodeWebGetter.js").default;
+const BrowserWebGetter = require("../../" + generatedJsPath + "cornerstone/BrowserWebGetter.js").BrowserWebGetter;
+const NodeWebGetter = require("../../" + generatedJsPath + "cornerstone/NodeWebGetter.js").NodeWebGetter;
 
 // dependencies
-const Logger = require("../../" + generatedJsPath + "cornerstone/Logger.js").default;
+const Logger = require("../../" + generatedJsPath + "cornerstone/Logger.js").Logger;
 
 const logger = new Logger({ loggingEnabled: false });
 const httpPort = 3000;

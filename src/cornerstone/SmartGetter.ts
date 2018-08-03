@@ -1,9 +1,9 @@
-import ICache from "../interfaces/ICache";
-import ILogger from "../interfaces/ILogger";
-import IUrlOptions from "../interfaces/IUrlOptions";
-import IWebGetter from "../interfaces/IWebGetter";
+import { ICache } from "../interfaces/ICache";
+import { ILogger } from "../interfaces/ILogger";
+import { IUrlOptions } from "../interfaces/IUrlOptions";
+import { IWebGetter } from "../interfaces/IWebGetter";
 
-export default class SmartGetter implements IWebGetter
+export class SmartGetter implements IWebGetter
 {
    public constructor(
          private logger: ILogger,
@@ -20,12 +20,12 @@ export default class SmartGetter implements IWebGetter
    {
       const url = options.url;
       if (this.cache.checkFor(url)) {
-         // retrieve from cache
+         // Retrieve from cache
          return this.cache.retrieve(url);
 
       } else {
          const promise = this.webGetter.request(options);
-         // store response into cache
+         // Store response into cache
          this.cache.store(url, promise);
          return promise;
       }

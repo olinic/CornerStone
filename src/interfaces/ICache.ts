@@ -1,4 +1,4 @@
-export default interface ICache
+export interface ICache
 {
    /**
     * Check if key exists and return the boolean.

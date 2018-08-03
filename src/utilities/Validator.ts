@@ -1,12 +1,13 @@
-import IValidator, {
+import {
    INumValOptions,
-   IShortValOptions
+   IShortValOptions,
+   IValidator,
 } from "../interfaces/IValidator";
 /**
  * Validator for "untrusted" input.
  */
 
-export default class Validator implements IValidator
+export class Validator implements IValidator
 {
    private valid: boolean;
    private errorMessage: string;
@@ -109,7 +110,7 @@ export default class Validator implements IValidator
       if (this.optionalFlag && !this.defined(options.value)) {
          return this;
       } else if (!this.defined(options.value)) {
-         // should have been defined
+         // Should have been defined
          let error = "";
          if (typeof options.value === "undefined") {
             error = " should not be undefined.";
@@ -121,7 +122,7 @@ export default class Validator implements IValidator
          }
          return this;
       } else {
-         // perform check
+         // Perform check
          return check();
       }
    }

@@ -1,5 +1,5 @@
 // src file
-const Validator = require("../../" + generatedJsPath + "cornerstone/Validator.js").default;
+const Validator = require("../../" + generatedJsPath + "cornerstone/Validator.js").Validator;
 let validator;
 
 describe("Validator", () => {

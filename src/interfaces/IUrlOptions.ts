@@ -1,4 +1,4 @@
-export default interface IUrlOptions
+export interface IUrlOptions
 {
    /**
     * Method: JSONP, GET, POST, PUT, DELETE, etc.

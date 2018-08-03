@@ -1,29 +1,28 @@
 // Internal dependencies.
-import IAdapter, {
+import {
+   IAdapter,
    IBibleContent,
    IChapterParams,
    ILanguages,
    IVerseParams
 } from "../interfaces/IAdapter";
-import ICache from "../interfaces/ICache";
-import ILogger from "../interfaces/ILogger";
-import IOnlineAdapterOptions, {
+import { ICache } from "../interfaces/ICache";
+import { ILogger } from "../interfaces/ILogger";
+import {
    IChapterAction,
    ILanguageAction,
+   IOnlineAdapterOptions,
    IPostChapterAction,
    IPostLanguageAction,
    IPostVerseAction,
    IVerseAction
 } from "../interfaces/IOnlineAdapterOptions";
-import IUrlOptions from "../interfaces/IUrlOptions";
-import IWebGetter from "../interfaces/IWebGetter";
-import Adapter from "./Adapter";
-import { request } from "./AdapterUtils";
+import { IUrlOptions } from "../interfaces/IUrlOptions";
+import { IWebGetter } from "../interfaces/IWebGetter";
+import { request } from "../utilities/AdapterUtils";
+import { Adapter } from "./Adapter";
 
-// External dependencies.
-import { Promise } from "es6-promise";
-
-export default class OnlineAdapter
+export class OnlineAdapter
       extends Adapter implements IAdapter
 {
    /**
@@ -73,8 +72,8 @@ export default class OnlineAdapter
       super(logger, {
          adapterName: adapterOptions.adapterName,
          maxNumberOfQueries: adapterOptions.maxNumberOfQueries,
-         queryPeriod: adapterOptions.queryPeriod,
          maxVersesInCache: adapterOptions.maxVersesInCache,
+         queryPeriod: adapterOptions.queryPeriod,
          termsUrl: adapterOptions.termsUrl,
          textFormat: adapterOptions.textFormat
       });
@@ -121,6 +120,6 @@ export default class OnlineAdapter
          this.howToGetLanguages(),
          this.webGetter,
          this.howToInterpretLanguages
-      )
+      );
    }
 }

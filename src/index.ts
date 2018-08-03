@@ -1,21 +1,24 @@
 // Adapters
 import { onlineAdapters } from "./adapters/AdapterList";
-import OnlineAdapter from "./cornerstone/OnlineAdapter";
+import { OnlineAdapter } from "./cornerstone/OnlineAdapter";
 
 // Core Components
-import AdapterManager from "./cornerstone/AdapterManager";
-import BrowserWebGetter from "./cornerstone/BrowserWebGetter";
-import Cache from "./cornerstone/Cache";
+import { AdapterManager } from "./cornerstone/AdapterManager";
+import { Cache } from "./cornerstone/Cache";
 import { LoggingLevel } from "./cornerstone/CommonEnums";
-import CornerStoneBible from "./cornerstone/CornerStone";
-import Logger from "./cornerstone/Logger";
-import NodeWebGetter from "./cornerstone/NodeWebGetter";
-import { isBrowser, isNode } from "./cornerstone/Platform";
-import SmartGetter from "./cornerstone/SmartGetter";
-import Validator from "./cornerstone/Validator";
+import { CornerStoneBible } from "./cornerstone/CornerStone";
+import { Logger } from "./cornerstone/Logger";
+import { StandardOuputConverter } from "./cornerstone/outputFormats/StandardOutputConverter";
+import { SmartGetter } from "./cornerstone/SmartGetter";
+
+// Utilities
+import { BrowserWebGetter } from "./utilities/BrowserWebGetter";
+import { NodeWebGetter } from "./utilities/NodeWebGetter";
+import { isBrowser, isNode } from "./utilities/Platform";
+import { Validator } from "./utilities/Validator";
 
 // Interfaces
-import IAdapter from "./interfaces/IAdapter";
+import { IAdapter } from "./interfaces/IAdapter";
 import { ICornerStoneSettings } from "./interfaces/ICornerStone";
 
 /**
@@ -35,8 +38,10 @@ export function New({
    const logger = new Logger({loggingEnabled: logging, loggingLevel: getLoggingLevel(loggingLevel)});
    const cache = new Cache(logger);
 
-   // Set the web getter based on the platform.
-   // This could possibly be removed due to webpack.
+   /**
+    * Set the web getter based on the platform.
+    * This could possibly be removed due to webpack.
+    */
    let webGetter;
    if (isBrowser()) {
       logger.info("Detected Browser environment.");
@@ -49,9 +54,11 @@ export function New({
                                    "Expected to run in Node or Browser.");
    }
 
-   // Create a Validator
-   // If noValidation is set, use an empty validator. Useful for TypeScript
-   // which already does checking at compile time.
+   /**
+    * Create a Validator
+    * If noValidation is set, use an empty validator. Useful for TypeScript
+    * which already does checking at compile time.
+    */
    const validator = new Validator();
 
    // Create smart caching.
@@ -63,13 +70,16 @@ export function New({
       adapters.push(new OnlineAdapter(logger, smartGetter, onlineAdapterOptions));
    }
 
+   // Create output converters.
+   const converter = new StandardOuputConverter(logger);
+
    // Start putting everything together.
    const adapterManager = new AdapterManager(logger, adapters);
    return new CornerStoneBible(
       logger,
       adapterManager,
       validator,
-      outputFormat
+      converter
    );
 }
 

@@ -1,5 +1,5 @@
 
-export default interface IValidator
+export interface IValidator
 {
    isValid(): boolean;
    getErrorMessage(): string;

@@ -4,9 +4,9 @@
  */
 
 // Interfaces
-import ILogger from "../interfaces/ILogger";
-import IUrlOptions from "../interfaces/IUrlOptions";
-import IWebGetter from "../interfaces/IWebGetter";
+import { ILogger } from "../interfaces/ILogger";
+import { IUrlOptions } from "../interfaces/IUrlOptions";
+import { IWebGetter } from "../interfaces/IWebGetter";
 
 // External
 import { Promise } from "es6-promise";
@@ -14,11 +14,11 @@ import { request as httpRequest} from "http";
 import { request as httpsRequest } from "https";
 import { parse } from "url";
 
-export default class WebGetterStub implements IWebGetter
+export class WebGetterStub implements IWebGetter
 {
    public constructor(
          private logger: ILogger,
-         private readonly PROMISE_TIMEOUT_PERIOD: number = 3000, // milliseconds
+         private readonly PROMISE_TIMEOUT_PERIOD: number = 3000, // Milliseconds
          /**
           * Library name. Allows the callback to call the appropriate object.
           */

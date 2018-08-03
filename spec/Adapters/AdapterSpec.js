@@ -1,16 +1,15 @@
 // src file
 const onlineAdapters = require("../../" + generatedJsPath + "adapters/AdapterList.js").onlineAdapters;
-const OnlineAdapter = require("../../" + generatedJsPath + "cornerstone/OnlineAdapter").default;
+const OnlineAdapter = require("../../" + generatedJsPath + "cornerstone/OnlineAdapter").OnlineAdapter;
 const validBookIds = require("../../" + generatedJsPath + "interfaces/ICornerStone.js").bookIds;
 
 // dependencies
-//const Logger = require("../../" + generatedJsPath + "stubs/LoggerStub.js").default;
-const Logger = require("../../" + generatedJsPath + "cornerstone/Logger.js").default;
+const Logger = require("../../" + generatedJsPath + "cornerstone/Logger.js").Logger;
 const LoggingLevel = require("../../" + generatedJsPath + "cornerstone/CommonEnums.js").LoggingLevel;
 const isNode = require("../../" + generatedJsPath + "cornerstone/Platform.js").isNode;
 const WebGetter = (isBrowser()) ?
-      require("../../" + generatedJsPath + "cornerstone/BrowserWebGetter.js").default :
-      require("../../" + generatedJsPath + "cornerstone/NodeWebGetter.js").default;
+      require("../../" + generatedJsPath + "cornerstone/BrowserWebGetter.js").BrowserWebGetter :
+      require("../../" + generatedJsPath + "cornerstone/NodeWebGetter.js").NodeWebGetter;
 
 const Book = require("../../" + generatedJsPath + "cornerstone/CommonEnums.js").Book;
 
@@ -44,72 +43,28 @@ function checkBibleContent(data)
  * corresponding position/index.
  */
 let shortBookNames = [
-   "gn",
-   "ex",
-   "lv",
-   "nm",
-   "de",
-   "js",
-   "jd",
-   "r",
-   "1s",
-   "2s",
-   "1k",
-   "2k",
-   "1c",
-   "2c",
-   "ez",
-   "nh",
-   "es",
-   "jb",
-   "ps",
-   "pr",
-   "ec",
-   "so",
-   "is",
-   "jr",
-   "la",
-   "ez",
-   "dn",
-   "hs",
-   "jo",
-   "am",
-   "ob",
-   "jn",
-   "mc",
-   "na",
-   "ha",
-   "ze",
-   "ha",
-   "zc",
-   "ml",
-   "mt",
-   "mr",
-   "lk",
-   "jh",
-   "ac",
-   "rm",
-   "1c",
-   "2c",
-   "gl",
-   "ep",
-   "ph",
-   "co",
-   "1t",
-   "2t",
-   "1t",
-   "2t",
-   "ti",
-   "ph",
-   "hb",
-   "js",
-   "1p",
-   "2p",
-   "1j",
-   "2j",
-   "3j",
-   "ju",
-   "rv"
+   "gn", "ex", "lv",
+   "nm", "de", "js",
+   "jd", "r", "1s",
+   "2s", "1k", "2k",
+   "1c", "2c", "ez",
+   "nh", "es", "jb",
+   "ps", "pr", "ec",
+   "so", "is", "jr",
+   "la", "ez", "dn",
+   "hs", "jo", "am",
+   "ob", "jn", "mc",
+   "na", "ha", "ze",
+   "ha", "zc", "ml",
+   "mt", "mr", "lk",
+   "jh", "ac", "rm",
+   "1c", "2c", "gl",
+   "ep", "ph", "co",
+   "1t", "2t", "1t",
+   "2t", "ti", "ph",
+   "hb", "js", "1p",
+   "2p", "1j", "2j",
+   "3j", "ju", "rv"
 ];
 
 function compare(a, b)

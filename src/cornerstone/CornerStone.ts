@@ -1,26 +1,24 @@
-// External dependencies.
-import { Promise } from "es6-promise";
-
 // Internal dependencies.
-import { IBibleContent } from "../interfaces/IAdapter";
-import IAdapterManager from "../interfaces/IAdapterManager";
-import ICornerStone, {
+import { IAdapter, IBibleContent } from "../interfaces/IAdapter";
+import { IAdapterManager } from "../interfaces/IAdapterManager";
+import {
    bookIds,
    IChapter,
    IChapterOptions,
+   ICornerStone,
    ILanguages,
    IVerse,
    IVerseOptions,
-   OutputFormatType,
 } from "../interfaces/ICornerStone";
-import ILogger from "../interfaces/ILogger";
-import IValidator from "../interfaces/IValidator";
+import { ILogger } from "../interfaces/ILogger";
+import { IOutputConverter } from "../interfaces/IOutputConverter";
+import { IValidator } from "../interfaces/IValidator";
 import { Book } from "./CommonEnums";
 
 /**
  * Implements interface to the user (developer).
  */
-export default class CornerStone implements ICornerStone
+export class CornerStoneBible implements ICornerStone
 {
    /**
     * Current language
@@ -39,7 +37,7 @@ export default class CornerStone implements ICornerStone
       private logger: ILogger,
       private adapterManager: IAdapterManager,
       private validator: IValidator,
-      private outputType: OutputFormatType)
+      private converter: IOutputConverter)
    {
       this.language = "eng";
       this.version = "kjv";
@@ -48,52 +46,38 @@ export default class CornerStone implements ICornerStone
 
    public getChapter(options: IChapterOptions): Promise<IChapter>
    {
-      return new Promise((resolve, reject) => {
-         if (this.validator
-               .reset()
-               .string({name: "object.book", value: options.book})
-               .number({name: "object.chapter", value: options.chapter})
-               .isValid()) {
-            this.adapterManager.getChapter({
-               book: this.convertToBook(options.book),
-               chapter: options.chapter
-            }).then((data) => {
-               resolve(this.convertToChapter(options, data));
-            }).catch((err) => {
-               reject(err);
-            });
-         } else {
-            const error = this.validator.getErrorMessage();
-            this.logger.error(error);
-            reject(error);
-         }
-      });
+      return this.aPromise(
+         options,
+         this.validator
+            .reset()
+            .string({name: "object.book", value: options.book})
+            .number({name: "object.chapter", value: options.chapter})
+            .isValid(),
+         this.adapter().getChapter({
+            book: this.convertToBook(options.book),
+            chapter: options.chapter
+         }),
+         this.converter.convertChapter
+      );
    }
 
    public getVerse(options: IVerseOptions): Promise<IVerse>
    {
-      return new Promise((resolve, reject) => {
-         if (this.validator
-               .reset()
-               .string({name: "object.book", value: options.book})
-               .number({name: "object.chapter", value: options.chapter})
-               .number({name: "object.verse", value: options.verse})
-               .isValid()) {
-            this.adapterManager.getVerse({
-               book: this.convertToBook(options.book),
-               chapter: options.chapter,
-               verse: options.verse
-            }).then((data) => {
-               resolve(this.convertToVerse(options, data));
-            }).catch((err) => {
-               reject(err);
-            });
-         } else {
-            const error = this.validator.getErrorMessage();
-            this.logger.error(error);
-            reject(error);
-         }
-      });
+      return this.aPromise(
+         options,
+         this.validator
+            .reset()
+            .string({name: "object.book", value: options.book})
+            .number({name: "object.chapter", value: options.chapter})
+            .number({name: "object.verse", value: options.verse})
+            .isValid(),
+         this.adapter().getVerse({
+            book: this.convertToBook(options.book),
+            chapter: options.chapter,
+            verse: options.verse
+         }),
+         this.converter.convertVerse
+      );
    }
 
    public getLanguages(): Promise<ILanguages>
@@ -106,9 +90,8 @@ export default class CornerStone implements ICornerStone
    public setBookIds(newIds: string[]): void
    {
       this.validator.reset();
-      const bookIds = this.getBookIds();
       // Validate user input
-      if (newIds.length === bookIds.length)
+      if (newIds.length === this.getBookIds.length)
       {
          for (const newId of newIds) {
             this.validator.string({ name: "Id", value: newId });
@@ -121,7 +104,7 @@ export default class CornerStone implements ICornerStone
       } else {
          this.logger.error("Length of new IDs (" + newIds.length +
                ") does not match current length of Book IDs (" +
-               bookIds.length + ")");
+               this.getBookIds.length + ")");
       }
    }
 
@@ -130,69 +113,38 @@ export default class CornerStone implements ICornerStone
       return bookIds;
    }
 
+   private adapter(): IAdapter
+   {
+      return this.adapterManager.getAdapter();
+   }
+
+   private aPromise(
+         options: any,
+         isValid: boolean,
+         promise: Promise<IBibleContent>,
+         postProcessing: (options: any, data: any) => any): Promise<any>
+   {
+      return new Promise((resolve, reject) => {
+         if (isValid) {
+            promise.then((data) => {
+               resolve(postProcessing(options, data));
+            }).catch((err) => {
+               reject(err);
+            });
+         } else {
+            const error = this.validator.getErrorMessage();
+            this.logger.error(error);
+            reject(error);
+         }
+      });
+   }
+
    private convertToBook(bookId: string): Book
    {
-      let book: Book = this.getBookIds().indexOf(bookId);
+      const book: Book = this.getBookIds().indexOf(bookId);
       if (book === -1) {
          throw this.logger.logAndGiveError("Book ID " + bookId + " is not in the list of valid book IDs.");
       }
       return book;
-   }
-
-   private convertToChapter(options: IChapterOptions, content: IBibleContent): IChapter
-   {
-      let output: any;
-      switch (this.outputType)
-      {
-         case "standard":
-         {
-            output = {
-               language: this.language,
-               version: this.version,
-               bookId: options.book,
-               bookName: content.bookName,
-               chapter: options.chapter,
-               ltr: true,
-               verses: content.verses
-            };
-            break;
-         }
-         case "simple":
-         {
-            output = [];
-            for (let verse of content.verses) {
-               output.push(verse);
-            }
-            break;
-         }
-      }
-      return output;
-   }
-
-   private convertToVerse(options: IVerseOptions, content: IBibleContent): IVerse
-   {
-      let output: any;
-      switch (this.outputType)
-      {
-         case "standard":
-         {
-            output = {
-               language: this.language,
-               version: this.version,
-               bookId: options.book,
-               bookName: content.bookName,
-               chapter: options.chapter,
-               ltr: true,
-               verses: content.verses
-            };
-            break;
-         }
-         case "simple":
-         {
-            output = content.verses[0];
-            break;
-         }
-      }
-      return output;
    }
 }

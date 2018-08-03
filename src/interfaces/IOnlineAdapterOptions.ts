@@ -1,12 +1,13 @@
-import IAdapter, {
+import {
+   IAdapter,
    IAdapterOptions,
    IBibleContent,
    IChapterDetails,
    IVerseDetails
 } from "./IAdapter";
-import IUrlOptions from "./IUrlOptions";
+import { IUrlOptions } from "./IUrlOptions";
 
-export default interface IOnlineAdapterOptions extends IAdapterOptions
+export interface IOnlineAdapterOptions extends IAdapterOptions
 {
    /**
     * Adapter books. Useful for the howToGet... to utilize correct
