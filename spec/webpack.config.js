@@ -12,6 +12,6 @@ module.exports = {
 
    resolve: {
       // resolvable extensions.
-      extensions: [".js"]
+      extensions: [".ts", ".js", ".json"]
    }
 };

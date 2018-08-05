@@ -1,12 +1,12 @@
-// Internal dependencies.
 import { IOnlineAdapterOptions } from "../interfaces/IOnlineAdapterOptions";
+import { getCode } from "../utilities/LanguageUtils";
 
 // Custom Variables
 const method = "JSONP";
 const ltr = true;
 
 /**
- * Languages and version specific to GetBibleNet.
+ * Languages and versions specific to GetBibleNet.
  */
 const versions = {
    Afrikaans: [{ name: "Ou Vertaling", code: "aov" }],
@@ -69,6 +69,10 @@ const versions = {
       { name: "Louis Segond (1910)",       code: "ls1910" },
       { name: "Ostervald (1996 revision)", code: "ostervald" }
    ],
+   Gaelic: [
+      { name: "Manx Gaelic (Esther Jonah 4 Gospels)", code: "manxgaelic" },
+      { name: "Scots Gaelic (Gospel of Mark)", code: "gaelic" }
+   ],
    Georgian: [{ name: "Georgian (Gospels Acts James)", code: "georgian" }],
    German: [
       { name: "Luther (1912)",      code: "luther1912" },
@@ -114,9 +118,8 @@ const versions = {
    ],
    Latvian: [{ name: "New Testament", code: "latvian" }],
    Lithuanian: [{ name: "Lithuanian", code: "lithuanian" }],
-   Manx_Gaelic: [{ name: "Manx Gaelic (Esther Jonah 4 Gospels)", code: "manxgaelic" }],
    Maori: [{ name: "Maori", code: "maori" }],
-   Myanmar_Burmse: [{ name: "Judson (1835)", code: "judson" }],
+   Myanmar: [{ name: "Judson (1835)", code: "judson" }],
    Norwegian: [{ name: "Bibelselskap (1930)", code: "bibelselskap" }],
    Portuguese: [{ name: "Almeida Atualizada", code: "almeida" }],
    Potawatomi: [{ name: "Potawatomi (Matthew Acts) (Lykins 1844)", code: "potawatomi" }],
@@ -127,7 +130,6 @@ const versions = {
       { name: "Makarij Translation Pentateuch (1825)", code: "makarij" },
       { name: "Victor Zhuromsky NT",                   code: "zhuromsky" }
    ],
-   Scottish_Gaelic: [{ name: "Scots Gaelic (Gospel of Mark)", code: "gaelic" }],
    Spanish: [
       { name: "Reina Valera (1909)",        code: "valera" },
       { name: "Reina Valera NT (1858)",     code: "rv1858" },
@@ -193,7 +195,7 @@ export const GetBibleNetAdapter: IOnlineAdapterOptions = {
       const langNames = Object.keys(versions);
       for (const name of langNames) {
          languages.push({
-            code: null,
+            code: getCode(name),
             name
          });
       }

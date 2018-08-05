@@ -131,9 +131,18 @@ describe("Adapters", () => {
             adapter.getLanguages().then((data) => {
                expect(data.length).toBeGreaterThan(0);
                if (data.length > 0) {
+                  // Check that each item contains the correct keys.
                   const expected = ["code", "name"];
                   const actual = Object.keys(data[0]).sort();
                   expect(actual).toEqual(expected);
+
+                  // Check that all keys are defined
+                  for (var i = 0; i < data.length; i++) {
+                     expect(data[i].code).not.toBe(undefined, "Code for " + data[i].name + " is expected to be defined.");
+                     expect(data[i].code).not.toBe(null, "Code for " + data[i].name + " is expected to not be null.");
+                     expect(data[i].name).not.toBe(undefined, "Name for " + data[i].code + " is expected to be defined.");
+                     expect(data[i].name).not.toBe(null, "Name for " + data[i].code + " is expected to not be null.");
+                  }
                }
                done();
             }).catch((err) => {

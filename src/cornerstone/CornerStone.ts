@@ -82,9 +82,7 @@ export class CornerStoneBible implements ICornerStone
 
    public getLanguages(): Promise<ILanguages>
    {
-      return new Promise((resolve, reject) => {
-         resolve([]);
-      });
+      return this.adapter().getLanguages();
    }
 
    public setBookIds(newIds: string[]): void

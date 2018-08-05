@@ -1,10 +1,10 @@
-import LanguageTags from "language-tags";
+import * as LanguageTags from "language-tags";
 
 export function getCode(name: string): string {
    let target = null;
-   const tags = LanguageTags.search(name);
-   if (tags.length > 0) {
-      const tag = tags[0].data;
+   const myTags = LanguageTags.search(name);
+   if (myTags.length > 0) {
+      const tag = myTags[0].data;
       const preferredValueExists = (typeof tag["Preferred-Value"] !== "undefined");
       if (preferredValueExists) {
          target = tag["Preferred-Value"];
@@ -17,9 +17,9 @@ export function getCode(name: string): string {
 
 export function getName(code: string): string {
    let target = null;
-   const tags = LanguageTags.subtags(code);
-   if (tags.length > 0) {
-      const langNames = tags[0].descriptions();
+   const myTags = LanguageTags.subtags(code);
+   if (myTags.length > 0) {
+      const langNames = myTags[0].descriptions();
       target = langNames[0];
    }
    return target;
