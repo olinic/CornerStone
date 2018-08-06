@@ -1,5 +1,8 @@
 import * as LanguageTags from "language-tags";
 
+/**
+ * Get the code of the language based on the provided language name.
+ */
 export function getCode(name: string): string {
    let target = null;
    const myTags = LanguageTags.search(name);
@@ -15,6 +18,9 @@ export function getCode(name: string): string {
    return target;
 }
 
+/**
+ * Get the name of the language based on the provided language code.
+ */
 export function getName(code: string): string {
    let target = null;
    const myTags = LanguageTags.subtags(code);
@@ -23,4 +29,17 @@ export function getName(code: string): string {
       target = langNames[0];
    }
    return target;
+}
+
+/**
+ * Generate a hash that maps codes to names. Useful for mapping back to the
+ * language name.
+ */
+export function generateCodeToNameHash(names: string[]): Object
+{
+   const hash = {};
+   for (var name of names) {
+      hash[getCode(name)] = name;
+   }
+   return hash;
 }

@@ -5,6 +5,10 @@ import {
    IChapterDetails,
    IVerseDetails
 } from "./IAdapter";
+import {
+   ILanguageCode,
+   IVersions,
+} from "./ICornerStone";
 import { IUrlOptions } from "./IUrlOptions";
 
 export interface IOnlineAdapterOptions extends IAdapterOptions
@@ -22,6 +26,14 @@ export interface IOnlineAdapterOptions extends IAdapterOptions
     * Define how to process/interpret the language data.
     */
    howToInterpretLanguages: IPostLanguageAction;
+   /**
+    * Determine the URL to get versions.
+    */
+   howToGetVersions: IVersionAction;
+   /**
+    * Determine how to process/interpret the version data.
+    */
+   howToInterpretVersions: IPostVersionAction;
    /**
     * Determine the URL to get verse.
     */
@@ -42,6 +54,8 @@ export interface IOnlineAdapterOptions extends IAdapterOptions
 
 export type ILanguageAction = () => IUrlOptions;
 export type IPostLanguageAction = (data: string) => string[];
+export type IVersionAction = (options: ILanguageCode) => IUrlOptions;
+export type IPostVersionAction = (data: string) => IVersions;
 export type IVerseAction = (options: IVerseDetails) => IUrlOptions;
 export type IPostVerseAction = (data: string) => IBibleContent;
 export type IChapterAction = (options: IChapterDetails) => IUrlOptions;

@@ -1,9 +1,15 @@
 import { IOnlineAdapterOptions } from "../interfaces/IOnlineAdapterOptions";
-import { getCode } from "../utilities/LanguageUtils";
+import {
+   getCode,
+   generateCodeToNameHash
+} from "../utilities/LanguageUtils";
 
 // Custom Variables
 const method = "JSONP";
 const ltr = true;
+
+// Temporary variable as placeholders
+let searchFor: string = "";
 
 /**
  * Languages and versions specific to GetBibleNet.
@@ -151,6 +157,8 @@ const versions = {
    Xhosa: [{ name: "Xhosa", code: "xhosa" }],
 };
 
+const languageCodeToName = generateCodeToNameHash(Object.keys(versions));
+
 /**
  * 1. Update Adapter settings appropriate to the adpater.
  */
@@ -200,6 +208,28 @@ export const GetBibleNetAdapter: IOnlineAdapterOptions = {
          });
       }
       return languages;
+   },
+   howToGetVersions: (languageCode) => {
+      searchFor = languageCode;
+      // Manually send versions.
+      return null;
+   },
+   howToInterpretVersions: (data) => {
+      const out = [];
+      const key = languageCodeToName[searchFor];
+      if (typeof key !== "undefined" &&
+          typeof versions[key] !== "undefined") {
+         for (const version of versions[key]) {
+            out.push({
+               lang: searchFor,
+               code: version.code,
+               name: version.name
+            });
+         }
+      } else {
+         throw new Error("Language code " + searchFor + " is invalid.");
+      }
+      return out;
    },
    howToGetVerse: (options) => {
       const url = "http://getbible.net/json?passage=" +

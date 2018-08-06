@@ -6,6 +6,10 @@ import {
    ILanguages,
    IVerseParams
 } from "../interfaces/IAdapter";
+import {
+   ILanguageCode,
+   IVersions
+} from "../interfaces/ICornerStone";
 import { ICache } from "../interfaces/ICache";
 import { ILogger } from "../interfaces/ILogger";
 import {
@@ -35,38 +39,10 @@ export class OnlineAdapter
     */
    private myBooks: string[];
 
-   /**
-    * Get the URL for the languages.
-    */
-   private howToGetLanguages: ILanguageAction;
-   /**
-    * Language post-processing.
-    */
-   private howToInterpretLanguages: IPostLanguageAction;
-   /**
-    * Get the URL for the verse.
-    */
-   private howToGetVerse: IVerseAction;
-
-   /**
-    * Verse post-processing.
-    */
-   private howToInterpretVerse: IPostVerseAction;
-
-   /**
-    * Get the URL for the chapter.
-    */
-   private howToGetChapter: IChapterAction;
-
-   /**
-    * Chapter post-processing.
-    */
-   private howToInterpretChapter: IPostChapterAction;
-
    constructor(
          private logger: ILogger,
          private webGetter: IWebGetter,
-         adapterOptions: IOnlineAdapterOptions
+         private adapterOptions: IOnlineAdapterOptions
       )
    {
       super(logger, {
@@ -79,47 +55,49 @@ export class OnlineAdapter
       });
       this.logger = logger;
       this.onlineAccessor = webGetter;
-
       this.myBooks = adapterOptions.books;
-      this.howToGetLanguages = adapterOptions.howToGetLanguages;
-      this.howToInterpretLanguages = adapterOptions.howToInterpretLanguages;
-      this.howToGetVerse = adapterOptions.howToGetVerse;
-      this.howToInterpretVerse = adapterOptions.howToInterpretVerse;
-      this.howToGetChapter = adapterOptions.howToGetChapter;
-      this.howToInterpretChapter = adapterOptions.howToInterpretChapter;
    }
 
    public getVerse(options: IVerseParams): Promise<IBibleContent>
    {
       return request(
-         this.howToGetVerse({
+         this.adapterOptions.howToGetVerse({
             book: this.myBooks[options.book],
             chapter: options.chapter,
             verse: options.verse
          }),
          this.webGetter,
-         this.howToInterpretVerse
+         this.adapterOptions.howToInterpretVerse
       );
    }
 
    public getChapter(options: IChapterParams): Promise<IBibleContent>
    {
       return request(
-         this.howToGetChapter({
+         this.adapterOptions.howToGetChapter({
             book: this.myBooks[options.book],
             chapter: options.chapter
          }),
          this.webGetter,
-         this.howToInterpretChapter
+         this.adapterOptions.howToInterpretChapter
       );
    }
 
    public getLanguages(): Promise<ILanguages>
    {
       return request(
-         this.howToGetLanguages(),
+         this.adapterOptions.howToGetLanguages(),
          this.webGetter,
-         this.howToInterpretLanguages
+         this.adapterOptions.howToInterpretLanguages
+      );
+   }
+
+   public getVersions(languageCode: ILanguageCode): Promise<IVersions>
+   {
+      return request(
+         this.adapterOptions.howToGetVersions(languageCode),
+         this.webGetter,
+         this.adapterOptions.howToInterpretVersions
       );
    }
 }

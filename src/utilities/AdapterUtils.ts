@@ -22,21 +22,34 @@ export function request(
    return new Promise((
          resolve: (response: string) => void,
          reject: (err: Error) => void) => {
-      if (typeof options === "undefined" || options === null) {
-         // If options are not defined, postProcessing provides data.
-         const data = postProcessing(null);
+
+      const successCase = (data) => {
          onSuccess(data);
          resolve(data);
+      };
+      const failureCase = (err) => {
+         onError(err);
+         reject(err);
+      };
+      const processData = (data) => {
+         try {
+            const processedData = postProcessing(data);
+            successCase(processedData);
+         } catch (err) {
+            failureCase(err);
+         }
+      };
+
+      if (typeof options === "undefined" || options === null) {
+         // If options are not defined, postProcessing provides data.
+         processData(null);
       } else {
          webGetter
             .request(options)
             .then((response) => {
-               const processedData = postProcessing(response);
-               onSuccess(processedData);
-               resolve(processedData);
+               processData(response);
             }).catch((err) => {
-               onError(err);
-               reject(err);
+               failureCase(err);
             });
       }
    });

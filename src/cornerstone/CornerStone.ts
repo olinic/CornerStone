@@ -6,9 +6,11 @@ import {
    IChapter,
    IChapterOptions,
    ICornerStone,
+   ILanguageCode,
    ILanguages,
    IVerse,
    IVerseOptions,
+   IVersions,
 } from "../interfaces/ICornerStone";
 import { ILogger } from "../interfaces/ILogger";
 import { IOutputConverter } from "../interfaces/IOutputConverter";
@@ -83,6 +85,11 @@ export class CornerStoneBible implements ICornerStone
    public getLanguages(): Promise<ILanguages>
    {
       return this.adapter().getLanguages();
+   }
+
+   public getVersions(langCode: ILanguageCode): Promise<IVersions>
+   {
+      return this.adapter().getVersions(langCode);
    }
 
    public setBookIds(newIds: string[]): void

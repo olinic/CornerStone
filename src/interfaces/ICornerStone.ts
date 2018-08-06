@@ -7,9 +7,6 @@ import {
    IStandardVerse
 } from "./IStandardOutput";
 
-export { ISimpleVerse, ISimpleVerses };
-export { IStandardContent, IStandardVerse };
-
 /**
  * CornerStone interface/API.
  *
@@ -36,8 +33,18 @@ export interface ICornerStone
     * });
     */
    getVerse(options: IVerseOptions): Promise<IVerse>;
+   /**
+    * Retrieve a Bible chapter.
+    */
    getChapter(options: IChapterOptions): Promise<IChapter>;
+   /**
+    * Retrieve all available languages.
+    */
    getLanguages(): Promise<ILanguages>;
+   /**
+    * Retrieve all available versions based on the language.
+    */
+   getVersions(ILanguageCode): Promise<IVersions>;
 }
 
 export interface ICornerStoneSettings
@@ -127,6 +134,8 @@ export interface IVersion
    code: string;
    name: string;
 }
+
+export type IVersions = IVersion[];
 
 export type IChapter = IStandardContent | ISimpleVerses;
 export type IVerse = IStandardContent | ISimpleVerse;

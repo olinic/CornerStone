@@ -151,6 +151,26 @@ describe("Adapters", () => {
             });
          });
 
+         it("should get versions", (done) => {
+            adapter.getVersions("en").then((data) => {
+               expect(data.length).toBeGreaterThan(0);
+               done();
+            }).catch((err) => {
+               fail(err);
+               done();
+            });
+         });
+
+         it("should not get versions for an invalid language", (done) => {
+            adapter.getVersions("nnnnnnnn").then((data) => {
+               fail("Should not succeed for an invalid language.");
+               done();
+            }).catch((err) => {
+               expect(err.message).toContain("invalid");
+               done();
+            });
+         });
+
          it("should get a verse", (done) => {
             adapter.getVerse({ book: Book.JOHN, chapter: 3, verse: 18 }).then((data) => {
                checkBibleContent(data);
