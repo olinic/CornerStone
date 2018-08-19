@@ -13,14 +13,8 @@ import { IOutputConverter } from "../../interfaces/IOutputConverter";
  */
 export class StandardOuputConverter implements IOutputConverter
 {
-   public constructor(private logger: ILogger)
-   {
-
-   }
-
    public convertVerse(options: IChapterOptions, data: IBibleContent): IVerse
    {
-      this.logger.debug("Converting verse output");
       return {
          bookId: options.book,
          bookName: data.bookName,
@@ -34,7 +28,6 @@ export class StandardOuputConverter implements IOutputConverter
 
    public convertChapter(options: IVerseOptions, data: IBibleContent): IChapter
    {
-      this.logger.debug("Converting chapter output");
       return {
          bookId: options.book,
          bookName: data.bookName,

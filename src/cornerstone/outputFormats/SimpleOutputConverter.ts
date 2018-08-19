@@ -13,20 +13,13 @@ import { IOutputConverter } from "../../interfaces/IOutputConverter";
  */
 export class SimpleOuputConverter implements IOutputConverter
 {
-   public constructor(private logger: ILogger)
-   {
-
-   }
-
    public convertVerse(options: IChapterOptions, data: IBibleContent): IVerse
    {
-      this.logger.debug("Converting verse output");
       return data.verses[0].text;
    }
 
    public convertChapter(options: IVerseOptions, data: IBibleContent): IChapter
    {
-      this.logger.debug("Converting chapter output");
       const output = [];
       for (const verse of data.verses) {
          output.push(verse);

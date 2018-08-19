@@ -24,7 +24,6 @@ import { ICornerStoneSettings } from "./interfaces/ICornerStone";
 /**
  * Creates and returns the CornerStone object using
  * the provided settings.
- * Don't export via "default" here.
  */
 export function New({
    cacheSize = 13,
@@ -71,7 +70,7 @@ export function New({
    }
 
    // Create output converters.
-   const converter = new StandardOuputConverter(logger);
+   const converter = new StandardOuputConverter();
 
    // Start putting everything together.
    const adapterManager = new AdapterManager(logger, adapters);
