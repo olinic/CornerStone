@@ -6,29 +6,30 @@ function createConfig(target) {
    return {
       target: target,
       entry: "./src/index.ts",
+      mode: "production",
       output: {
-            filename: name + "-" + version + "." + target + filenameExtension,
-            path: __dirname + "/dist/CornerStone-" + version,
-            library: 'CornerStone',
-            libraryTarget: 'umd'
+         filename: name + "-" + version + "." + target + filenameExtension,
+         path: __dirname + "/dist/CornerStone-" + version,
+         library: 'CornerStone',
+         libraryTarget: 'umd'
       },
 
       // Enable sourcemaps for debugging webpack's output.
-      devtool: "source-map",
+      devtool: "inline-source-map",
 
       resolve: {
-            // Add '.ts' and '.tsx' as resolvable extensions.
-            extensions: [".ts", ".tsx", ".js", ".json"]
+         // Add '.ts' and '.tsx' as resolvable extensions.
+         extensions: [".ts", ".tsx", ".js", ".json"]
       },
 
       module: {
-            rules: [
-                  // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-                  { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
-
-                  // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-                  { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
-            ]
+         rules: [
+            {
+               test: /\.tsx?$/,
+               use: "ts-loader",
+               exclude: /node_modules/
+            }
+         ]
       }
    };
 }

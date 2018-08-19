@@ -5,6 +5,7 @@
  */
 module.exports = {
    entry: "./spec/SpecBrowserTests.js",
+   mode: "development",
    output: {
       filename: "SpecBundle.js",
       path: __dirname
@@ -12,6 +13,6 @@ module.exports = {
 
    resolve: {
       // resolvable extensions.
-      extensions: [".ts", ".js", ".json"]
+      extensions: [".js", ".json"]
    }
 };
