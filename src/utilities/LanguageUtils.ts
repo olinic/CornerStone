@@ -38,7 +38,7 @@ export function getName(code: string): string {
 export function generateCodeToNameHash(names: string[]): Object
 {
    const hash = {};
-   for (var name of names) {
+   for (const name of names) {
       hash[getCode(name)] = name;
    }
    return hash;

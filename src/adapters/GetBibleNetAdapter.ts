@@ -1,14 +1,14 @@
 import { IOnlineAdapterOptions } from "../interfaces/IOnlineAdapterOptions";
 import {
-   getCode,
-   generateCodeToNameHash
+   generateCodeToNameHash,
+   getCode
 } from "../utilities/LanguageUtils";
 
 // Custom Variables
-const method = "JSONP";
-const ltr = true;
+const method: string = "JSONP";
+const ltr: boolean = true;
 
-// Temporary variable as placeholders
+// Internal variable for searching
 let searchFor: string = "";
 
 /**

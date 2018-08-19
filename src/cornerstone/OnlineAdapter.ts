@@ -6,11 +6,11 @@ import {
    ILanguages,
    IVerseParams
 } from "../interfaces/IAdapter";
+import { ICache } from "../interfaces/ICache";
 import {
    ILanguageCode,
    IVersions
 } from "../interfaces/ICornerStone";
-import { ICache } from "../interfaces/ICache";
 import { ILogger } from "../interfaces/ILogger";
 import {
    IChapterAction,
@@ -26,8 +26,7 @@ import { IWebGetter } from "../interfaces/IWebGetter";
 import { request } from "../utilities/AdapterUtils";
 import { Adapter } from "./Adapter";
 
-export class OnlineAdapter
-      extends Adapter implements IAdapter
+export class OnlineAdapter extends Adapter implements IAdapter
 {
    /**
     * Online Accessor. Retrieves online resources.
