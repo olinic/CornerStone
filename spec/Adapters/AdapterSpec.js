@@ -154,6 +154,15 @@ describe("Adapters", () => {
          it("should get versions", (done) => {
             adapter.getVersions("en").then((data) => {
                expect(data.length).toBeGreaterThan(0);
+
+               var foundKjv = false;
+               for (var version of data) {
+                  // Expect the languages to match for all of the versions.
+                  expect(version.lang).toEqual("en");
+                  foundKjv = foundKjv || (version.code === "kjv");
+                  expect(version.name).not.toEqual("", "Should not have an empty name for version code " + version.code);
+               }
+               expect(foundKjv).toBe(true, "Could not find code kjv.");
                done();
             }).catch((err) => {
                fail(err);

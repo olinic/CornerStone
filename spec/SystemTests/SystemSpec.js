@@ -2,4 +2,8 @@
 const smokeTest = require("./SmokeTest.js").smokeTest;
 var CornerStone = require(nodeProjectLatestPath + "/" + nodeProjectLatestFile);
 
-smokeTest(CornerStone.New({logging: false, loggingLevel: "info"}));
+try {
+   smokeTest(CornerStone.New({logging: false, loggingLevel: "info"}));
+} catch (err) {
+   console.log(err);
+}
