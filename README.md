@@ -54,7 +54,7 @@ Be sure to
 CornerStone was developed in TypeScript so that the latest features of JavaScript and be utilized while providing compatibility for browsers. The TypeScript code is transpiled and nicely packaged into browser-supported JavaScript.
 
 ### Tested
-CornerStone is rigorously tested through automation. Currently CornerStone has over 40 tests.
+CornerStone is rigorously tested through automation. Currently CornerStone has over 70 tests.
 
 [cornerstone]: ./images/cornerstone-green192x192.png
 [architecture]: ./images/architecture.png

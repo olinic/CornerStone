@@ -10,6 +10,6 @@ There are two avenues for contributing: **creating/updating adapters** and **mai
 
 Additional adapters are a crucial part of CornerStone. Adapters improve the service and content available to developers by connecting developers to more Bible APIs.
 
-On a similar note, all of the adapters rely on the core. This is not very trivial. The core is designed to ease the development of adapters so that adapters can be easily developed with powerful functionality.
+On a similar note, all of the adapters rely on the core. The core is designed to ease the development of adapters and provide lots of functionality to users.
 
 ## Code of Conduct
