@@ -10,6 +10,7 @@ export { ILanguages };
 
 export interface IAdapter
 {
+   getName(): string;
    getVerse(options: IVerseParams): Promise<IBibleContent>;
    getChapter(options: IChapterParams): Promise<IBibleContent>;
    getLanguages(): Promise<ILanguages>;
@@ -17,8 +18,8 @@ export interface IAdapter
    /*getNextChapter(): object;
    getPrevChapter(): object;
    getCatalog(): object;
-   getAdapterName(): string;
    getCapabilities(): string[];*/
+   isAvailable(): Promise<boolean>;
 }
 
 export interface IAdapterOptions

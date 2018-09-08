@@ -15,7 +15,7 @@
     "systemtest": "npm run publish && jasmine --config=./spec/support/jasmine-system-test.json && start spec/SystemTests/SystemSpecRunner.html",
     "typedoc": "typedoc --excludePrivate --excludeNotExported --excludeExternals --mode file --readme ./README.md --module commonjs --out ./doc ./src/index.ts",
     "apidoc": "typedoc --excludePrivate --excludeExternals --mode file --readme ./README.md --module commonjs --out ./doc ./src/interfaces/ICornerStone.ts",
-    "publish": "node ./scripts/propagateDetails.js && node ./scripts/mkDistDirectory.js && webpack --devtool false && webpack --devtool false --optimize-minimize",
+    "publish": "node ./scripts/propagateDetails.js && node ./scripts/mkDistDirectory.js && webpack --devtool false --display-modules true && webpack --devtool false --display-modules true --optimize-minimize",
     "speclint": "eslint ./spec/CornerStone/*.js",
     "lint": "tslint --force src/**/*.ts",
     "cleanLint": "tslint --fix src/**/*.ts"

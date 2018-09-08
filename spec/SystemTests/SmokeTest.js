@@ -11,13 +11,14 @@ if (typeof module !== "undefined") {
 function smokeTest(cornerstone)
 {
    describe("CornerStone", function() {
-      it("should get a list of languages", () => {
+      it("should get a list of languages", (done) => {
          cornerstone.getLanguages()
          .then(function(data) {
             expect(data.length).toBeGreaterThan(0);
+            done();
          })
          .catch(function(err) {
-            fail(err);
+            done(err);
          });
       });
 

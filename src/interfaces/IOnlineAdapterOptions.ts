@@ -19,6 +19,11 @@ export interface IOnlineAdapterOptions extends IAdapterOptions
     */
    books: string[];
    /**
+    * URL to check if adapter is available. Ideally, this URL returns little
+    * data.
+    */
+   howToCheckAvailability: IUrlOptions;
+   /**
     * Determine the URL to get languages.
     */
    howToGetLanguages: ILanguageAction;

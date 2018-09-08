@@ -99,4 +99,13 @@ export class OnlineAdapter extends Adapter implements IAdapter
          this.adapterOptions.howToInterpretVersions
       );
    }
+
+   public isAvailable(): Promise<boolean>
+   {
+      return request(
+         this.adapterOptions.howToCheckAvailability,
+         this.webGetter,
+         (data)=>true // return true if successful
+      )
+   }
 }

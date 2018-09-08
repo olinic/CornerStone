@@ -217,6 +217,15 @@ describe("Adapters", () => {
             }
          });
 
+         it("should provide availability", (done) => {
+            adapter.isAvailable()
+               .then(() => { done(); })
+               .catch((err) => {
+                  fail(err);
+                  done();
+               });
+         });
+
          // Test that the adapter returns verses in the format defined in the adapter.
       });
    });

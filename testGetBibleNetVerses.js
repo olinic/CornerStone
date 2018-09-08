@@ -1,27 +1,6 @@
-import { IOnlineAdapterOptions } from "../interfaces/IOnlineAdapterOptions";
-import {
-   generateCodeToNameHash,
-   getCode
-} from "../utilities/LanguageUtils";
+const verseCounts = require("./verseCounts.json");
+const Promise = require("es6-promise");
 
-// Custom Variables
-const method: string = "JSONP";
-const ltr: boolean = true;
-
-// Internal variable for searching
-let searchFor: string = "";
-
-/**
- * How to get books for versions
- * https://getbible.net/index.php?option=com_getbible&task=bible.books&format=json&v=kjv
- * How to get number of chapters
- * https://getbible.net/index.php?option=com_getbible&task=bible.chapter&format=json&v=kjv&nr=1
- *
- */
-
-/**
- * Languages and versions specific to GetBibleNet.
- */
 const versions = {
    Afrikaans: [{ name: "Ou Vertaling", code: "aov" }],
    Albanian: [{ name: "Albanian", code: "albanian" }],
@@ -165,154 +144,34 @@ const versions = {
    Xhosa: [{ name: "Xhosa", code: "xhosa" }],
 };
 
-const languageCodeToName = generateCodeToNameHash(Object.keys(versions));
-
-/**
- * 1. Update Adapter settings appropriate to the adpater.
- */
-export const GetBibleNetAdapter: IOnlineAdapterOptions = {
-   adapterName: "GetBibleNet",
-   termsUrl: "https://getbible.net/api",
-   textFormat: "para",
-   /**
-    * Set array of book names that the adapter uses. This
-    * should correspond to "Book" in interfaces/ICornerStone.ts.
-    */
-   books: [
-      "Gen", "Exo", "Lev",
-      "Num", "Deu", "Jos",
-      "Ju", "Ruth", "1Sam",
-      "2Sam", "1Kings", "2Kings",
-      "1Chr", "2Chr", "Ezra",
-      "Neh", "Est", "Job",
-      "Ps", "Pro", "Ecc",
-      "Song", "Isa", "Jer",
-      "Lam", "Eze", "Dan",
-      "Hos", "Joel", "Amos",
-      "Obad", "Jonah", "Mic",
-      "Nah", "Hab", "Zeph",
-      "Hag", "Zech", "Mal",
-      "Mat", "Mark", "Luke",
-      "John", "Acts", "Rom",
-      "1Cor", "2Cor", "Gal",
-      "Eph", "Philippians", "Col",
-      "1Thes", "2Thes", "1Tim",
-      "2Tim", "Titus", "Philemon",
-      "Heb", "James", "1Pet",
-      "2Pet", "1John", "2John",
-      "3John", "Jude", "Rev"
-   ],
-   howToCheckAvailability: {
-      method,
-      url: "http://getbible.net/json?text=jn11:35"
-   },
-   howToGetLanguages: () => {
-      // Manually send languages.
-      return null;
-   },
-   howToInterpretLanguages: (data) => {
-      const languages = [];
-      const langNames = Object.keys(versions);
-      for (const name of langNames) {
-         languages.push({
-            code: getCode(name),
-            name
-         });
+function getBook(target) {
+   for (const bookObj of verseCounts) {
+      if (bookObj.book == target) {
+         return bookObj;
       }
-      return languages;
-   },
-   howToGetVersions: (languageCode) => {
-      searchFor = languageCode;
-      // Manually send versions.
-      return null;
-   },
-   howToInterpretVersions: (data) => {
-      const out = [];
-      const key = languageCodeToName[searchFor];
-      if (typeof key !== "undefined" &&
-          typeof versions[key] !== "undefined") {
-         for (const version of versions[key]) {
-            out.push({
-               lang: searchFor,
-               code: version.code,
-               name: version.name
-            });
-         }
-      } else {
-         throw new Error("Language code " + searchFor + " is invalid.");
-      }
-      return out;
-   },
-   howToGetVerse: (options) => {
-      const url = "http://getbible.net/json?passage=" +
-              options.book +
-              options.chapter + ":" +
-              options.verse;
-      return {
-         method, // Use method defined earlier
-         url
-      };
-   },
-   howToInterpretVerse: (data) => {
-      const json = data;
-      return handleData(json, (obj) => {
-         const verseNum = Object.keys(obj.book[0].chapter)[0];
-         const output = {
-            bookName: obj.book[0].book_name,
-            ltr,
-            verses: [
-               { text: obj.book[0].chapter[verseNum].verse,
-                 verseNumber: parseInt(verseNum, 10) }
-            ]
-         };
-         return output;
-      });
-   },
-   howToGetChapter: (options) => {
-      const url = "http://getbible.net/json?passage=" +
-              options.book +
-              options.chapter;
-      return {
-         method,
-         url
-      };
-   },
-   howToInterpretChapter: (data) => {
-      const json = data;
-      return handleData(json, (obj) => {
-         const verses = [];
-         for (const key of Object.keys(obj.chapter)) {
-            verses.push({ text: obj.chapter[key].verse,
-                          verseNumber: parseInt(key, 10) });
-         }
-         const output = {
-            bookName: obj.book_name,
-            ltr,
-            verses
-         };
-         return output;
-      });
-   },
-};
+   }
+   return null;
+}
 
-function handleData(json, how: (obj: any) => any): any
-{
-   try {
-      return how(JSON.parse(json));
-   } catch (err) {
-      handleError(err, json);
+function getVerseCount(bookObj, chapterNum) {
+   if (chapterNum > bookObj.chapters.length) {
+      console.log("Chapter number exceeded available.");
+      return -1;
+   } else {
+      return bookObj.chapters[chapterNum-1].verses;
    }
 }
-function handleError(err: Error, json: string): void
-{
-   if (err instanceof SyntaxError) {
-      throw Error("Unable to parse data from getbible.net. Data: " + json + ". Error: " + err);
-   }
-   else {
-      throw Error("Error: " + err);
+
+/**
+ * How to get books for versions
+ * https://getbible.net/index.php?option=com_getbible&task=bible.books&format=json&v=kjv
+ * How to get number of chapters
+ * https://getbible.net/index.php?option=com_getbible&task=bible.chapter&format=json&v=kjv&nr=1
+ *
+ */
+for (const language of Object.keys(versions)) {
+   for (const version of versions[language]) {
+      const code = version.code;
+
    }
 }
-/**
- * When done with creating the adapter, add it to the AdapterList.ts and
- * remove all instruction comments (like this one :)
- */
