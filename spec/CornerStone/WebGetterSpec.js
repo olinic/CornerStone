@@ -1,6 +1,6 @@
 // src file
-const BrowserWebGetter = require("../../" + generatedJsPath + "cornerstone/BrowserWebGetter.js").BrowserWebGetter;
-const NodeWebGetter = require("../../" + generatedJsPath + "cornerstone/NodeWebGetter.js").NodeWebGetter;
+const BrowserWebGetter = require("../../" + generatedJsPath + "utilities/BrowserWebGetter.js").BrowserWebGetter;
+const NodeWebGetter = require("../../" + generatedJsPath + "utilities/NodeWebGetter.js").NodeWebGetter;
 
 // dependencies
 const Logger = require("../../" + generatedJsPath + "cornerstone/Logger.js").Logger;

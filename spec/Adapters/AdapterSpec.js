@@ -6,10 +6,10 @@ const validBookIds = require("../../" + generatedJsPath + "interfaces/ICornerSto
 // dependencies
 const Logger = require("../../" + generatedJsPath + "cornerstone/Logger.js").Logger;
 const LoggingLevel = require("../../" + generatedJsPath + "cornerstone/CommonEnums.js").LoggingLevel;
-const isNode = require("../../" + generatedJsPath + "cornerstone/Platform.js").isNode;
+const isNode = require("../../" + generatedJsPath + "utilities/Platform.js").isNode;
 const WebGetter = (isBrowser()) ?
-      require("../../" + generatedJsPath + "cornerstone/BrowserWebGetter.js").BrowserWebGetter :
-      require("../../" + generatedJsPath + "cornerstone/NodeWebGetter.js").NodeWebGetter;
+      require("../../" + generatedJsPath + "utilities/BrowserWebGetter.js").BrowserWebGetter :
+      require("../../" + generatedJsPath + "utilities/NodeWebGetter.js").NodeWebGetter;
 
 const Book = require("../../" + generatedJsPath + "cornerstone/CommonEnums.js").Book;
 

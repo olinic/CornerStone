@@ -1,5 +1,5 @@
 
-const multiReplace = require("../../" + generatedJsPath + "cornerstone/CornerStoneUtils.js").multiReplace;
+const multiReplace = require("../../" + generatedJsPath + "utilities/CornerStoneUtils.js").multiReplace;
 
 describe("CornerStone Utils", () => {
    describe("multiReplace", () => {

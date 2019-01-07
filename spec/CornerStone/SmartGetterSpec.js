@@ -4,10 +4,10 @@ const SmartGetter = require("../../" + generatedJsPath + "cornerstone/SmartGette
 // dependencies
 const LocalCache = require("../../" + generatedJsPath + "cornerstone/Cache.js").Cache;
 const Logger = require("../../" + generatedJsPath + "cornerstone/Logger.js").Logger;
-const isNode = require("../../" + generatedJsPath + "cornerstone/Platform.js").isNode;
+const isNode = require("../../" + generatedJsPath + "utilities/Platform.js").isNode;
 const WebAccessor = (isBrowser()) ?
-      require("../../" + generatedJsPath + "cornerstone/BrowserWebGetter.js").BrowserWebGetter :
-      require("../../" + generatedJsPath + "cornerstone/NodeWebGetter.js").NodeWebGetter;
+      require("../../" + generatedJsPath + "utilities/BrowserWebGetter.js").BrowserWebGetter :
+      require("../../" + generatedJsPath + "utilities/NodeWebGetter.js").NodeWebGetter;
 const sinon = require("sinon");
 const http = require("http");
 
