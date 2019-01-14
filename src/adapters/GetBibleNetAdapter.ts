@@ -204,7 +204,7 @@ export const GetBibleNetAdapter: IOnlineAdapterOptions = {
    ],
    howToCheckAvailability: {
       method,
-      url: "http://getbible.net/json?text=jn11:35"
+      url: "https://getbible.net/json?text=jn11:35"
    },
    howToGetLanguages: () => {
       // Manually send languages.
@@ -244,7 +244,7 @@ export const GetBibleNetAdapter: IOnlineAdapterOptions = {
       return out;
    },
    howToGetVerse: (options) => {
-      const url = "http://getbible.net/json?passage=" +
+      const url = "https://getbible.net/json?passage=" +
               options.book +
               options.chapter + ":" +
               options.verse;
@@ -269,7 +269,7 @@ export const GetBibleNetAdapter: IOnlineAdapterOptions = {
       });
    },
    howToGetChapter: (options) => {
-      const url = "http://getbible.net/json?passage=" +
+      const url = "https://getbible.net/json?passage=" +
               options.book +
               options.chapter;
       return {
