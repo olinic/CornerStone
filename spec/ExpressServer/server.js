@@ -1,13 +1,19 @@
+/* 
+ * Usage:
+ * node testserver.js <time in sec> 
+ */
 const express = require('express');
 const http = require("http");
 const https = require("https");
 const fs = require("fs");
+const path = require("path");
 
 // Retrieve the number of seconds from command line arguments.
 //  [0]     [1]       [2]
 // node testserver.js  6
-var input = Number(process.argv[2]);
-var seconds = isNaN(input) ? 5 : input;
+const script = process.argv[1];
+const input = Number(process.argv[2]);
+const seconds = isNaN(input) ? 5 : input;
 console.log("Running for " + seconds + " seconds.");
 
 var app = express();
@@ -16,9 +22,11 @@ var secureApp = express();
 var httpPort = 3000;
 var httpsPort = 3003;
 
+const dir = path.dirname(script);
+
 const secureOptions = {
-   key: fs.readFileSync("./spec/ExpressServer/key.pem"),
-   cert: fs.readFileSync("./spec/ExpressServer/cert.pem")
+   key: fs.readFileSync(dir + path.sep + "key.pem"),
+   cert: fs.readFileSync(dir + path.sep + "cert.pem")
 };
 
 var server = http.createServer(app);
