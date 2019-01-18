@@ -23,7 +23,6 @@ function testWebGetter(name, webGetter) {
       let port;
       let urlPath;
 
-
       function testRequest(method, urlPath, baseUrl, port) {
          return webGetter.request({
             method: method,
@@ -56,7 +55,7 @@ function testWebGetter(name, webGetter) {
          // Set variables to defaults before each test
          responseText = "verse";
          method = "GET";
-         baseUrl = "http://localhost";
+         baseUrl = "http://127.0.0.1";
          port = 3000;
          urlPath = "";
          process.env.NODE_TLS_REJECT_UNAUTHORIZED = "1";
@@ -69,8 +68,9 @@ function testWebGetter(name, webGetter) {
       });
 
       it("should GET an online resource securely (HTTPS)", (done) => {
+         console.log("Temporarily allow self-signed certificates for testing.");
          process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-         baseUrl = "https://localhost";
+         baseUrl = "https://127.0.0.1";
          port = httpsPort;
          urlPath = responseText;
 
@@ -132,7 +132,7 @@ function testWebGetter(name, webGetter) {
 
 // Returns the url for the test server. baseUrl and port are optional.
 function testServerUrl(urlEnd, baseUrl, port) {
-   let urlBase = (typeof baseUrl === 'string') ? baseUrl : "http://localhost";
+   let urlBase = (typeof baseUrl === 'string') ? baseUrl : "http://127.0.0.1";
    let urlPort = (typeof port === 'number') ? port : httpPort;
    return (urlBase + ":" + urlPort + "/" + urlEnd);
 }

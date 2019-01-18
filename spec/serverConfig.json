@@ -1,0 +1,10 @@
+{
+   "executable": "server.js",
+   "dir": "ExpressServer",
+   "host":"127.0.0.1",
+   "httpPort": 3000,
+   "httpsPort": 3003,
+   "shutdown": "/shutdown",
+   "fail": "/fail",
+   "jsonp": "/jsonp"
+}

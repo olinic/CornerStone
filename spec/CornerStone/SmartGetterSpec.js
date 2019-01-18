@@ -25,7 +25,7 @@ describe("Smart Getter", () => {
       let numIterations = 5;
       for (let i=0; i < numIterations; i++) {
          promises[i] = smartGetter.request({
-            "url": "http://localhost:3000/" + response,
+            "url": "http://127.0.0.1:3000/" + response,
             "method": "GET"
          });
 
@@ -46,7 +46,7 @@ describe("Smart Getter", () => {
       let failMessage = "didNotWork";
       for (let i=1; i <= numIterations; i++) {
          promises[i] = smartGetter.request({
-            "url": "http://localhost:3000/fail?code=500&message=" + failMessage,
+            "url": "http://127.0.0.1:3000/fail?code=500&message=" + failMessage,
             "method": "GET"
          });
 
@@ -73,7 +73,7 @@ describe("Smart Getter", () => {
 
       for (let i=0; i < 4; i++) {
          smartGetter.request({
-            "url": "http://localhost:3000/test",
+            "url": "http://127.0.0.1:3000/test",
             "method": "GET"
          });
       }

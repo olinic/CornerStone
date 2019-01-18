@@ -7,20 +7,23 @@ const http = require("http");
 const https = require("https");
 const fs = require("fs");
 const path = require("path");
+const serverConfig = require(".." + path.sep + "serverConfig.json");
+
+const defaultTime = 5;
 
 // Retrieve the number of seconds from command line arguments.
 //  [0]     [1]       [2]
 // node testserver.js  6
 const script = process.argv[1];
 const input = Number(process.argv[2]);
-const seconds = isNaN(input) ? 5 : input;
+const seconds = isNaN(input) ? defaultTime : input;
 console.log("Running for " + seconds + " seconds.");
 
 var app = express();
 var secureApp = express();
 
-var httpPort = 3000;
-var httpsPort = 3003;
+var httpPort = serverConfig.httpPort;
+var httpsPort = serverConfig.httpsPort;
 
 const dir = path.dirname(script);
 
@@ -46,15 +49,15 @@ function configureServer(app) {
       next();
    });
 
-   // Send an http request to http://localhost:<port>/shutdown to
+   // Send an http request to http://127.0.0.1:<port>/shutdown to
    // shutdown the server.
-   app.get('/shutdown', (req, res) => {
+   app.get(serverConfig.shutdown, (req, res) => {
       res.send("Shutting down...");
-      server.close();
+      shutdown();
    });
 
-   // To force a fail, request http://localhost:<port>/fail?code=<number>&message=<message>
-   app.all('/fail', (req, res) => {
+   // To force a fail, request http://127.0.0.1:<port>/fail?code=<number>&message=<message>
+   app.all(serverConfig.fail, (req, res) => {
       var message = req.query.message || "Resource not found.";
       var failCode = req.query.code || 404;
       res.status(failCode);
@@ -62,13 +65,13 @@ function configureServer(app) {
    });
 
    // JSONP
-   app.get('/jsonp', (req, res) => {
+   app.get(serverConfig.jsonp, (req, res) => {
       var obj = {message: "helloworld"};
       res.jsonp(obj);
    });
 
    // GET dynamic response, returns the path passed in.
-   // For example, http://localhost:<port>/helloworld returns helloworld.
+   // For example, http://127.0.0.1:<port>/helloworld returns helloworld.
    app.get('/*', (req, res) => {
       res.send(req.params[0]);
    });
@@ -87,9 +90,16 @@ secureServer.listen(httpsPort, () => {
    console.log("HTTPS: Listening on port " + httpsPort);
 });
 
-setTimeout(() =>
+var timer = setTimeout(() =>
+{
+   shutdown()
+}, seconds*1000);
+
+function shutdown()
 {
    console.log("Closing servers");
    server.close();
    secureServer.close();
-}, seconds*1000);
+   clearTimeout(timer);
+}
+

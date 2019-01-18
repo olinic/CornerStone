@@ -52,7 +52,7 @@ export class NodeWebGetter implements IWebGetter
             hostname: parse(url).hostname,
             method,
             path: (parse(url).pathname || "") + (parse(url).search || ""),
-            port: Number(parse(url).port) || 80,
+            port: parse(url).port || ((parse(url).protocol.indexOf("https") === -1) ? 80 : 443),
             protocol: parse(url).protocol || "http:"
          };
          this.logger.debug("Sending URL options: " + JSON.stringify(requestOptions));
